@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "707995369520",
+    "firebase_url": "https://jasir-26928.firebaseio.com",
+    "project_id": "jasir-26928",
+    "storage_bucket": "jasir-26928.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:707995369520:android:5facbd3860a9a2fc72adf5",
+        "android_client_info": {
+          "package_name": "com.example.flutter_story_app_concept"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "707995369520-bki5l2dl0annukf6gqreklak7gg54kl8.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA015lNffG1oQUqSSy7IGPOaVqTxhTyOYQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "707995369520-bki5l2dl0annukf6gqreklak7gg54kl8.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
