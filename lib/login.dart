@@ -18,7 +18,8 @@ class _LoginScreenState extends State<LoginScreen>
 
   Widget homePage() {
     return new Scaffold(
-      body: Container(
+      body: SingleChildScrollView(
+      child: Container(
       height: MediaQuery.of(context).size.height,
       decoration: BoxDecoration(
         color: Colors.redAccent,
@@ -140,12 +141,13 @@ class _LoginScreenState extends State<LoginScreen>
           ),
         ],
       ),
-    ));
+    )));
   }
 
   Widget loginPage() {
     return new Scaffold(
-      body: Container(
+      body: SingleChildScrollView(
+      child: Container(
       height: MediaQuery.of(context).size.height,
       decoration: BoxDecoration(
         color: Colors.white,
@@ -477,12 +479,14 @@ class _LoginScreenState extends State<LoginScreen>
           )
         ],
       ),
-    ));
+    )));
   }
 
   Widget signupPage() {
     return new Scaffold(
-      body: Container(
+      body: SingleChildScrollView(
+      child: 
+      Container(
       height: MediaQuery.of(context).size.height,
       decoration: BoxDecoration(
         color: Colors.white,
@@ -719,7 +723,7 @@ class _LoginScreenState extends State<LoginScreen>
         ],
       ),
     )
-    );
+    ));
   }
 
   gotoLogin() {
@@ -745,6 +749,7 @@ class _LoginScreenState extends State<LoginScreen>
   @override
   Widget build(BuildContext context) {
     return new MaterialApp(
+      debugShowCheckedModeBanner: false,
         home: Container(
           height: MediaQuery.of(context).size.height,
           child: PageView(

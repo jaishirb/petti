@@ -1,4 +1,4 @@
-name: flutter_story_app_concept
+name: Petti
 description: A new Flutter project.
 
 # The following defines the version and build number for your application.
@@ -46,6 +46,11 @@ flutter:
    - assets/image_02.jpg
    - assets/image_03.jpg
    - assets/image_04.jpg
+   - assets/adopcion.png
+   - assets/Coupet.png
+   - assets/comprayventa.png
+   - assets/petshop.png
+   - assets/veterinaria.png
 
 
   # An image asset can refer to one or more resolution-specific "variants", see
