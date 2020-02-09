@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'home.dart';
+import 'sign_in.dart';
+
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -438,7 +440,12 @@ class _LoginScreenState extends State<LoginScreen>
                                 children: <Widget>[
                                   new Expanded(
                                     child: new FlatButton(
-                                      onPressed: ()=>{},
+                                      onPressed: ()=>{
+                                          signInWithGoogle().whenComplete(() {
+                                          Navigator.push(context, MaterialPageRoute(builder: (context) => MyApp()), );
+                                          })
+
+                                      },
                                       padding: EdgeInsets.only(
                                         top: 20.0,
                                         bottom: 20.0,

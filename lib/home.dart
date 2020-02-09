@@ -59,7 +59,9 @@ class _MyAppState extends State<MyApp> {
                         color: Colors.white,
                         size: 30.0,
                       ),
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => user_screen()), );
+                      },
                     ),
                     IconButton(
                       icon: Icon(
