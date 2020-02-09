@@ -15,6 +15,7 @@ var widgetAspectRatio = cardAspectRatio * 1.2;
 class _MyAppState extends State<MyApp> {
   var currentPage = images.length - 1.0;
   var currentPageFamous = imagesFamous.length - 1.0;
+  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
   @override
   Widget build(BuildContext context) {
@@ -43,7 +44,50 @@ class _MyAppState extends State<MyApp> {
               end: Alignment.topCenter,
               tileMode: TileMode.clamp)),
       child: Scaffold(
+        key: _scaffoldKey,
         backgroundColor: Colors.transparent,
+        drawer: Drawer(
+          child: ListView(
+            children: <Widget>[
+                UserAccountsDrawerHeader(
+                    accountName: Text("Ashish Rawat"),
+                    accountEmail: Text("ashishrawat2911@gmail.com"),
+                    currentAccountPicture: CircleAvatar(
+                        backgroundColor: Theme.of(context).platform == TargetPlatform.iOS ? Colors.blue : Colors.white,
+                      child: Text("A", style: TextStyle(fontSize: 40.0),),
+                    ),
+                ),
+                ListTile(
+                  title: Text("Home"),
+                  leading: Icon(Icons.home),
+                  /** 
+                  onTap: () {
+                    Navigator.of(context).pop();
+                    Navigator.of(context).push(MaterialPageRoute(
+                    builder: (BuildContext context) => NewPage("Page two")));
+                  },
+                  **/
+                ),
+                ListTile(
+                  title: Text("Item 2"),
+                  leading: Icon(Icons.launch),
+                ),
+                ListTile(
+                  title: Text("Cerrar sesión"),
+                  leading: Icon(Icons.exit_to_app),
+                  onTap: () {
+                    Navigator.of(context).pop();
+                    //logic of sign out
+                    /**
+                     * Here you put the screen to go after signing out 
+                    Navigator.of(context).push(MaterialPageRoute(
+                    builder: (BuildContext context) => NewPage("Page two")));
+                    **/
+                  },
+                ),
+            ],
+      ),
+        ),
         body: SingleChildScrollView(
           child: Column(
             children: <Widget>[
@@ -59,7 +103,7 @@ class _MyAppState extends State<MyApp> {
                         color: Colors.white,
                         size: 30.0,
                       ),
-                      onPressed: () {},
+                      onPressed: () {_scaffoldKey.currentState.openDrawer();},
                     ),
                     IconButton(
                       icon: Icon(
