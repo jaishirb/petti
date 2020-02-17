@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>496683495191-2d7vel4iksu1g6duu03i6s9jfcokn98n.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.496683495191-2d7vel4iksu1g6duu03i6s9jfcokn98n</string>
+	<key>API_KEY</key>
+	<string>AIzaSyCPM5UuiUspp2klMSvoMuWKi2Kjhy4boJo</string>
+	<key>GCM_SENDER_ID</key>
+	<string>496683495191</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>io.flutter.flutter.app</string>
+	<key>PROJECT_ID</key>
+	<string>petti-7933f</string>
+	<key>STORAGE_BUCKET</key>
+	<string>petti-7933f.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:496683495191:ios:a0cf59022e9f0cf6fdd152</string>
+	<key>DATABASE_URL</key>
+	<string>https://petti-7933f.firebaseio.com</string>
+</dict>
+</plist>

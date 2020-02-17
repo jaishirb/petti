@@ -1,4 +1,11 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_facebook_login/flutter_facebook_login.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+
+import 'package:http/http.dart' as http;
 
 import 'home.dart';
 
@@ -10,11 +17,103 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen>
     with TickerProviderStateMixin {
 
- 
-  @override
+ bool isLoggedIn = false;
+ String token;
+ var firebaseAuth = FirebaseAuth.instance;
+
+
+ @override
   void initState() {
     super.initState();
   }
+
+  void onLoginStatusChange(bool isLoggedIn, String token){
+      setState(() {
+        this.isLoggedIn = isLoggedIn;
+        this.token = token;
+        print("token: " + this.token);
+      });
+  }
+
+  void getUserInfo(FacebookLoginResult result) async{
+    final token = result.accessToken.token;
+    final graphResponse = await http.get(
+        'https://graph.facebook.com/v2.12/me?fields=name,first_name,last_name,email&access_token=${token}');
+    final profile = json.decode(graphResponse.body);
+    print(profile);
+  }
+
+ void initiateSignIn(String type) {
+   _handleSignIn(type).then((result) {
+     if (result == 1) {
+       setState(() {
+         this.isLoggedIn = true;
+       });
+     } else {
+        print("error in google sign in");
+     }
+   });
+ }
+
+ Future<int> _handleSignIn(String type) async {
+   switch (type) {
+     case "FB":
+       FacebookLoginResult facebookLoginResult = await initiateFacebookLogin();
+       final accessToken = facebookLoginResult.accessToken.token;
+       if (facebookLoginResult.status == FacebookLoginStatus.loggedIn) {
+         final facebookAuthCred =
+         FacebookAuthProvider.getCredential(accessToken: accessToken);
+         final user = await firebaseAuth.signInWithCredential(facebookAuthCred);
+         print("User : " + user.displayName);
+         print("Email: " + user.email);
+         return 1;
+       } else
+         return 0;
+       break;
+     case "G":
+       try {
+         GoogleSignInAccount googleSignInAccount = await _handleGoogleSignIn();
+         final googleAuth = await googleSignInAccount.authentication;
+         final googleAuthCred = GoogleAuthProvider.getCredential(
+             idToken: googleAuth.idToken, accessToken: googleAuth.accessToken);
+         final user = await firebaseAuth.signInWithCredential(googleAuthCred);
+         print("User : " + user.displayName);
+         print("Email: " + user.email);
+         return 1;
+       } catch (error) {
+         print("error: " + error.toString());
+         return 0;
+       }
+   }
+   return 0;
+ }
+
+ Future<FacebookLoginResult> initiateFacebookLogin() async{
+   FacebookLogin login = FacebookLogin();
+   FacebookLoginResult result = await login.logIn(['email']);
+
+   switch (result.status) {
+     case FacebookLoginStatus.loggedIn:
+       var tokenFacebook = result.accessToken.token;
+       onLoginStatusChange(true, tokenFacebook);
+       getUserInfo(result);
+       break;
+     case FacebookLoginStatus.cancelledByUser:
+     //TODO: _showCancelledMessage();
+       break;
+     case FacebookLoginStatus.error:
+       print("error: " + result.errorMessage);
+       break;
+   }
+   return result;
+ }
+
+ Future<GoogleSignInAccount> _handleGoogleSignIn() async {
+   GoogleSignIn googleSignIn = GoogleSignIn(
+       scopes: ['email', 'https://www.googleapis.com/auth/contacts.readonly']);
+   GoogleSignInAccount googleSignInAccount = await googleSignIn.signIn();
+   return googleSignInAccount;
+ }
 
   Widget homePage() {
     return new Scaffold(
@@ -385,7 +484,7 @@ class _LoginScreenState extends State<LoginScreen>
                                 children: <Widget>[
                                   new Expanded(
                                     child: new FlatButton(
-                                      onPressed: ()=>{},
+                                      onPressed: ()=>{initiateSignIn("FB")},
                                       padding: EdgeInsets.only(
                                         top: 20.0,
                                         bottom: 20.0,
@@ -439,7 +538,7 @@ class _LoginScreenState extends State<LoginScreen>
                                 children: <Widget>[
                                   new Expanded(
                                     child: new FlatButton(
-                                      onPressed: ()=>{},
+                                      onPressed: ()=>{initiateSignIn("G")},
                                       padding: EdgeInsets.only(
                                         top: 20.0,
                                         bottom: 20.0,
