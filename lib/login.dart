@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
 import 'home.dart';
@@ -56,6 +56,12 @@ class _LoginScreenState extends State<LoginScreen>
  }
 
  Future<int> _handleSignIn(String type) async {
+   SharedPreferences prefs = await SharedPreferences.getInstance();
+   var email = prefs.getString('email');
+   print(email);
+   if(email != null){
+     Navigator.push(context, MaterialPageRoute(builder: (context) => MyApp()));
+   } 
    switch (type) {
      case "FB":
        FacebookLoginResult facebookLoginResult = await initiateFacebookLogin();
@@ -64,6 +70,9 @@ class _LoginScreenState extends State<LoginScreen>
          final facebookAuthCred =
          FacebookAuthProvider.getCredential(accessToken: accessToken);
          final user = await firebaseAuth.signInWithCredential(facebookAuthCred);
+         SharedPreferences prefs = await SharedPreferences.getInstance();
+         prefs.setString('email', user.email);
+         Navigator.push(context, MaterialPageRoute(builder: (context) => MyApp()));
          print("User : " + user.displayName);
          print("Email: " + user.email);
          return 1;
@@ -77,6 +86,9 @@ class _LoginScreenState extends State<LoginScreen>
          final googleAuthCred = GoogleAuthProvider.getCredential(
              idToken: googleAuth.idToken, accessToken: googleAuth.accessToken);
          final user = await firebaseAuth.signInWithCredential(googleAuthCred);
+         SharedPreferences prefs = await SharedPreferences.getInstance();
+         prefs.setString('email', user.email);
+         Navigator.push(context, MaterialPageRoute(builder: (context) => MyApp()));
          print("User : " + user.displayName);
          print("Email: " + user.email);
          return 1;
@@ -538,7 +550,9 @@ class _LoginScreenState extends State<LoginScreen>
                                 children: <Widget>[
                                   new Expanded(
                                     child: new FlatButton(
-                                      onPressed: ()=>{initiateSignIn("G")},
+                                      onPressed: ()=>{
+                                      initiateSignIn("G"),
+                                      },
                                       padding: EdgeInsets.only(
                                         top: 20.0,
                                         bottom: 20.0,
