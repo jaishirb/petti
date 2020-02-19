@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:Petti/data.dart';
+import 'package:Petti/screens/data.dart';
 import 'customIcons.dart';
 import 'data.dart';
 import 'dart:math';

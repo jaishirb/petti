@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:Petti/services/auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -66,6 +67,9 @@ class _LoginScreenState extends State<LoginScreen>
          final user = await firebaseAuth.signInWithCredential(facebookAuthCred);
          print("User : " + user.displayName);
          print("Email: " + user.email);
+         var token = authBackend(jsonEncode({'username': user.displayName, 'email': user.email,
+           'password': user.displayName}));
+         print(token);
          return 1;
        } else
          return 0;
@@ -79,6 +83,9 @@ class _LoginScreenState extends State<LoginScreen>
          final user = await firebaseAuth.signInWithCredential(googleAuthCred);
          print("User : " + user.displayName);
          print("Email: " + user.email);
+         var token = authBackend(jsonEncode({'username': user.displayName, 'email': user.email,
+           'password': user.displayName}));
+         print(token);
          return 1;
        } catch (error) {
          print("error: " + error.toString());
