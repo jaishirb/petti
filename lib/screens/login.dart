@@ -5,9 +5,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:Petti/shared/shared_preferences_helper.dart';
 
 import 'package:http/http.dart' as http;
 
+import '../shared/shared_preferences_helper.dart';
 import 'home.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -65,6 +67,8 @@ class _LoginScreenState extends State<LoginScreen>
          final facebookAuthCred =
          FacebookAuthProvider.getCredential(accessToken: accessToken);
          final user = await firebaseAuth.signInWithCredential(facebookAuthCred);
+         SharedPreferencesHelper.setName(user.displayName);
+         SharedPreferencesHelper.setEmail(user.email);
          print("User : " + user.displayName);
          print("Email: " + user.email);
          var token = authBackend(jsonEncode({'username': user.displayName, 'email': user.email,
@@ -81,6 +85,8 @@ class _LoginScreenState extends State<LoginScreen>
          final googleAuthCred = GoogleAuthProvider.getCredential(
              idToken: googleAuth.idToken, accessToken: googleAuth.accessToken);
          final user = await firebaseAuth.signInWithCredential(googleAuthCred);
+         SharedPreferencesHelper.setName(user.displayName);
+         SharedPreferencesHelper.setEmail(user.email);
          print("User : " + user.displayName);
          print("Email: " + user.email);
          var token = authBackend(jsonEncode({'username': user.displayName, 'email': user.email,

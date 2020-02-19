@@ -3,6 +3,7 @@ import 'package:Petti/screens/data.dart';
 import 'customIcons.dart';
 import 'data.dart';
 import 'dart:math';
+import 'package:Petti/shared/shared_preferences_helper.dart';
 
 class MyApp extends StatefulWidget {
   @override
@@ -13,6 +14,8 @@ var cardAspectRatio = 12.0 / 16.0;
 var widgetAspectRatio = cardAspectRatio * 1.2;
 
 class _MyAppState extends State<MyApp> {
+  var name = SharedPreferencesHelper.getName().toString();
+  var email = SharedPreferencesHelper.getEmail().toString();
   var currentPage = images.length - 1.0;
   var currentPageFamous = imagesFamous.length - 1.0;
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
@@ -50,11 +53,11 @@ class _MyAppState extends State<MyApp> {
           child: ListView(
             children: <Widget>[
                 UserAccountsDrawerHeader(
-                    accountName: Text("Ashish Rawat"),
-                    accountEmail: Text("ashishrawat2911@gmail.com"),
+                    accountName: Text(name),
+                    accountEmail: Text(email),
                     currentAccountPicture: CircleAvatar(
                         backgroundColor: Theme.of(context).platform == TargetPlatform.iOS ? Colors.blue : Colors.white,
-                      child: Text("A", style: TextStyle(fontSize: 40.0),),
+                      child: Text(name.substring(0,0), style: TextStyle(fontSize: 40.0),),
                     ),
                 ),
                 ListTile(

@@ -18,6 +18,14 @@ class SharedPreferencesHelper {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     return prefs.setString('name', value);
   }
+  static Future<bool> setEmail(String value) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.setString('email', value);
+  }
+  static Future<String> getEmail() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getString('email') ?? '';
+  }
 
   static Future<String> getName() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();

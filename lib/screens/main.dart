@@ -3,6 +3,8 @@ import 'package:Petti/screens/login.dart';
 import 'customIcons.dart';
 import 'data.dart';
 import 'dart:math';
+import 'package:Petti/shared/shared_preferences_helper.dart';
+
 
 void main() => runApp(MaterialApp(
       home: MyApp(),
@@ -18,8 +20,9 @@ var cardAspectRatio = 12.0 / 16.0;
 var widgetAspectRatio = cardAspectRatio * 1.2;
 
 class _MyAppState extends State<MyApp> {
+  var tok = SharedPreferencesHelper.getToken();
+  var result;
   var currentPage = images.length - 1.0;
-
   @override
   Widget build(BuildContext context) {
     PageController controller = PageController(initialPage: images.length - 1);
@@ -39,7 +42,9 @@ class _MyAppState extends State<MyApp> {
               begin: Alignment.bottomCenter,
               end: Alignment.topCenter,
               tileMode: TileMode.clamp)),
-      child: LoginScreen(),
+      child: 
+      result = (tok != null) ? MyApp()  : LoginScreen(), 
+      
     );
   }
 }
