@@ -57,9 +57,9 @@ class _LoginScreenState extends State<LoginScreen>
 
  Future<int> _handleSignIn(String type) async {
    SharedPreferences prefs = await SharedPreferences.getInstance();
-   var email = prefs.getString('email');
-   print(email);
-   if(email != null){
+   var tok = prefs.getString('token');
+   print(tok);
+   if(tok != null){
      Navigator.push(context, MaterialPageRoute(builder: (context) => MyApp()));
    } 
    switch (type) {
@@ -71,6 +71,8 @@ class _LoginScreenState extends State<LoginScreen>
          FacebookAuthProvider.getCredential(accessToken: accessToken);
          final user = await firebaseAuth.signInWithCredential(facebookAuthCred);
          SharedPreferences prefs = await SharedPreferences.getInstance();
+         prefs.setString('token', token);
+         prefs.setString('user', user.displayName);
          prefs.setString('email', user.email);
          Navigator.push(context, MaterialPageRoute(builder: (context) => MyApp()));
          print("User : " + user.displayName);
@@ -87,6 +89,8 @@ class _LoginScreenState extends State<LoginScreen>
              idToken: googleAuth.idToken, accessToken: googleAuth.accessToken);
          final user = await firebaseAuth.signInWithCredential(googleAuthCred);
          SharedPreferences prefs = await SharedPreferences.getInstance();
+         prefs.setString('token', token);
+         prefs.setString('user', user.displayName);
          prefs.setString('email', user.email);
          Navigator.push(context, MaterialPageRoute(builder: (context) => MyApp()));
          print("User : " + user.displayName);
