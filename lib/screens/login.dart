@@ -58,25 +58,36 @@ class _LoginScreenState extends State<LoginScreen>
    });
  }
 
+ void loginActions(String displayName, String email) async{
+   SharedPreferencesHelper.setName(displayName);
+   SharedPreferencesHelper.setEmail(email);
+   print("User : " + displayName);
+   print("Email: " + email);
+   String token = await authBackend(jsonEncode({'username': displayName, 'email': email,
+     'password': displayName}));
+   print(token);
+   SharedPreferencesHelper.setToken(token);
+   Navigator.pushNamedAndRemoveUntil(context, '/home', ModalRoute.withName('/home'),
+   );
+ }
+
  Future<int> _handleSignIn(String type) async {
    switch (type) {
      case "FB":
-       FacebookLoginResult facebookLoginResult = await initiateFacebookLogin();
-       final accessToken = facebookLoginResult.accessToken.token;
-       if (facebookLoginResult.status == FacebookLoginStatus.loggedIn) {
-         final facebookAuthCred =
-         FacebookAuthProvider.getCredential(accessToken: accessToken);
-         final user = await firebaseAuth.signInWithCredential(facebookAuthCred);
-         SharedPreferencesHelper.setName(user.displayName);
-         SharedPreferencesHelper.setEmail(user.email);
-         print("User : " + user.displayName);
-         print("Email: " + user.email);
-         var token = authBackend(jsonEncode({'username': user.displayName, 'email': user.email,
-           'password': user.displayName}));
-         print(token);
-         return 1;
-       } else
-         return 0;
+       try{
+         FacebookLoginResult facebookLoginResult = await initiateFacebookLogin();
+         final accessToken = facebookLoginResult.accessToken.token;
+         if (facebookLoginResult.status == FacebookLoginStatus.loggedIn) {
+           final facebookAuthCred =
+           FacebookAuthProvider.getCredential(accessToken: accessToken);
+           final user = await firebaseAuth.signInWithCredential(facebookAuthCred);
+           loginActions(user.displayName, user.email);
+           return 1;
+         } else
+           return 0;
+       }catch (error){
+         print("error: " + error.toString());
+       }
        break;
      case "G":
        try {
@@ -85,13 +96,7 @@ class _LoginScreenState extends State<LoginScreen>
          final googleAuthCred = GoogleAuthProvider.getCredential(
              idToken: googleAuth.idToken, accessToken: googleAuth.accessToken);
          final user = await firebaseAuth.signInWithCredential(googleAuthCred);
-         SharedPreferencesHelper.setName(user.displayName);
-         SharedPreferencesHelper.setEmail(user.email);
-         print("User : " + user.displayName);
-         print("Email: " + user.email);
-         var token = authBackend(jsonEncode({'username': user.displayName, 'email': user.email,
-           'password': user.displayName}));
-         print(token);
+         loginActions(user.displayName, user.email);
          return 1;
        } catch (error) {
          print("error: " + error.toString());
@@ -135,12 +140,14 @@ class _LoginScreenState extends State<LoginScreen>
       height: MediaQuery.of(context).size.height,
       decoration: BoxDecoration(
         color: Colors.redAccent,
+        /**
         image: DecorationImage(
           colorFilter: new ColorFilter.mode(
               Colors.black.withOpacity(0.1), BlendMode.dstATop),
-          image: AssetImage('assets/images/mountains.jpg'),
+          image: AssetImage('assets/petshop.png'),
           fit: BoxFit.cover,
         ),
+         **/
       ),
       child: new Column(
         children: <Widget>[
@@ -263,22 +270,24 @@ class _LoginScreenState extends State<LoginScreen>
       height: MediaQuery.of(context).size.height,
       decoration: BoxDecoration(
         color: Colors.white,
+        /**
         image: DecorationImage(
           colorFilter: new ColorFilter.mode(
               Colors.black.withOpacity(0.05), BlendMode.dstATop),
-          image: AssetImage('assets/images/mountains.jpg'),
+          image: AssetImage('assets/petshop.png'),
           fit: BoxFit.cover,
         ),
+         */
       ),
       child: new Column(
         children: <Widget>[
           Container(
-            padding: EdgeInsets.all(120.0),
+            padding: EdgeInsets.only(left:120.0, right: 120.0, top: 120.0, bottom: 70.0),
             child: Center(
               child: Icon(
-                Icons.headset_mic,
+                Icons.account_circle,
                 color: Colors.redAccent,
-                size: 50.0,
+                size: 70.0,
               ),
             ),
           ),
@@ -322,7 +331,7 @@ class _LoginScreenState extends State<LoginScreen>
                     textAlign: TextAlign.left,
                     decoration: InputDecoration(
                       border: InputBorder.none,
-                      hintText: 'samarthagarwal@live.com',
+                      hintText: 'email@domain.com',
                       hintStyle: TextStyle(color: Colors.grey),
                     ),
                   ),
@@ -417,7 +426,7 @@ class _LoginScreenState extends State<LoginScreen>
                     ),
                     color: Colors.redAccent,
                     onPressed: () => {
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => MyApp()), )
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => HomeScreen()), )
                     },
                     child: new Container(
 
@@ -506,12 +515,6 @@ class _LoginScreenState extends State<LoginScreen>
                                         mainAxisAlignment:
                                             MainAxisAlignment.spaceEvenly,
                                         children: <Widget>[
-                                          Icon(
-                                            const IconData(0xea90,
-                                                fontFamily: 'icomoon'),
-                                            color: Colors.white,
-                                            size: 15.0,
-                                          ),
                                           Text(
                                             "FACEBOOK",
                                             textAlign: TextAlign.center,
@@ -560,12 +563,6 @@ class _LoginScreenState extends State<LoginScreen>
                                         mainAxisAlignment:
                                             MainAxisAlignment.spaceEvenly,
                                         children: <Widget>[
-                                          Icon(
-                                            const IconData(0xea88,
-                                                fontFamily: 'icomoon'),
-                                            color: Colors.white,
-                                            size: 15.0,
-                                          ),
                                           Text(
                                             "GOOGLE",
                                             textAlign: TextAlign.center,
@@ -602,22 +599,24 @@ class _LoginScreenState extends State<LoginScreen>
       height: MediaQuery.of(context).size.height,
       decoration: BoxDecoration(
         color: Colors.white,
+        /**
         image: DecorationImage(
           colorFilter: new ColorFilter.mode(
               Colors.black.withOpacity(0.05), BlendMode.dstATop),
-          image: AssetImage('assets/images/mountains.jpg'),
+          image: AssetImage('assets/petshop.png'),
           fit: BoxFit.cover,
         ),
+         **/
       ),
       child: new Column(
         children: <Widget>[
           Container(
-            padding: EdgeInsets.all(100.0),
+            padding: EdgeInsets.only(left:120.0, right: 120.0, top: 100.0, bottom: 70.0),
             child: Center(
               child: Icon(
-                Icons.headset_mic,
+                Icons.account_circle,
                 color: Colors.redAccent,
-                size: 50.0,
+                size: 70.0,
               ),
             ),
           ),
@@ -661,7 +660,7 @@ class _LoginScreenState extends State<LoginScreen>
                     textAlign: TextAlign.left,
                     decoration: InputDecoration(
                       border: InputBorder.none,
-                      hintText: 'samarthagarwal@live.com',
+                      hintText: 'email@domain.com',
                       hintStyle: TextStyle(color: Colors.grey),
                     ),
                   ),
@@ -789,7 +788,7 @@ class _LoginScreenState extends State<LoginScreen>
                     ),
                     textAlign: TextAlign.end,
                   ),
-                  onPressed: () => {},
+                  onPressed: () => {gotoLogin()},
                 ),
               ),
             ],

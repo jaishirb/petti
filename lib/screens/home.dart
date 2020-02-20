@@ -5,20 +5,43 @@ import 'data.dart';
 import 'dart:math';
 import 'package:Petti/shared/shared_preferences_helper.dart';
 
-class MyApp extends StatefulWidget {
+class HomeScreen extends StatefulWidget {
   @override
-  _MyAppState createState() => new _MyAppState();
+  _HomeScreenState createState() => new _HomeScreenState();
 }
 
 var cardAspectRatio = 12.0 / 16.0;
 var widgetAspectRatio = cardAspectRatio * 1.2;
 
-class _MyAppState extends State<MyApp> {
-  var name = SharedPreferencesHelper.getName().toString();
-  var email = SharedPreferencesHelper.getEmail().toString();
+class _HomeScreenState extends State<HomeScreen> {
+
+  String name = 'Petti';
+  String email = '';
+
   var currentPage = images.length - 1.0;
   var currentPageFamous = imagesFamous.length - 1.0;
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+
+
+  @override
+  void initState() {
+    super.initState();
+    this.getUserInfo();
+  }
+
+  getUserInfo (){
+    SharedPreferencesHelper.getName().then((onValue){
+      setState(() {
+        this.name = onValue;
+      });
+    });
+
+    SharedPreferencesHelper.getEmail().then((onValue){
+      setState(() {
+        this.email = onValue;
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -35,6 +58,15 @@ class _MyAppState extends State<MyApp> {
         currentPageFamous = controllerFamous.page;
       });
     });
+
+
+    void _handleLogout() async {
+      SharedPreferencesHelper.removeToken();
+      SharedPreferencesHelper.removeEmail();
+      SharedPreferencesHelper.removeName();
+      Navigator.pushNamedAndRemoveUntil(
+          context, '/login', ModalRoute.withName('/login'));
+    }
 
     return Container(
       decoration: BoxDecoration(
@@ -53,11 +85,11 @@ class _MyAppState extends State<MyApp> {
           child: ListView(
             children: <Widget>[
                 UserAccountsDrawerHeader(
-                    accountName: Text(name),
-                    accountEmail: Text(email),
+                    accountName: Text(this.name),
+                    accountEmail: Text(this.email),
                     currentAccountPicture: CircleAvatar(
                         backgroundColor: Theme.of(context).platform == TargetPlatform.iOS ? Colors.blue : Colors.white,
-                      child: Text(name.substring(0,0), style: TextStyle(fontSize: 40.0),),
+                      child: Text(name.substring(0,1), style: TextStyle(fontSize: 40.0),),
                     ),
                 ),
                 ListTile(
@@ -79,7 +111,7 @@ class _MyAppState extends State<MyApp> {
                   title: Text("Cerrar sesión"),
                   leading: Icon(Icons.exit_to_app),
                   onTap: () {
-                    Navigator.of(context).pop();
+                    _handleLogout();
                     //logic of sign out
                     /**
                      * Here you put the screen to go after signing out 

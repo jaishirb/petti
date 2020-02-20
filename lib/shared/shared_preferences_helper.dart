@@ -4,9 +4,9 @@ import 'dart:async';
 class SharedPreferencesHelper {
   static final String _token = "token";
 
-  static Future<String> getToken() async {
+  static getToken() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    return prefs.getString(_token) ?? '';
+    return prefs.getString(_token) ?? "";
   }
 
   static Future<bool> setToken(String value) async {
@@ -34,6 +34,14 @@ class SharedPreferencesHelper {
 
   static void removeToken() {
     SharedPreferencesHelper.setToken('').then((bool v) => print('ready!'));
+  }
+
+  static void removeName(){
+    SharedPreferencesHelper.setName('').then((bool v) => print('ready!'));
+  }
+
+  static void removeEmail(){
+    SharedPreferencesHelper.setEmail('').then((bool v) => print('ready!'));
   }
 
 }
