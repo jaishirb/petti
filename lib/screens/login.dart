@@ -19,7 +19,11 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen>
     with TickerProviderStateMixin {
-
+ TextEditingController  emaillogController = new TextEditingController();
+ TextEditingController  passwordlogController = new TextEditingController();
+ TextEditingController  passwordController = new TextEditingController();
+ TextEditingController  password2Controller = new TextEditingController();
+ TextEditingController  emailController = new TextEditingController();
  bool isLoggedIn = false;
  String token;
  var firebaseAuth = FirebaseAuth.instance;
@@ -53,7 +57,7 @@ class _LoginScreenState extends State<LoginScreen>
          this.isLoggedIn = true;
        });
      } else {
-        print("error in google sign in");
+        print("error de login");
      }
    });
  }
@@ -65,6 +69,35 @@ class _LoginScreenState extends State<LoginScreen>
    print("Email: " + email);
    String token = await authBackend(jsonEncode({'username': displayName, 'email': email,
      'password': displayName}));
+   print(token);
+   SharedPreferencesHelper.setToken(token);
+   Navigator.pushNamedAndRemoveUntil(context, '/home', ModalRoute.withName('/home'),
+   );
+ }
+ void _showAlertDialog() {
+    showDialog(
+      context: context,
+      builder: (buildcontext) {
+        return AlertDialog(
+             title: new Text("Error"),
+             content: new Text("Las contraseñas no coinciden"),
+             actions: <Widget>[
+               new FlatButton(onPressed: (){
+                 Navigator.of(context).pop();
+               }, child: new Text("Cerrar"))
+             ],
+            );
+      }
+    );
+  }
+
+  void loginActionsIndependient(String displayName, String email, String password) async{
+   SharedPreferencesHelper.setName(displayName);
+   SharedPreferencesHelper.setEmail(email);
+   print("User : " + displayName);
+   print("Email: " + email);
+   String token = await authBackend(jsonEncode({'username': displayName, 'email': email,
+     'password': password}));
    print(token);
    SharedPreferencesHelper.setToken(token);
    Navigator.pushNamedAndRemoveUntil(context, '/home', ModalRoute.withName('/home'),
@@ -99,6 +132,28 @@ class _LoginScreenState extends State<LoginScreen>
          loginActions(user.displayName, user.email);
          return 1;
        } catch (error) {
+         print("error: " + error.toString());
+         return 0;
+       }
+       break;
+       case "S":
+       try {
+         if(passwordController.text == password2Controller.text){
+           var m = emailController.text.split("@");
+           loginActionsIndependient(m[0],emailController.text,passwordController.text);
+         }else{
+           _showAlertDialog();
+         }         
+       }catch (error) {
+         print("error: " + error.toString());
+         return 0;
+        }
+       break;
+       case "L":
+       try {
+           var m = emaillogController.text.split("@");
+           loginActionsIndependient(m[0],emaillogController.text,passwordlogController.text);                 
+       }catch (error) {
          print("error: " + error.toString());
          return 0;
        }
@@ -327,6 +382,7 @@ class _LoginScreenState extends State<LoginScreen>
               children: <Widget>[
                 new Expanded(
                   child: TextField(
+                    controller: emaillogController,
                     obscureText: true,
                     textAlign: TextAlign.left,
                     decoration: InputDecoration(
@@ -378,6 +434,7 @@ class _LoginScreenState extends State<LoginScreen>
               children: <Widget>[
                 new Expanded(
                   child: TextField(
+                    controller: passwordlogController,
                     obscureText: true,
                     textAlign: TextAlign.left,
                     decoration: InputDecoration(
@@ -426,7 +483,7 @@ class _LoginScreenState extends State<LoginScreen>
                     ),
                     color: Colors.redAccent,
                     onPressed: () => {
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => HomeScreen()), )
+                      initiateSignIn("L")
                     },
                     child: new Container(
 
@@ -656,6 +713,7 @@ class _LoginScreenState extends State<LoginScreen>
               children: <Widget>[
                 new Expanded(
                   child: TextField(
+                    controller: emailController,
                     obscureText: true,
                     textAlign: TextAlign.left,
                     decoration: InputDecoration(
@@ -707,6 +765,7 @@ class _LoginScreenState extends State<LoginScreen>
               children: <Widget>[
                 new Expanded(
                   child: TextField(
+                    controller: passwordController,
                     obscureText: true,
                     textAlign: TextAlign.left,
                     decoration: InputDecoration(
@@ -758,6 +817,7 @@ class _LoginScreenState extends State<LoginScreen>
               children: <Widget>[
                 new Expanded(
                   child: TextField(
+                    controller: password2Controller,
                     obscureText: true,
                     textAlign: TextAlign.left,
                     decoration: InputDecoration(
@@ -805,7 +865,9 @@ class _LoginScreenState extends State<LoginScreen>
                       borderRadius: new BorderRadius.circular(30.0),
                     ),
                     color: Colors.redAccent,
-                    onPressed: () => {},
+                    onPressed: () => {
+                      initiateSignIn("S")
+                    },
                     child: new Container(
                       padding: const EdgeInsets.symmetric(
                         vertical: 20.0,
