@@ -470,15 +470,20 @@ class CardFamousScrollWidget extends StatelessWidget {
                             Padding(
                               padding: const EdgeInsets.only(
                                   left: 12.0, bottom: 12.0),
-                              child: Container(
-                                padding: EdgeInsets.symmetric(
-                                    horizontal: 22.0, vertical: 6.0),
-                                decoration: BoxDecoration(
-                                    color: Colors.blueAccent,
-                                    borderRadius: BorderRadius.circular(20.0)),
-                                child: Text("Ver más",
-                                    style: TextStyle(color: Colors.white)),
-                              ),
+                              child: new GestureDetector(
+                                  onTap: (){
+                                    print("Container clicked $i");
+                                  },
+                                  child: new Container(
+                                    padding: EdgeInsets.symmetric(
+                                        horizontal: 22.0, vertical: 6.0),
+                                    decoration: BoxDecoration(
+                                        color: Colors.blueAccent,
+                                        borderRadius: BorderRadius.circular(20.0)),
+                                    child: Text("Ver más",
+                                        style: TextStyle(color: Colors.white)),
+                                  ),
+                              )
                             )
                           ],
                         ),
