@@ -1,3 +1,4 @@
+import 'package:Petti/shared/shared_preferences_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'feed.dart';
@@ -96,6 +97,8 @@ class _HomePageState extends State<HomePage> {
   int _page = 0;
   bool triedSilentLogin = false;
   bool setupNotifications = false;
+  String token = "";
+
 
   Scaffold buildLoginPage() {
     return Scaffold(
@@ -132,7 +135,7 @@ class _HomePageState extends State<HomePage> {
       silentLogin(context);
     }
 
-    return (googleSignIn.currentUser == null || currentUserModel == null)
+    return (token=="")
         ? buildLoginPage()
         : Scaffold(
             body: PageView(
@@ -200,7 +203,18 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
+    _loadUserInfo();
     pageController = PageController();
+  }
+
+  _loadUserInfo() async {
+    token = await SharedPreferencesHelper.getToken();
+    print('--------------------------------');
+    print(token);
+    if (token != "") {
+      Navigator.pushNamedAndRemoveUntil(
+          context, '/posts', ModalRoute.withName('/login'));
+    }
   }
 
   @override

@@ -1,3 +1,5 @@
+import 'package:Petti/screens/posts/upload_page.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'image_post.dart';
 import 'dart:async';
@@ -12,11 +14,20 @@ class Feed extends StatefulWidget {
 
 class _Feed extends State<Feed> with AutomaticKeepAliveClientMixin<Feed> {
   List<ImagePost> feedData;
+  PageController pageController;
+  int _page = 0;
 
   @override
   void initState() {
     super.initState();
+    pageController = PageController();
     this._loadFeed();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    pageController.dispose();
   }
 
   buildFeed() {
@@ -31,6 +42,17 @@ class _Feed extends State<Feed> with AutomaticKeepAliveClientMixin<Feed> {
     }
   }
 
+  void navigationTapped(int page) {
+    //Animating Page
+    pageController.jumpToPage(page);
+  }
+
+  void onPageChanged(int page) {
+    setState(() {
+      this._page = page;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     super.build(context); // reloads state when opened again
@@ -39,13 +61,44 @@ class _Feed extends State<Feed> with AutomaticKeepAliveClientMixin<Feed> {
       appBar: AppBar(
         title: const Text('Petti posts',
             style: const TextStyle(
-                fontFamily: "Billabong", color: Colors.black, fontSize: 35.0)),
+                fontFamily: "Billabong", color: Color.fromRGBO(28, 96, 97, 1.0), fontSize: 35.0)),
         centerTitle: true,
         backgroundColor: Colors.white,
       ),
-      body: RefreshIndicator(
-        onRefresh: _refresh,
-        child: buildFeed(),
+      body: PageView(
+        children: [
+          Container(
+            color: Colors.white,
+            child:  RefreshIndicator(
+              onRefresh: _refresh,
+              child: buildFeed(),
+            ),
+          ),
+          Container(
+            color: Colors.white,
+            child: Uploader(),
+          ),
+        ],
+        controller: pageController,
+        physics: NeverScrollableScrollPhysics(),
+        onPageChanged: onPageChanged,
+      ),
+      bottomNavigationBar: CupertinoTabBar(
+        backgroundColor: Colors.white,
+        items: <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+              icon: Icon(Icons.home,
+                  color: (_page == 0) ? Color.fromRGBO(28, 96, 97, 1.0) : Color.fromRGBO(89, 192, 154, 1.0)),
+              title: Container(height: 0.0),
+              backgroundColor: Colors.white),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.add_circle,
+                  color: (_page == 1) ? Color.fromRGBO(28, 96, 97, 1.0) : Color.fromRGBO(89, 192, 154, 1.0)),
+              title: Container(height: 0.0),
+              backgroundColor: Colors.white),
+        ],
+        onTap: navigationTapped,
+        currentIndex: _page,
       ),
     );
   }
@@ -59,6 +112,8 @@ class _Feed extends State<Feed> with AutomaticKeepAliveClientMixin<Feed> {
   }
 
   _loadFeed() async {
+    _getFeed();
+    /**
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String json = prefs.getString("feed");
     if (json != null) {
@@ -70,6 +125,7 @@ class _Feed extends State<Feed> with AutomaticKeepAliveClientMixin<Feed> {
     } else {
       _getFeed();
     }
+        **/
   }
 
   _getFeed() async {
@@ -77,7 +133,6 @@ class _Feed extends State<Feed> with AutomaticKeepAliveClientMixin<Feed> {
 
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
-    String userId = googleSignIn.currentUser.id.toString();
     // var url = 'https://us-central1-petti-7933f.cloudfunctions.net/getFeed?uid=' + userId;
     var url = 'http://75.2.0.131/petti/api/v1/mascotas/publicaciones';
     var httpClient = HttpClient();
@@ -96,7 +151,7 @@ class _Feed extends State<Feed> with AutomaticKeepAliveClientMixin<Feed> {
         result = "Success in http request for feed";
       } else {
         result =
-            'Error getting a feed: Http status ${response.statusCode} | userId $userId';
+            'Error getting a feed: Http status ${response.statusCode}';
       }
     } catch (exception) {
       result = 'Failed invoking the getFeed function. Exception: $exception';
@@ -112,6 +167,7 @@ class _Feed extends State<Feed> with AutomaticKeepAliveClientMixin<Feed> {
     List<ImagePost> listOfPosts = [];
 
     for (var postData in feedData) {
+      print(postData);
       listOfPosts.add(ImagePost.fromJSON(postData));
     }
 

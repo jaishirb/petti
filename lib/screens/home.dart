@@ -1,3 +1,4 @@
+import 'package:Petti/screens/posts/feed.dart';
 import 'package:flutter/material.dart';
 import 'package:Petti/screens/data.dart';
 import 'customIcons.dart';
@@ -72,8 +73,8 @@ class _HomeScreenState extends State<HomeScreen> {
       decoration: BoxDecoration(
           gradient: LinearGradient(
               colors: [
-            Color(0xFF1b1e44),
-            Color(0xFF2d3447),
+            Colors.white,
+            Colors.white,
           ],
               begin: Alignment.bottomCenter,
               end: Alignment.topCenter,
@@ -89,7 +90,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     accountEmail: Text(this.email),
                     currentAccountPicture: CircleAvatar(
                         backgroundColor: Theme.of(context).platform == TargetPlatform.iOS ? Colors.blue : Colors.white,
-                      child: Text(name.substring(0,1), style: TextStyle(fontSize: 40.0),),
+                      child: Text(name.substring(0,1), style: TextStyle(fontSize: 40.0, color: Color.fromRGBO(21, 157, 99, 1.0)),),
                     ),
                 ),
                 ListTile(
@@ -128,26 +129,19 @@ class _HomeScreenState extends State<HomeScreen> {
             children: <Widget>[
               Padding(
                 padding: const EdgeInsets.only(
-                    left: 12.0, right: 12.0, top: 30.0, bottom: 8.0),
+                    left: 12.0, right: 12.0, top: 40.0, bottom: 8.0),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
                     IconButton(
                       icon: Icon(
                         CustomIcons.menu,
-                        color: Colors.white,
+                        color: Color.fromRGBO(28, 96, 97, 1.0),
                         size: 30.0,
                       ),
                       onPressed: () {_scaffoldKey.currentState.openDrawer();},
                     ),
-                    IconButton(
-                      icon: Icon(
-                        Icons.search,
-                        color: Colors.white,
-                        size: 30.0,
-                      ),
-                      onPressed: () {},
-                    )
+
                   ],
                 ),
               ),
@@ -158,16 +152,12 @@ class _HomeScreenState extends State<HomeScreen> {
                   children: <Widget>[
                     Text("Petti",
                         style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 46.0,
-                          fontFamily: "Calibre-Semibold",
-                          letterSpacing: 1.0,
-                        )),
+                            fontFamily: "Billabong", color: Color.fromRGBO(28, 96, 97, 1.0), fontSize: 46.0)),
                     IconButton(
                       icon: Icon(
                         CustomIcons.option,
                         size: 12.0,
-                        color: Colors.white,
+                        color: Color.fromRGBO(28, 96, 97, 1.0),
                       ),
                       onPressed: () {},
                     )
@@ -175,12 +165,12 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.only(left: 20.0),
+                padding: const EdgeInsets.only(left: 20.0, top: 15.0),
                 child: Row(
                   children: <Widget>[
                     Container(
                       decoration: BoxDecoration(
-                        color: Color(0xFFff6e6e),
+                        color: Color.fromRGBO(28, 96, 97, 1.0),
                         borderRadius: BorderRadius.circular(20.0),
                       ),
                       child: Center(
@@ -196,7 +186,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       width: 15.0,
                     ),
                     Text("4+ Secciones",
-                        style: TextStyle(color: Colors.blueAccent))
+                        style: TextStyle(color: Color.fromRGBO(28, 96, 97, 1.0)))
                   ],
                 ),
               ),
@@ -204,81 +194,25 @@ class _HomeScreenState extends State<HomeScreen> {
                 children: <Widget>[
                   CardScrollWidget(currentPage),
                   Positioned.fill(
-                    child: PageView.builder(
-                      itemCount: images.length,
-                      controller: controller,
-                      reverse: true,
-                      itemBuilder: (context, index) {
-                        return Container();
+                    child: GestureDetector(
+                      onTap: (){
+                        print('index: $currentPage');
+                        Navigator.push(context, MaterialPageRoute(builder: (context)=>Feed()));
+                        //Navigator.pushNamedAndRemoveUntil(context, '/posts', ModalRoute.withName('/posts'));
                       },
+                      child: PageView.builder(
+                        itemCount: images.length,
+                        controller: controller,
+                        reverse: true,
+                        itemBuilder: (context, index) {
+                          return Container();
+                        },
+                      ),
                     ),
                   )
                 ],
               ),
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 20.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Text("Destacados",
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 46.0,
-                          fontFamily: "Calibre-Semibold",
-                          letterSpacing: 1.0,
-                        )),
-                    IconButton(
-                      icon: Icon(
-                        CustomIcons.option,
-                        size: 12.0,
-                        color: Colors.white,
-                      ),
-                      onPressed: () {},
-                    )
-                  ],
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(left: 20.0),
-                child: Row(
-                  children: <Widget>[
-                    Container(
-                      decoration: BoxDecoration(
-                        color: Colors.blueAccent,
-                        borderRadius: BorderRadius.circular(20.0),
-                      ),
-                      child: Center(
-                        child: Padding(
-                          padding: EdgeInsets.symmetric(
-                              horizontal: 22.0, vertical: 6.0),
-                          child: Text("Recientes",
-                              style: TextStyle(color: Colors.white)),
-                        ),
-                      ),
-                    ),
-                    SizedBox(
-                      width: 15.0,
-                    ),
-                    Text("4+ Historias",
-                        style: TextStyle(color: Colors.blueAccent))
-                  ],
-                ),
-              ),
-              Stack(
-                children: <Widget>[
-                  new CardFamousScrollWidget(currentPageFamous),
-                  Positioned.fill(
-                    child: PageView.builder(
-                      itemCount: imagesFamous.length,
-                      controller: controllerFamous,
-                      reverse: true,
-                      itemBuilder: (context, index) {
-                        return Container();
-                      },
-                    ),
-                  )
-                ],
-              ),
+
             ],
           ),
         ),
@@ -349,15 +283,7 @@ class CardScrollWidget extends StatelessWidget {
                           mainAxisSize: MainAxisSize.min,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
-                            Padding(
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: 16.0, vertical: 8.0),
-                              child: Text(title[i],
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 25.0,
-                                      fontFamily: "SF-Pro-Text-Regular")),
-                            ),
+
                             SizedBox(
                               height: 10.0,
                             ),
@@ -368,9 +294,9 @@ class CardScrollWidget extends StatelessWidget {
                                 padding: EdgeInsets.symmetric(
                                     horizontal: 22.0, vertical: 6.0),
                                 decoration: BoxDecoration(
-                                    color: Colors.blueAccent,
+                                    color: Color.fromRGBO(28, 96, 97, 1.0),
                                     borderRadius: BorderRadius.circular(20.0)),
-                                child: Text("Ver más",
+                                child: Text(title[i],
                                     style: TextStyle(color: Colors.white)),
                               ),
                             )
@@ -478,7 +404,7 @@ class CardFamousScrollWidget extends StatelessWidget {
                                     padding: EdgeInsets.symmetric(
                                         horizontal: 22.0, vertical: 6.0),
                                     decoration: BoxDecoration(
-                                        color: Colors.blueAccent,
+                                        color: Color.fromRGBO(28, 96, 97, 1.0),
                                         borderRadius: BorderRadius.circular(20.0)),
                                     child: Text("Ver más",
                                         style: TextStyle(color: Colors.white)),

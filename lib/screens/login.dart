@@ -194,7 +194,15 @@ class _LoginScreenState extends State<LoginScreen>
       child: Container(
       height: MediaQuery.of(context).size.height,
       decoration: BoxDecoration(
-        color: Colors.redAccent,
+          gradient: LinearGradient(
+              colors: [
+                Color.fromRGBO(28, 96, 97, 1.0),
+                Color.fromRGBO(89, 192, 154, 1.0),
+                Color.fromRGBO(21, 157, 99, 1.0),
+              ],
+              begin: Alignment.bottomCenter,
+              end: Alignment.topCenter,
+              tileMode: TileMode.clamp)
         /**
         image: DecorationImage(
           colorFilter: new ColorFilter.mode(
@@ -248,7 +256,7 @@ class _LoginScreenState extends State<LoginScreen>
                   child: new OutlineButton(
                     shape: new RoundedRectangleBorder(
                         borderRadius: new BorderRadius.circular(30.0)),
-                    color: Colors.redAccent,
+                    color: Color.fromRGBO(28, 96, 97, 1.0),
                     highlightedBorderColor: Colors.white,
                     onPressed: () => gotoSignup(),
                     child: new Container(
@@ -301,7 +309,7 @@ class _LoginScreenState extends State<LoginScreen>
                               "LOGIN",
                               textAlign: TextAlign.center,
                               style: TextStyle(
-                                  color: Colors.redAccent,
+                                  color: Color.fromRGBO(28, 96, 97, 1.0),
                                   fontWeight: FontWeight.bold),
                             ),
                           ),
@@ -341,7 +349,7 @@ class _LoginScreenState extends State<LoginScreen>
             child: Center(
               child: Icon(
                 Icons.account_circle,
-                color: Colors.redAccent,
+                color: Color.fromRGBO(28, 96, 97, 1.0),
                 size: 70.0,
               ),
             ),
@@ -355,7 +363,7 @@ class _LoginScreenState extends State<LoginScreen>
                     "EMAIL",
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
-                      color: Colors.redAccent,
+                      color: Color.fromRGBO(28, 96, 97, 1.0),
                       fontSize: 15.0,
                     ),
                   ),
@@ -370,7 +378,7 @@ class _LoginScreenState extends State<LoginScreen>
             decoration: BoxDecoration(
               border: Border(
                 bottom: BorderSide(
-                    color: Colors.redAccent,
+                    color: Color.fromRGBO(28, 96, 97, 1.0),
                     width: 0.5,
                     style: BorderStyle.solid),
               ),
@@ -407,7 +415,7 @@ class _LoginScreenState extends State<LoginScreen>
                     "PASSWORD",
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
-                      color: Colors.redAccent,
+                      color: Color.fromRGBO(28, 96, 97, 1.0),
                       fontSize: 15.0,
                     ),
                   ),
@@ -422,7 +430,7 @@ class _LoginScreenState extends State<LoginScreen>
             decoration: BoxDecoration(
               border: Border(
                 bottom: BorderSide(
-                    color: Colors.redAccent,
+                    color: Color.fromRGBO(28, 96, 97, 1.0),
                     width: 0.5,
                     style: BorderStyle.solid),
               ),
@@ -460,7 +468,7 @@ class _LoginScreenState extends State<LoginScreen>
                     "Forgot Password?",
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
-                      color: Colors.redAccent,
+                      color: Color.fromRGBO(28, 96, 97, 1.0),
                       fontSize: 15.0,
                     ),
                     textAlign: TextAlign.end,
@@ -481,7 +489,7 @@ class _LoginScreenState extends State<LoginScreen>
                     shape: new RoundedRectangleBorder(
                       borderRadius: new BorderRadius.circular(30.0),
                     ),
-                    color: Colors.redAccent,
+                    color: Color.fromRGBO(28, 96, 97, 1.0),
                     onPressed: () => {
                       initiateSignIn("L")
                     },
@@ -555,7 +563,7 @@ class _LoginScreenState extends State<LoginScreen>
                             shape: new RoundedRectangleBorder(
                               borderRadius: new BorderRadius.circular(30.0),
                             ),
-                            color: Color(0Xff3B5998),
+                            color: Color.fromRGBO(89, 192, 154, 1.0),
                             onPressed: () => {},
                             child: new Container(
                               child: new Row(
@@ -603,7 +611,7 @@ class _LoginScreenState extends State<LoginScreen>
                             shape: new RoundedRectangleBorder(
                               borderRadius: new BorderRadius.circular(30.0),
                             ),
-                            color: Color(0Xffdb3236),
+                            color: Color.fromRGBO(21, 157, 99, 1.0),
                             onPressed: () => {},
                             child: new Container(
                               child: new Row(
@@ -651,7 +659,7 @@ class _LoginScreenState extends State<LoginScreen>
   Widget signupPage() {
     return new Scaffold(
       body: SingleChildScrollView(
-      child: 
+      child:
       Container(
       height: MediaQuery.of(context).size.height,
       decoration: BoxDecoration(
@@ -672,7 +680,7 @@ class _LoginScreenState extends State<LoginScreen>
             child: Center(
               child: Icon(
                 Icons.account_circle,
-                color: Colors.redAccent,
+                color: Color.fromRGBO(28, 96, 97, 1.0),
                 size: 70.0,
               ),
             ),
@@ -686,7 +694,7 @@ class _LoginScreenState extends State<LoginScreen>
                     "EMAIL",
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
-                      color: Colors.redAccent,
+                      color: Color.fromRGBO(28, 96, 97, 1.0),
                       fontSize: 15.0,
                     ),
                   ),
@@ -701,7 +709,7 @@ class _LoginScreenState extends State<LoginScreen>
             decoration: BoxDecoration(
               border: Border(
                 bottom: BorderSide(
-                    color: Colors.redAccent,
+                    color: Color.fromRGBO(28, 96, 97, 1.0),
                     width: 0.5,
                     style: BorderStyle.solid),
               ),
@@ -738,7 +746,7 @@ class _LoginScreenState extends State<LoginScreen>
                     "PASSWORD",
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
-                      color: Colors.redAccent,
+                      color: Color.fromRGBO(28, 96, 97, 1.0),
                       fontSize: 15.0,
                     ),
                   ),
@@ -753,7 +761,7 @@ class _LoginScreenState extends State<LoginScreen>
             decoration: BoxDecoration(
               border: Border(
                 bottom: BorderSide(
-                    color: Colors.redAccent,
+                    color: Color.fromRGBO(28, 96, 97, 1.0),
                     width: 0.5,
                     style: BorderStyle.solid),
               ),
@@ -790,7 +798,7 @@ class _LoginScreenState extends State<LoginScreen>
                     "CONFIRM PASSWORD",
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
-                      color: Colors.redAccent,
+                      color: Color.fromRGBO(28, 96, 97, 1.0),
                       fontSize: 15.0,
                     ),
                   ),
@@ -805,7 +813,7 @@ class _LoginScreenState extends State<LoginScreen>
             decoration: BoxDecoration(
               border: Border(
                 bottom: BorderSide(
-                    color: Colors.redAccent,
+                    color: Color.fromRGBO(28, 96, 97, 1.0),
                     width: 0.5,
                     style: BorderStyle.solid),
               ),
@@ -843,7 +851,7 @@ class _LoginScreenState extends State<LoginScreen>
                     "Already have an account?",
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
-                      color: Colors.redAccent,
+                      color: Color.fromRGBO(28, 96, 97, 1.0),
                       fontSize: 15.0,
                     ),
                     textAlign: TextAlign.end,
@@ -864,7 +872,7 @@ class _LoginScreenState extends State<LoginScreen>
                     shape: new RoundedRectangleBorder(
                       borderRadius: new BorderRadius.circular(30.0),
                     ),
-                    color: Colors.redAccent,
+                    color: Color.fromRGBO(28, 96, 97, 1.0),
                     onPressed: () => {
                       initiateSignIn("S")
                     },

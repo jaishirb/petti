@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:Petti/shared/shared_preferences_helper.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -9,7 +10,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flare_flutter/flare_actor.dart';
 
 class ImagePost extends StatefulWidget {
-  const ImagePost(
+  ImagePost(
       {this.mediaUrl,
       this.username,
       this.location,
@@ -32,6 +33,8 @@ class ImagePost extends StatefulWidget {
   }
 
   int getLikeCount(var likes) {
+    print('--!--!...');
+    print(likes);
     if (likes == null) {
       return 0;
     }
@@ -46,6 +49,7 @@ class ImagePost extends StatefulWidget {
 
     return count;
   }
+
 
   final String mediaUrl;
   final String username;
@@ -73,9 +77,10 @@ class _ImagePost extends State<ImagePost> {
   final String location;
   final String description;
   Map likes;
+  String name = '';
   int likeCount;
   final String id;
-  bool liked;
+  bool liked = false;
   final String owner;
 
   bool showHeart = false;
@@ -86,6 +91,17 @@ class _ImagePost extends State<ImagePost> {
   );
 
 
+  @override
+  void initState(){
+    super.initState();
+    SharedPreferencesHelper.getName().then((_name){
+      setState(() {
+        this.name = _name.trim().replaceAll(' ', '').toLowerCase();
+      });
+    });
+    print('????????????');
+    print(likes);
+  }
   _ImagePost(
       {this.mediaUrl,
       this.username,
@@ -101,7 +117,7 @@ class _ImagePost extends State<ImagePost> {
     IconData icon;
 
     if (liked) {
-      color = Colors.pink;
+      color = Color.fromRGBO(21, 157, 99, 1.0);
       icon = FontAwesomeIcons.solidHeart;
     } else {
       icon = FontAwesomeIcons.heart;
@@ -153,18 +169,17 @@ class _ImagePost extends State<ImagePost> {
       return Text("owner error");
     }
 
-    return FutureBuilder(
+    return FutureBuilder (
 
         builder: (context, snapshot) {
-
-          if (snapshot.data != null) {
+          if (owner != null) {
             return ListTile(
               leading: CircleAvatar(
                 //backgroundImage: CachedNetworkImageProvider(snapshot.data.data['photoUrl']),
-                backgroundColor: Colors.grey,
+                backgroundColor: Color.fromRGBO(28, 96, 97, 1.0),
               ),
               title: GestureDetector(
-                child: Text('Usuario', style: boldStyle),
+                child: Text(name, style: boldStyle),
                 onTap: () {
                   //openProfile(context, owner);
                 },
@@ -173,6 +188,7 @@ class _ImagePost extends State<ImagePost> {
               trailing: const Icon(Icons.more_vert),
             );
           }
+
 
           // snapshot data is null here
           return Container();
@@ -184,9 +200,13 @@ class _ImagePost extends State<ImagePost> {
     child: Center(child: CircularProgressIndicator()),
   );
 
+
   @override
   Widget build(BuildContext context) {
-    liked = (likes[googleSignIn.currentUser.id.toString()] == true);
+    SharedPreferencesHelper.getEmailAsync().then((_email){
+      liked = (likes[_email] == true);
+    });
+
 
     return Column(
       mainAxisSize: MainAxisSize.min,
@@ -216,9 +236,9 @@ class _ImagePost extends State<ImagePost> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Container(
-                margin: const EdgeInsets.only(left: 20.0),
+                margin: const EdgeInsets.only(left: 20.0, right: 2.0),
                 child: Text(
-                  "Usuario ",
+                  name,
                   style: boldStyle,
                 )),
             Expanded(child: Text(description)),
@@ -229,14 +249,16 @@ class _ImagePost extends State<ImagePost> {
   }
 
   void _likePost(String id2) async{
-    var userId = googleSignIn.currentUser.id;
-    bool _liked = likes[userId] == true;
+    var email = await SharedPreferencesHelper.getEmailAsync();
+    print('-----------------------');
+    print(email);
+    bool _liked = likes[email] == true;
     var dio = Dio();
     if (_liked) {
       print('removing like');
       try{
         final formData = {
-          '$userId': false
+          '$email': false
       };
       final response = await dio.post(
         'http://75.2.0.131/petti/api/v1/mascotas/publicaciones/$id/update_likes/', data: formData);
@@ -253,7 +275,7 @@ class _ImagePost extends State<ImagePost> {
       setState(() {
         likeCount = likeCount - 1;
         liked = false;
-        likes[userId] = false;
+        likes[email] = false;
       });
 
     }
@@ -262,7 +284,7 @@ class _ImagePost extends State<ImagePost> {
       print('liking');
       try{
         final formData = {
-          '$userId': true
+          '$email': true
       };
       final response = await dio.post(
         'http://75.2.0.131/petti/api/v1/mascotas/publicaciones/$id/update_likes/', data: formData);
@@ -278,7 +300,7 @@ class _ImagePost extends State<ImagePost> {
       setState(() {
         likeCount = likeCount + 1;
         liked = true;
-        likes[userId] = true;
+        likes[email] = true;
         showHeart = true;
       });
       Timer(const Duration(milliseconds: 2000), () {
@@ -294,7 +316,7 @@ class _ImagePost extends State<ImagePost> {
 class ImagePostFromId extends StatelessWidget {
   final String id;
 
-  const ImagePostFromId({this.id});
+  ImagePostFromId({this.id});
 
   getImagePost() async {
     return null;
