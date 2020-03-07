@@ -219,7 +219,7 @@ class PostForm extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: <Widget>[
             CircleAvatar(
-              backgroundImage: NetworkImage(currentUserModel.photoUrl),
+              //backgroundImage: NetworkImage(currentUserModel.photoUrl),
             ),
             Container(
               width: 250.0,
