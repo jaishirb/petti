@@ -1,6 +1,8 @@
 import 'package:Petti/screens/posts/feed.dart';
+import 'package:Petti/screens/profile.dart';
 import 'package:flutter/material.dart';
 import 'package:Petti/screens/data.dart';
+import 'cards/ui/home/home_page.dart';
 import 'customIcons.dart';
 import 'data.dart';
 import 'dart:math';
@@ -105,8 +107,11 @@ class _HomeScreenState extends State<HomeScreen> {
                   **/
                 ),
                 ListTile(
-                  title: Text("Item 2"),
-                  leading: Icon(Icons.launch),
+                  title: Text("Perfil"),
+                  leading: Icon(Icons.account_circle),
+                  onTap: () {
+                    Navigator.push(context, MaterialPageRoute(builder: (context)=>ProfilePage()));
+                  },
                 ),
                 ListTile(
                   title: Text("Cerrar sesión"),
@@ -196,8 +201,30 @@ class _HomeScreenState extends State<HomeScreen> {
                   Positioned.fill(
                     child: GestureDetector(
                       onTap: (){
+                        String _title = '';
+                        switch(currentPage.toInt()){
+                          case 4:
+                            _title = 'Adopción';
+                            Navigator.push(context, MaterialPageRoute(builder: (context)=>Feed(title: '$_title')));
+                            break;
+                          case 3:
+                            _title = 'Compra/venta';
+                            Navigator.push(context, MaterialPageRoute(builder: (context)=>Feed(title: '$_title')));
+                            break;
+                          case 2:
+                            _title = 'Parejas';
+                            Navigator.push(context, MaterialPageRoute(builder: (context)=>Feed(title: '$_title')));
+                            break;
+                          case 1:
+                            _title = 'Veterinaria 24h';
+                            Navigator.push(context, MaterialPageRoute(builder: (context)=>HomePage()));
+                            break;
+                          case 0:
+                            _title = 'Market place';
+                            break;
+                        }
                         print('index: $currentPage');
-                        Navigator.push(context, MaterialPageRoute(builder: (context)=>Feed()));
+
                         //Navigator.pushNamedAndRemoveUntil(context, '/posts', ModalRoute.withName('/posts'));
                       },
                       child: PageView.builder(

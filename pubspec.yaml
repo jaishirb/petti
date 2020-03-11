@@ -53,10 +53,6 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
-   - assets/image_01.png
-   - assets/image_02.jpg
-   - assets/image_03.jpg
-   - assets/image_04.jpg
    - assets/adopcion.png
    - assets/Coupet.png
    - assets/comprayventa.png
@@ -64,6 +60,19 @@ flutter:
    - assets/veterinaria.png
    - assets/images/google_signin_button.png
    - assets/flare/Like.flr
+   - assets/images/email_icon.png
+   - assets/images/password_icon.png
+   - assets/images/user_icon.png
+   - assets/images/as.png
+   - assets/images/mars.png
+   - assets/images/neptune.png
+   - assets/images/moon.png
+   - assets/images/earth.png
+   - assets/images/mercury.png
+   - assets/images/ic_distance.png
+   - assets/images/ic_gravity.png
+   - assets/images/testl.png
+   - assets/images/coin.png
 
 
   # An image asset can refer to one or more resolution-specific "variants", see

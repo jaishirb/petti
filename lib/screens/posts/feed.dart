@@ -9,10 +9,14 @@ import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Feed extends StatefulWidget {
-  _Feed createState() => _Feed();
+  final String title;
+  Feed({this.title});
+  _Feed createState() => _Feed(title: title);
 }
 
 class _Feed extends State<Feed> with AutomaticKeepAliveClientMixin<Feed> {
+  final String title;
+  _Feed({this.title});
   List<ImagePost> feedData;
   PageController pageController;
   int _page = 0;
@@ -59,7 +63,7 @@ class _Feed extends State<Feed> with AutomaticKeepAliveClientMixin<Feed> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Petti posts',
+        title: Text('$title',
             style: const TextStyle(
                 fontFamily: "Billabong", color: Color.fromRGBO(28, 96, 97, 1.0), fontSize: 35.0)),
         centerTitle: true,
