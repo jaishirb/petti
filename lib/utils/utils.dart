@@ -1,1 +1,1 @@
-const DOMAIN = "75.2.0.131/petti";
+const DOMAIN = "52.24.128.245/petti";

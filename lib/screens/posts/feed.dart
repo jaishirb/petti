@@ -1,6 +1,7 @@
 import 'package:Petti/screens/posts/upload_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import '../../utils/utils.dart';
 import 'image_post.dart';
 import 'dart:async';
 import 'main.dart';
@@ -138,7 +139,7 @@ class _Feed extends State<Feed> with AutomaticKeepAliveClientMixin<Feed> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
     // var url = 'https://us-central1-petti-7933f.cloudfunctions.net/getFeed?uid=' + userId;
-    var url = 'http://75.2.0.131/petti/api/v1/mascotas/publicaciones';
+    var url = 'http://$DOMAIN/api/v1/mascotas/publicaciones';
     var httpClient = HttpClient();
 
     List<ImagePost> listOfPosts;

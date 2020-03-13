@@ -4,6 +4,7 @@ import 'package:Petti/shared/shared_preferences_helper.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import '../../utils/utils.dart';
 import 'main.dart';
 import 'dart:async';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -261,7 +262,7 @@ class _ImagePost extends State<ImagePost> {
           '$email': false
       };
       final response = await dio.post(
-        'http://75.2.0.131/petti/api/v1/mascotas/publicaciones/$id/update_likes/', data: formData);
+        'http://$DOMAIN/api/v1/mascotas/publicaciones/$id/update_likes/', data: formData);
       print("Response status: ${response.statusCode}");
       print("Response body: ${response.data}");
       }catch(exception){
@@ -287,7 +288,7 @@ class _ImagePost extends State<ImagePost> {
           '$email': true
       };
       final response = await dio.post(
-        'http://75.2.0.131/petti/api/v1/mascotas/publicaciones/$id/update_likes/', data: formData);
+        'http://$DOMAIN/api/v1/mascotas/publicaciones/$id/update_likes/', data: formData);
       print("Response status: ${response.statusCode}");
       print("Response body: ${response.data}");
       }catch(exception){

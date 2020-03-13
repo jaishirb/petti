@@ -4,6 +4,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:async';
+import '../../utils/utils.dart';
 import 'main.dart';
 import 'dart:io';
 import 'location.dart';
@@ -280,7 +281,7 @@ Future<int> uploadImage(var imageFile) async {
       "title": "test"
   });
   final response = await dio.post(
-    'http://75.2.0.131/petti/api/v1/mascotas/imagenes/', data: formData);
+    'http://$DOMAIN/api/v1/mascotas/imagenes/', data: formData);
   print("Response status: ${response.statusCode}");
   print("Response body: ${response.data}");
   final id = response.data['id'];
@@ -327,7 +328,7 @@ void postToFireStore(
       "description": description,
   });
   final response = await dio.post(
-    'http://75.2.0.131/petti/api/v1/mascotas/publicaciones/', data: formData);
+    'http://$DOMAIN/api/v1/mascotas/publicaciones/', data: formData);
   print("Response status: ${response.statusCode}");
   print("Response body: ${response.data}");
 }

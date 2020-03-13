@@ -1,13 +1,32 @@
 import 'package:flutter/material.dart';
-import '../../model/planets.dart';
+import '../../model/cards.dart' as cardsp;
 import '../../ui/common/plannet_summary.dart';
 
-class HomePageBody extends StatelessWidget {
+class HomePageBody extends StatefulWidget {
+
+  @override
+  _HomePageBodyState createState() => _HomePageBodyState();
+}
+
+class _HomePageBodyState extends State<HomePageBody> {
+  List<cardsp.Card>cards = [];
+  @override
+  void initState() {
+    super.initState();
+    cardsp.getCards().then((data){
+      setState(() {
+          cards = data;
+          print(cards);
+      });
+    });
+
+  }
+
   @override
   Widget build(BuildContext context) {
     return new Expanded(
       child: new Container(
-       color: Colors.white,
+        color: Colors.white,
         child: new CustomScrollView(
           scrollDirection: Axis.vertical,
           shrinkWrap: false,
@@ -16,8 +35,8 @@ class HomePageBody extends StatelessWidget {
               padding: const EdgeInsets.symmetric(vertical: 24.0),
               sliver: new SliverList(
                 delegate: new SliverChildBuilderDelegate(
-                    (context, index) => new PlanetSummary(planets[index]),
-                  childCount: planets.length,
+                      (context, index) => new PlanetSummary(cards[index]),
+                  childCount: cards.length,
                 ),
               ),
             ),
