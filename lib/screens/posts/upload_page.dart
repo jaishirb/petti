@@ -266,14 +266,6 @@ class PostForm extends StatelessWidget {
 }
 
 Future<int> uploadImage(var imageFile) async {
-  /**
-   * var uuid = Uuid().v1();
-  StorageReference ref = FirebaseStorage.instance.ref().child("post_$uuid.jpg");
-  StorageUploadTask uploadTask = ref.putFile(imageFile);
-
-  String downloadUrl = await (await uploadTask.onComplete).ref.getDownloadURL();
-  return downloadUrl;
-   */
   var dio = Dio();
   String fileName = imageFile.path.split('/').last;
   FormData formData = FormData.fromMap({
@@ -286,41 +278,11 @@ Future<int> uploadImage(var imageFile) async {
   print("Response body: ${response.data}");
   final id = response.data['id'];
   return id;
-  /**
-   * final response = await http.post('http://18.216.178.5/petti/api/v1/mascotas/imagenes/', 
-      headers: {
-            "Content-type": "multipart/form-data",
-      }, 
-      body: {
-            "photo": imageFile,
-            "title": 'test',
-      });
-      print("Response status: ${response.statusCode}");
-      print("Response body: ${response.body}");
-      final url = jsonDecode(response.body)['photo'];
-      return url;
-   */
-  
 }
 
 void postToFireStore(
     {int mediaUrl, String location, String description}) async {
-  /** 
-   * var reference = Firestore.instance.collection('insta_posts');
 
-  reference.add({
-    "username": currentUserModel.username,
-    "location": location,
-    "likes": {},
-    "media_url": mediaUrl,
-    "description": description,
-    "owner": googleSignIn.currentUser.id,
-    "timestamp": DateTime.now(),
-  }).then((DocumentReference doc) {
-    String docId = doc.documentID;
-    reference.document(docId).updateData({"id": docId});
-  });
-  */
   var dio = Dio();
   FormData formData = FormData.fromMap({
       "location": location,
