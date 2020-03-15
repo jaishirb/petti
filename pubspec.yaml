@@ -74,6 +74,7 @@ flutter:
    - assets/images/ic_gravity.png
    - assets/images/testl.png
    - assets/images/coin.png
+   - assets/images/user.png
 
 
   # An image asset can refer to one or more resolution-specific "variants", see

@@ -9,7 +9,7 @@ class HomePageBody extends StatefulWidget {
 }
 
 class _HomePageBodyState extends State<HomePageBody> {
-  List<cardsp.Card>cards = [];
+  List<cardsp.Card>cards;
   @override
   void initState() {
     super.initState();
@@ -22,26 +22,37 @@ class _HomePageBodyState extends State<HomePageBody> {
 
   }
 
+  buildFeed() {
+    if (cards != null) {
+      return  new CustomScrollView(
+        scrollDirection: Axis.vertical,
+        shrinkWrap: false,
+        slivers: <Widget>[
+          new SliverPadding(
+            padding: const EdgeInsets.symmetric(vertical: 24.0),
+            sliver: new SliverList(
+              delegate: new SliverChildBuilderDelegate(
+                    (context, index) => new PlanetSummary(cards[index]),
+                childCount: cards.length,
+              ),
+            ),
+          )
+        ],
+      );
+    } else {
+      print('loading');
+      return Container(
+          alignment: FractionalOffset.center,
+          child: CircularProgressIndicator());
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return new Expanded(
       child: new Container(
         color: Colors.white,
-        child: new CustomScrollView(
-          scrollDirection: Axis.vertical,
-          shrinkWrap: false,
-          slivers: <Widget>[
-            new SliverPadding(
-              padding: const EdgeInsets.symmetric(vertical: 24.0),
-              sliver: new SliverList(
-                delegate: new SliverChildBuilderDelegate(
-                      (context, index) => new PlanetSummary(cards[index]),
-                  childCount: cards.length,
-                ),
-              ),
-            ),
-          ],
-        ),
+        child: buildFeed(),
       ),
     );
   }

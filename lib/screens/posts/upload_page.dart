@@ -1,12 +1,10 @@
-import 'dart:convert';
-
-import 'package:dio/dio.dart';
+import 'package:Petti/services/upload_page.dart';
+import 'package:Petti/shared/shared_preferences_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:async';
-import '../../utils/utils.dart';
-import 'main.dart';
 import 'dart:io';
+import 'feed.dart';
 import 'location.dart';
 import 'package:geocoder/geocoder.dart';
 
@@ -16,13 +14,12 @@ class Uploader extends StatefulWidget {
 
 class _Uploader extends State<Uploader> {
   File file;
-  //Strings required to save address
   Address address;
 
   Map<String, double> currentLocation = Map();
   TextEditingController descriptionController = TextEditingController();
   TextEditingController locationController = TextEditingController();
-
+  String section;
   bool uploading = false;
 
   @override
@@ -40,6 +37,22 @@ class _Uploader extends State<Uploader> {
     setState(() {
       address = first;
     });
+    SharedPreferencesHelper.getSection().then((value){
+      setState(() {
+        section = value;
+      });
+    });
+  }
+
+  Future<int> uploadImage(var imageFile) async {
+    final id = await uploadImageService(imageFile);
+    return id;
+  }
+
+  Future<int> postToFireStore({int mediaUrl, String location, String description}) async {
+    final statusCode = await postToFireStoreService(
+        mediaUrl: mediaUrl, location: location, description: description, section: section);
+    return statusCode;
   }
 
   Widget build(BuildContext context) {
@@ -55,14 +68,14 @@ class _Uploader extends State<Uploader> {
                   icon: Icon(Icons.arrow_back, color: Colors.black),
                   onPressed: clearImage),
               title: const Text(
-                'Post to',
+                'Nueva publicación',
                 style: const TextStyle(color: Colors.black),
               ),
               actions: <Widget>[
                 FlatButton(
                     onPressed: postImage,
                     child: Text(
-                      "Post",
+                      "Publicar",
                       style: TextStyle(
                           color: Colors.blueAccent,
                           fontWeight: FontWeight.bold,
@@ -138,10 +151,10 @@ class _Uploader extends State<Uploader> {
 
       builder: (BuildContext context) {
         return SimpleDialog(
-          title: const Text('Create a Post'),
+          title: const Text('Crear una publicación'),
           children: <Widget>[
             SimpleDialogOption(
-                child: const Text('Take a photo'),
+                child: const Text('Tomar foto'),
                 onPressed: () async {
                   Navigator.pop(context);
                   File imageFile =
@@ -151,7 +164,7 @@ class _Uploader extends State<Uploader> {
                   });
                 }),
             SimpleDialogOption(
-                child: const Text('Choose from Gallery'),
+                child: const Text('Escoger en galería'),
                 onPressed: () async {
                   Navigator.of(context).pop();
                   File imageFile =
@@ -161,7 +174,7 @@ class _Uploader extends State<Uploader> {
                   });
                 }),
             SimpleDialogOption(
-              child: const Text("Cancel"),
+              child: const Text("Cancelar"),
               onPressed: () {
                 Navigator.pop(context);
               },
@@ -183,13 +196,13 @@ class _Uploader extends State<Uploader> {
       uploading = true;
     });
     uploadImage(file).then((int data) {
-      print('image uploaded!!!!!!!!');
+      print('image uploaded!');
       postToFireStore(
           mediaUrl: data,
           description: descriptionController.text,
           location: locationController.text);
     }).then((_) {
-      print('post created!!!!!!!!!!!!!!!!!!1');
+      print('post created!');
       setState(() {
         file = null;
         uploading = false;
@@ -227,7 +240,7 @@ class PostForm extends StatelessWidget {
               child: TextField(
                 controller: descriptionController,
                 decoration: InputDecoration(
-                    hintText: "Write a caption...", border: InputBorder.none),
+                    hintText: "Escribe una descripción...", border: InputBorder.none),
               ),
             ),
             Container(
@@ -255,7 +268,7 @@ class PostForm extends StatelessWidget {
             child: TextField(
               controller: locationController,
               decoration: InputDecoration(
-                  hintText: "Where was this photo taken?",
+                  hintText: "¿Dónde se tomó esta foto?",
                   border: InputBorder.none),
             ),
           ),
@@ -265,32 +278,4 @@ class PostForm extends StatelessWidget {
   }
 }
 
-Future<int> uploadImage(var imageFile) async {
-  var dio = Dio();
-  String fileName = imageFile.path.split('/').last;
-  FormData formData = FormData.fromMap({
-      "photo": await MultipartFile.fromFile(imageFile.path, filename:fileName),
-      "title": "test"
-  });
-  final response = await dio.post(
-    'http://$DOMAIN/api/v1/mascotas/imagenes/', data: formData);
-  print("Response status: ${response.statusCode}");
-  print("Response body: ${response.data}");
-  final id = response.data['id'];
-  return id;
-}
 
-void postToFireStore(
-    {int mediaUrl, String location, String description}) async {
-
-  var dio = Dio();
-  FormData formData = FormData.fromMap({
-      "location": location,
-      "media_url": mediaUrl,
-      "description": description,
-  });
-  final response = await dio.post(
-    'http://$DOMAIN/api/v1/mascotas/publicaciones/', data: formData);
-  print("Response status: ${response.statusCode}");
-  print("Response body: ${response.data}");
-}

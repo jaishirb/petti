@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import '../../model/cards.dart' as cardp;
 import '../../ui/common/separator.dart';
@@ -24,7 +25,7 @@ class PlanetSummary extends StatelessWidget {
       alignment: horizontal ? FractionalOffset.centerLeft : FractionalOffset.center,
       child: new Hero(
           tag: "planet-hero-${card.id}",
-          child: new Image.network(card.image,
+          child: CachedNetworkImage(imageUrl: card.image,
           height: 110.0,
           width: 110.0,
         ),

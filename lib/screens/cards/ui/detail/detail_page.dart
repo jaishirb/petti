@@ -1,4 +1,7 @@
+import 'dart:convert';
+
 import 'package:Petti/screens/cards/ui/detail/dialog.dart';
+import 'package:Petti/services/cards.dart';
 import 'package:flutter/material.dart';
 import '../../model/cards.dart' as cardp;
 import '../../ui/common/plannet_summary.dart';
@@ -14,7 +17,7 @@ class DetailPage extends StatelessWidget {
 
   DetailPage(this.planet);
 
-  void book(BuildContext context){
+  void book(BuildContext context)async{
     pr = new ProgressDialog(context,type: ProgressDialogType.Normal, isDismissible: true, showLogs: false);
     pr.style(
         message: 'Creando reserva...',
@@ -31,18 +34,25 @@ class DetailPage extends StatelessWidget {
             color: Colors.black, fontSize: 14.0, fontWeight: FontWeight.w300)
     );
     pr.show();
+    int statusCode = await reservarService(jsonEncode({'servicio': int.parse(planet.id)}));
     Future.delayed(Duration(seconds: 3)).then((onValue){
       print("PR status  ${pr.isShowing()}" );
       if(pr.isShowing()){
         pr.hide();
       }
+      String title, description;
+      if(statusCode == 200 || statusCode == 201){
+        title = "¡Muy bien!";
+        description = "Hemos recibido tu reserva, \n¡pronto un asesor te contactará!";
+      }else{
+        title = "Oops";
+        description = "Parece que ha habido un error, \nintenta más tarde.";
+      }
       showDialog(
         context: context,
         builder: (BuildContext context) => CustomDialog(
-          title: "¡Muy bien!",
-          description:
-          "Hemos recibido tu reserva, \n¡pronto un asesor te contactará!\n\n"
-              "!recuerda actualizar tu perfil!",
+          title: title,
+          description: description,
           buttonText: "Okay",
         ),
       );

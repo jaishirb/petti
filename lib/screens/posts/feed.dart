@@ -1,13 +1,10 @@
 import 'package:Petti/screens/posts/upload_page.dart';
+import 'package:Petti/services/feed.dart';
+import 'package:Petti/shared/shared_preferences_helper.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import '../../utils/utils.dart';
 import 'image_post.dart';
 import 'dart:async';
-import 'main.dart';
-import 'dart:io';
-import 'dart:convert';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class Feed extends StatefulWidget {
   final String title;
@@ -24,6 +21,7 @@ class _Feed extends State<Feed> with AutomaticKeepAliveClientMixin<Feed> {
 
   @override
   void initState() {
+    SharedPreferencesHelper.setSection(title);
     super.initState();
     pageController = PageController();
     this._loadFeed();
@@ -50,18 +48,19 @@ class _Feed extends State<Feed> with AutomaticKeepAliveClientMixin<Feed> {
   void navigationTapped(int page) {
     //Animating Page
     pageController.jumpToPage(page);
+    _refresh();
   }
 
   void onPageChanged(int page) {
     setState(() {
       this._page = page;
     });
+    _refresh();
   }
 
   @override
   Widget build(BuildContext context) {
     super.build(context); // reloads state when opened again
-
     return Scaffold(
       appBar: AppBar(
         title: Text('$title',
@@ -118,51 +117,12 @@ class _Feed extends State<Feed> with AutomaticKeepAliveClientMixin<Feed> {
 
   _loadFeed() async {
     _getFeed();
-    /**
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    String json = prefs.getString("feed");
-    if (json != null) {
-      Map<String, dynamic> data = jsonDecode(json);
-      List<ImagePost> listOfPosts = _generateFeed(data['results']);
-      setState(() {
-        feedData = listOfPosts;
-      });
-    } else {
-      _getFeed();
-    }
-        **/
   }
 
   _getFeed() async {
-    print("Staring getFeed");
-
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-
-    // var url = 'https://us-central1-petti-7933f.cloudfunctions.net/getFeed?uid=' + userId;
-    var url = 'http://$DOMAIN/api/v1/mascotas/publicaciones';
-    var httpClient = HttpClient();
-
     List<ImagePost> listOfPosts;
-    String result;
-    try {
-      var request = await httpClient.getUrl(Uri.parse(url));
-      var response = await request.close();
-      if (response.statusCode == HttpStatus.ok) {
-        String json = await response.transform(utf8.decoder).join();
-        prefs.setString("feed", json);
-        print(jsonDecode(json));
-        Map<String, dynamic> data = jsonDecode(json);
-        listOfPosts = _generateFeed(data['results']);
-        result = "Success in http request for feed";
-      } else {
-        result =
-            'Error getting a feed: Http status ${response.statusCode}';
-      }
-    } catch (exception) {
-      result = 'Failed invoking the getFeed function. Exception: $exception';
-    }
-    print(result);
-
+    List<dynamic> data = await getDataFeedService(title);
+    listOfPosts = _generateFeed(data);
     setState(() {
       feedData = listOfPosts;
     });
@@ -170,7 +130,6 @@ class _Feed extends State<Feed> with AutomaticKeepAliveClientMixin<Feed> {
 
   List<ImagePost> _generateFeed(List<dynamic> feedData) {
     List<ImagePost> listOfPosts = [];
-
     for (var postData in feedData) {
       print(postData);
       listOfPosts.add(ImagePost.fromJSON(postData));

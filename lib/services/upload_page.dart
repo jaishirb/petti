@@ -2,7 +2,7 @@ import 'package:Petti/utils/utils.dart';
 import 'package:dio/dio.dart';
 
 
-Future<int> uploadImage(var imageFile) async {
+Future<int> uploadImageService(var imageFile) async {
   var dio = Dio();
   String fileName = imageFile.path.split('/').last;
   FormData formData = FormData.fromMap({
@@ -14,12 +14,26 @@ Future<int> uploadImage(var imageFile) async {
   return id;
 }
 
-Future<int> postToFireStore({int mediaUrl, String location, String description}) async {
+Future<int> postToFireStoreService({int mediaUrl, String location, String description,
+  String section}) async {
   var dio = Dio();
+  String _action;
+  switch(section){
+    case 'Adopción':
+      _action = 'adopcion';
+      break;
+    case 'Compra/venta':
+      _action = 'compraventa';
+      break;
+    case 'Parejas':
+      _action = 'parejas';
+      break;
+  }
   FormData formData = FormData.fromMap({
     "location": location,
     "media_url": mediaUrl,
     "description": description,
+    "tag": _action,
   });
   final response = await dio.post('http://$DOMAIN/api/v1/mascotas/publicaciones/', data: formData);
  return response.statusCode;

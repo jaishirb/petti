@@ -3,15 +3,16 @@ import 'dart:io';
 import 'package:http/http.dart';
 import 'package:Petti/utils/utils.dart';
 
-Future<Map<String, dynamic>>getDataCards() async{
-  var url = 'http://$DOMAIN/api/v1/mascotas/veterinarias';
-  Map<String, dynamic> data;
+Future<List<dynamic>>getDataCardsService() async{
+  var url = 'http://$DOMAIN/api/v1/mascotas/servicios';
+  List<dynamic> data;
   String result;
   try {
-    var request = await get(url, headers: getHeaders());
-    int statusCode = request.statusCode;
+    final headers = await getHeaders();
+    var response = await get(url, headers: headers);
+    int statusCode = response.statusCode;
     if (statusCode == HttpStatus.ok) {
-      var body = request.body;
+      var body = utf8.decode(response.bodyBytes);
       data = jsonDecode(body)['results'];
     } else {
       result =
@@ -22,4 +23,14 @@ Future<Map<String, dynamic>>getDataCards() async{
   }
   print(result);
   return data;
+}
+
+Future<int> reservarService(String data) async {
+  var url = 'http://$DOMAIN/api/v1/mascotas/reservas/';
+  print(data);
+  final headers = await getHeaders();
+  Response response = await post(url, headers: headers, body: data);
+  print(response.statusCode);
+  int statusCode = response.statusCode;
+  return statusCode;
 }

@@ -4,16 +4,29 @@ import 'package:http/http.dart';
 import 'package:Petti/utils/utils.dart';
 
 
-Future<Map<String, dynamic>>getDataFeed() async {
+Future<List<dynamic>>getDataFeedService(String action) async {
   print("Staring getFeed");
-  var url = 'http://$DOMAIN/api/v1/mascotas/publicaciones';
-  Map<String, dynamic> data;
+  String _action;
+  switch(action){
+    case 'Adopción':
+      _action = 'adopcion';
+      break;
+    case 'Compra/venta':
+      _action = 'compraventa';
+      break;
+    case 'Parejas':
+      _action = 'parejas';
+      break;
+  }
+  var url = 'http://$DOMAIN/api/v1/mascotas/publicaciones/?action=$_action';
+  List<dynamic> data;
   String result;
   try {
-    var request = await get(url, headers: getHeaders());
-    int statusCode = request.statusCode;
+    final headers = await getHeaders();
+    var response = await get(url, headers: headers);
+    int statusCode = response.statusCode;
     if (statusCode == HttpStatus.ok) {
-      var body = request.body;
+      var body = utf8.decode(response.bodyBytes);
       data = jsonDecode(body)['results'];
     } else {
       result =

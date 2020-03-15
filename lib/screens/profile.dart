@@ -45,7 +45,7 @@ class MapScreenState extends State<ProfilePage>
                                 ),
                                 Padding(
                                   padding: EdgeInsets.only(left: 10.0, top: 12.0),
-                                  child: new Text('PROFILE',
+                                  child: new Text('Perfil',
                                       style: TextStyle(
                                           fontWeight: FontWeight.bold,
                                           fontSize: 20.0,
@@ -68,7 +68,7 @@ class MapScreenState extends State<ProfilePage>
                                       shape: BoxShape.circle,
                                       image: new DecorationImage(
                                         image: new ExactAssetImage(
-                                            'assets/images/as.png'),
+                                            'assets/images/user.png'),
                                         fit: BoxFit.cover,
                                       ),
                                     )),
@@ -80,7 +80,7 @@ class MapScreenState extends State<ProfilePage>
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: <Widget>[
                                     new CircleAvatar(
-                                      backgroundColor: Colors.red,
+                                      backgroundColor: Colors.green,
                                       radius: 25.0,
                                       child: new Icon(
                                         Icons.camera_alt,
@@ -114,7 +114,7 @@ class MapScreenState extends State<ProfilePage>
                                     mainAxisSize: MainAxisSize.min,
                                     children: <Widget>[
                                       new Text(
-                                        'Parsonal Information',
+                                        'Información personal',
                                         style: TextStyle(
                                             fontSize: 18.0,
                                             fontWeight: FontWeight.bold),
@@ -141,7 +141,7 @@ class MapScreenState extends State<ProfilePage>
                                     mainAxisSize: MainAxisSize.min,
                                     children: <Widget>[
                                       new Text(
-                                        'Name',
+                                        'Nombre',
                                         style: TextStyle(
                                             fontSize: 16.0,
                                             fontWeight: FontWeight.bold),
@@ -159,7 +159,7 @@ class MapScreenState extends State<ProfilePage>
                                   new Flexible(
                                     child: new TextField(
                                       decoration: const InputDecoration(
-                                        hintText: "Enter Your Name",
+                                        hintText: "Escribe tu nombre",
                                       ),
                                       enabled: !_status,
                                       autofocus: !_status,
@@ -179,7 +179,7 @@ class MapScreenState extends State<ProfilePage>
                                     mainAxisSize: MainAxisSize.min,
                                     children: <Widget>[
                                       new Text(
-                                        'Email ID',
+                                        'Correo electrónico',
                                         style: TextStyle(
                                             fontSize: 16.0,
                                             fontWeight: FontWeight.bold),
@@ -197,7 +197,7 @@ class MapScreenState extends State<ProfilePage>
                                   new Flexible(
                                     child: new TextField(
                                       decoration: const InputDecoration(
-                                          hintText: "Enter Email ID"),
+                                          hintText: "Escribe tu correo"),
                                       enabled: !_status,
                                     ),
                                   ),
@@ -214,7 +214,7 @@ class MapScreenState extends State<ProfilePage>
                                     mainAxisSize: MainAxisSize.min,
                                     children: <Widget>[
                                       new Text(
-                                        'Mobile',
+                                        'Teléfono',
                                         style: TextStyle(
                                             fontSize: 16.0,
                                             fontWeight: FontWeight.bold),
@@ -232,7 +232,7 @@ class MapScreenState extends State<ProfilePage>
                                   new Flexible(
                                     child: new TextField(
                                       decoration: const InputDecoration(
-                                          hintText: "Enter Mobile Number"),
+                                          hintText: "Escribe tu número de teléfono"),
                                       enabled: !_status,
                                     ),
                                   ),
@@ -248,7 +248,7 @@ class MapScreenState extends State<ProfilePage>
                                   Expanded(
                                     child: Container(
                                       child: new Text(
-                                        'Pin Code',
+                                        'Dirección',
                                         style: TextStyle(
                                             fontSize: 16.0,
                                             fontWeight: FontWeight.bold),
@@ -259,7 +259,7 @@ class MapScreenState extends State<ProfilePage>
                                   Expanded(
                                     child: Container(
                                       child: new Text(
-                                        'State',
+                                        'Ciudad',
                                         style: TextStyle(
                                             fontSize: 16.0,
                                             fontWeight: FontWeight.bold),
@@ -281,7 +281,7 @@ class MapScreenState extends State<ProfilePage>
                                       padding: EdgeInsets.only(right: 10.0),
                                       child: new TextField(
                                         decoration: const InputDecoration(
-                                            hintText: "Enter Pin Code"),
+                                            hintText: "Escribe tu dirección"),
                                         enabled: !_status,
                                       ),
                                     ),
@@ -290,7 +290,7 @@ class MapScreenState extends State<ProfilePage>
                                   Flexible(
                                     child: new TextField(
                                       decoration: const InputDecoration(
-                                          hintText: "Enter State"),
+                                          hintText: "Escribe tu ciudad"),
                                       enabled: !_status,
                                     ),
                                     flex: 2,
@@ -328,7 +328,7 @@ class MapScreenState extends State<ProfilePage>
               padding: EdgeInsets.only(right: 10.0),
               child: Container(
                   child: new RaisedButton(
-                    child: new Text("Save"),
+                    child: new Text("Guardar"),
                     textColor: Colors.white,
                     color: Colors.green,
                     onPressed: () {
@@ -348,7 +348,7 @@ class MapScreenState extends State<ProfilePage>
               padding: EdgeInsets.only(left: 10.0),
               child: Container(
                   child: new RaisedButton(
-                    child: new Text("Cancel"),
+                    child: new Text("Cancelar"),
                     textColor: Colors.white,
                     color: Colors.red,
                     onPressed: () {
@@ -371,7 +371,7 @@ class MapScreenState extends State<ProfilePage>
   Widget _getEditIcon() {
     return new GestureDetector(
       child: new CircleAvatar(
-        backgroundColor: Colors.red,
+        backgroundColor: Colors.green,
         radius: 14.0,
         child: new Icon(
           Icons.edit,
