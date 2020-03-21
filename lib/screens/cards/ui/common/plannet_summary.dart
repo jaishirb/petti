@@ -110,12 +110,13 @@ class PlanetSummary extends StatelessWidget {
     );
 
 
-    final planetCard = new Container(
+    final planetCard = Container(
       child: planetCardContent,
-      height: horizontal ? 125.0 : 155.0,
+      height: horizontal ? 140.0 : 170.0,
       margin: horizontal
         ? new EdgeInsets.only(left: 46.0)
         : new EdgeInsets.only(top: 72.0),
+      padding: new EdgeInsets.only(bottom: 5),
       decoration: new BoxDecoration(
         color: Color.fromRGBO(35, 100, 105, 1.0),
         shape: BoxShape.rectangle,
@@ -146,11 +147,14 @@ class PlanetSummary extends StatelessWidget {
           vertical: 16.0,
           horizontal: 24.0,
         ),
-        child: new Stack(
-          children: <Widget>[
-            planetCard,
-            planetThumbnail,
-          ],
+        child: ConstrainedBox(
+          constraints: BoxConstraints(),
+          child: new Stack(
+            children: <Widget>[
+              planetCard,
+              planetThumbnail,
+            ],
+          ),
         ),
       )
     );

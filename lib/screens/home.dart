@@ -1,5 +1,7 @@
+import 'package:Petti/screens/cards/ui/detail/dialog.dart';
 import 'package:Petti/screens/posts/feed.dart';
 import 'package:Petti/screens/profile.dart';
+import 'package:Petti/services/profile.dart';
 import 'package:flutter/material.dart';
 import 'package:Petti/screens/data.dart';
 import 'cards/ui/home/home_page.dart';
@@ -33,16 +35,27 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   getUserInfo (){
-    SharedPreferencesHelper.getName().then((onValue){
-      setState(() {
-        this.name = onValue;
+    Map profile;
+    getDataProfileService().then((value){
+      profile = value;
+      SharedPreferencesHelper.setName(profile['username']).then((_value){
+        setState(() {
+          this.name = profile['username'];
+        });
       });
     });
-
     SharedPreferencesHelper.getEmail().then((onValue){
       setState(() {
         this.email = onValue;
       });
+      showDialog(
+        context: context,
+        builder: (BuildContext context) => CustomDialog(
+          title: 'Bienvenido!',
+          description: '¡Bienvenido a Petti!\nrecuerda actualizar tu perfil y agregar tu número de contacto :)',
+          buttonText: "Okay",
+        ),
+      );
     });
   }
 
@@ -208,15 +221,15 @@ class _HomeScreenState extends State<HomeScreen> {
                             Navigator.push(context, MaterialPageRoute(builder: (context)=>Feed(title: '$_title')));
                             break;
                           case 3:
-                            _title = 'Compra/venta';
+                            _title = 'Compra/venta/pérdida';
                             Navigator.push(context, MaterialPageRoute(builder: (context)=>Feed(title: '$_title')));
                             break;
                           case 2:
-                            _title = 'Parejas';
+                            _title = 'Coupet';
                             Navigator.push(context, MaterialPageRoute(builder: (context)=>Feed(title: '$_title')));
                             break;
                           case 1:
-                            _title = 'Veterinaria 24h';
+                            _title = 'Vet & care';
                             Navigator.push(context, MaterialPageRoute(builder: (context)=>HomePage()));
                             break;
                           case 0:

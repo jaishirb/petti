@@ -9,7 +9,14 @@ Future<int> uploadImageService(var imageFile) async {
     "photo": await MultipartFile.fromFile(imageFile.path, filename:fileName),
     "title": "test"
   });
-  final response = await dio.post('http://$DOMAIN/api/v1/mascotas/imagenes/', data: formData);
+  final headers = await getHeaders();
+  final response = await dio.post(
+      'http://$DOMAIN/api/v1/mascotas/imagenes/',
+      data: formData,
+      options: Options(
+          headers: headers
+      )
+  );
   final id = response.data['id'];
   return id;
 }
@@ -22,19 +29,33 @@ Future<int> postToFireStoreService({int mediaUrl, String location, String descri
     case 'Adopción':
       _action = 'adopcion';
       break;
-    case 'Compra/venta':
+    case 'Compra/venta/pérdida':
       _action = 'compraventa';
       break;
-    case 'Parejas':
+    case 'Coupet':
       _action = 'parejas';
       break;
   }
+  Map t = {
+    "location": location,
+    "media_url": mediaUrl,
+    "description": description,
+    "tag": _action,
+  };
+  print(t);
   FormData formData = FormData.fromMap({
     "location": location,
     "media_url": mediaUrl,
     "description": description,
     "tag": _action,
   });
-  final response = await dio.post('http://$DOMAIN/api/v1/mascotas/publicaciones/', data: formData);
+  final headers = await getHeaders();
+  final response = await dio.post(
+      'http://$DOMAIN/api/v1/mascotas/publicaciones/',
+      data: formData,
+      options: Options(
+        headers: headers
+      )
+  );
  return response.statusCode;
 }

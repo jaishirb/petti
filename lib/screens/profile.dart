@@ -1,5 +1,11 @@
+import 'dart:convert';
+
+import 'package:Petti/services/profile.dart';
+import 'package:Petti/shared/shared_preferences_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+
+import 'cards/ui/detail/dialog.dart';
 
 class ProfilePage extends StatefulWidget {
   @override
@@ -10,13 +16,42 @@ class MapScreenState extends State<ProfilePage>
     with SingleTickerProviderStateMixin {
   bool _status = true;
   final FocusNode myFocusNode = FocusNode();
+  Map profile;
+  TextEditingController _nombreController = new TextEditingController();
+  TextEditingController _numeroController = new TextEditingController();
+  TextEditingController _emailController = new TextEditingController();
+  TextEditingController _ciudadController = new TextEditingController();
+  TextEditingController _direccionController = new TextEditingController();
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    getDataProfileService().then((value){
+      profile = value;
+      print(profile);
+      setState(() {
+        _nombreController.text = profile['username'];
+        _numeroController.text = profile['telefono'];
+        _emailController.text = profile['email'];
+        _ciudadController.text = profile['ciudad'];
+        _direccionController.text = profile['direccion'];
+      });
+      _nombreController.addListener(detector);
+      _numeroController.addListener(detector);
+      _emailController.addListener(detector);
+      _ciudadController.addListener(detector);
+      _direccionController.addListener(detector);
+    });
   }
 
+  void detector(){
+    profile['username'] = _nombreController.text;
+    profile['telefono'] = _numeroController.text;
+    profile['email'] = _emailController.text;
+    profile['ciudad'] = _ciudadController.text;
+    profile['direccion'] = _direccionController.text;
+  }
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
@@ -79,6 +114,7 @@ class MapScreenState extends State<ProfilePage>
                                 child: new Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: <Widget>[
+                                    /**
                                     new CircleAvatar(
                                       backgroundColor: Colors.green,
                                       radius: 25.0,
@@ -86,7 +122,7 @@ class MapScreenState extends State<ProfilePage>
                                         Icons.camera_alt,
                                         color: Colors.white,
                                       ),
-                                    )
+                                    )**/
                                   ],
                                 )),
                           ]),
@@ -141,7 +177,7 @@ class MapScreenState extends State<ProfilePage>
                                     mainAxisSize: MainAxisSize.min,
                                     children: <Widget>[
                                       new Text(
-                                        'Nombre',
+                                        'Usuario',
                                         style: TextStyle(
                                             fontSize: 16.0,
                                             fontWeight: FontWeight.bold),
@@ -157,9 +193,11 @@ class MapScreenState extends State<ProfilePage>
                                 mainAxisSize: MainAxisSize.max,
                                 children: <Widget>[
                                   new Flexible(
-                                    child: new TextField(
+                                    child: new TextFormField(
+                                      keyboardType: TextInputType.text,
+                                      controller: _nombreController,
                                       decoration: const InputDecoration(
-                                        hintText: "Escribe tu nombre",
+                                        hintText: "Escribe tu usuario",
                                       ),
                                       enabled: !_status,
                                       autofocus: !_status,
@@ -196,9 +234,11 @@ class MapScreenState extends State<ProfilePage>
                                 children: <Widget>[
                                   new Flexible(
                                     child: new TextField(
+                                      keyboardType: TextInputType.emailAddress,
+                                      controller: _emailController,
                                       decoration: const InputDecoration(
                                           hintText: "Escribe tu correo"),
-                                      enabled: !_status,
+                                      enabled: false,
                                     ),
                                   ),
                                 ],
@@ -231,6 +271,8 @@ class MapScreenState extends State<ProfilePage>
                                 children: <Widget>[
                                   new Flexible(
                                     child: new TextField(
+                                      keyboardType: TextInputType.phone,
+                                      controller: _numeroController,
                                       decoration: const InputDecoration(
                                           hintText: "Escribe tu número de teléfono"),
                                       enabled: !_status,
@@ -280,6 +322,7 @@ class MapScreenState extends State<ProfilePage>
                                     child: Padding(
                                       padding: EdgeInsets.only(right: 10.0),
                                       child: new TextField(
+                                        controller: _direccionController,
                                         decoration: const InputDecoration(
                                             hintText: "Escribe tu dirección"),
                                         enabled: !_status,
@@ -289,6 +332,7 @@ class MapScreenState extends State<ProfilePage>
                                   ),
                                   Flexible(
                                     child: new TextField(
+                                      controller: _ciudadController,
                                       decoration: const InputDecoration(
                                           hintText: "Escribe tu ciudad"),
                                       enabled: !_status,
@@ -332,10 +376,62 @@ class MapScreenState extends State<ProfilePage>
                     textColor: Colors.white,
                     color: Colors.green,
                     onPressed: () {
-                      setState(() {
-                        _status = true;
-                        FocusScope.of(context).requestFocus(new FocusNode());
+                      final temp_txt = profile['username'];
+                      var flag = true;
+                      temp_txt.runes.forEach((int rune) {
+                        if((rune >= 48 && rune <= 57) || (rune >= 65 &&
+                            rune <= 90) || (rune >= 97 && rune <= 122)){
+                        }else{
+                          flag = false;
+                        }
                       });
+                      if(flag){
+                        Map profileTemp = new Map();
+                        profileTemp.addAll(profile);
+                        profileTemp.remove('id');
+                        var username = profileTemp['username'];
+                        profileTemp['first_name'] = username;
+                        username = username.toString().replaceAll(' ', '');
+                        profileTemp['username'] = username.toString().toLowerCase().trim();
+                        actualizarProfileService(jsonEncode(profileTemp), profile['id']).then((code){
+                          if(code == 200){
+                            setState(() {
+                              _status = true;
+                              FocusScope.of(context).requestFocus(new FocusNode());
+                            });
+                            showDialog(
+                              context: context,
+                              builder: (BuildContext context) => CustomDialog(
+                                title:'Éxito!',
+                                description:'Datos actualizados correctamente!',
+                                buttonText: "Okay",
+                              ),
+                            );
+                            SharedPreferencesHelper.setName(username);
+                          }else{
+                            showDialog(
+                              context: context,
+                              builder: (BuildContext context) => CustomDialog(
+                                title:'Error',
+                                description:'Por favor, intenta con otro nombre de usuario.',
+                                buttonText: "Okay",
+                              ),
+                            );
+                          }
+                        });
+
+                      } else{
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) => CustomDialog(
+                            title:'Error',
+                            description:'El nombre de usuario solo puede contener letras y números\nsin espacios.',
+                            buttonText: "Okay",
+                          ),
+                        );
+
+                      }
+
                     },
                     shape: new RoundedRectangleBorder(
                         borderRadius: new BorderRadius.circular(20.0)),

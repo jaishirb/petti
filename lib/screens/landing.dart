@@ -21,6 +21,7 @@ class _LandingState extends State<Landing> {
     token = await SharedPreferencesHelper.getToken();
     print('--------------------------------');
     print(token);
+    await new Future.delayed(const Duration(seconds : 7));
     if (token == "") {
       Navigator.pushNamedAndRemoveUntil(
           context, '/login', ModalRoute.withName('/login'));
@@ -32,6 +33,72 @@ class _LandingState extends State<Landing> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(body: Center(child: CircularProgressIndicator()));
+    return Scaffold(
+      body: Stack(
+        fit: StackFit.expand,
+        children: [
+          Container(
+            decoration: BoxDecoration(color: Colors.white),
+          ),
+          Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Expanded(
+                flex: 2,
+                child: Container(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      CircleAvatar(
+                        backgroundColor: Colors.white,
+                        radius: 50.0,
+                        child: CircleAvatar(
+                          radius: 40.0,
+                          backgroundImage: NetworkImage(
+                              "https://pettiapp.s3.us-east-2.amazonaws.com/images/LOGO1.png"
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.only(top: 10.0),
+                      ),
+                      Text(
+                        "Petti",
+                        style: TextStyle(
+                            color: Color.fromRGBO(28, 96, 97, 1.0),
+                            fontWeight: FontWeight.bold,
+                            fontSize: 24.0),
+                      )
+                    ],
+                  ),
+                ),
+              ),
+              Expanded(
+                flex: 1,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    CircularProgressIndicator(),
+                    Padding(
+                      padding: EdgeInsets.only(top: 20.0),
+                    ),
+                    Text(
+                      "Iniciando Petti App",
+                      softWrap: true,
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 18.0,
+                          color: Color.fromRGBO(28, 96, 97, 1.0)),
+
+                    )
+                  ],
+                ),
+              )
+            ],
+          )
+        ],
+      ),
+    );
   }
 }

@@ -8,9 +8,9 @@ List<String> images = [
 
 List<String> title = [
   "Market place",
-  "Veterinaria 24h",
-  "Parejas",
-  "Compra/venta",
+  "Vet & care",
+  "Coupet",
+  "Compra/venta/pérdida",
   "Adopción",
 ];
 
@@ -25,8 +25,8 @@ List<String> imagesFamous = [
 
 List<String> titleFamous = [
   "Adopción",
-  "Veterinaria 24h",
-  "Parejas",
-  "Compra/venta",
+  "Vet & care",
+  "Coupet",
+  "Compra/venta/pérdida",
   "Market place",
 ];

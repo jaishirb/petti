@@ -35,10 +35,19 @@ dependencies:
   location: ^2.3.5
   image_picker: ^0.6.2+3
   progress_dialog: ^1.2.1
+  compressimage: ^0.1.1
+  flutter_open_whatsapp: ^0.1.2
+
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  flutter_launcher_icons: "^0.7.3"
+
+flutter_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "assets/images/logof.png"
 
 
 # For information on the generic Dart part of this file, see the
@@ -59,20 +68,13 @@ flutter:
    - assets/comprayventa.png
    - assets/petshop.png
    - assets/veterinaria.png
-   - assets/images/google_signin_button.png
    - assets/flare/Like.flr
    - assets/images/email_icon.png
    - assets/images/password_icon.png
    - assets/images/user_icon.png
    - assets/images/as.png
-   - assets/images/mars.png
-   - assets/images/neptune.png
-   - assets/images/moon.png
-   - assets/images/earth.png
-   - assets/images/mercury.png
    - assets/images/ic_distance.png
    - assets/images/ic_gravity.png
-   - assets/images/testl.png
    - assets/images/coin.png
    - assets/images/user.png
 

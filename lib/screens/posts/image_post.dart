@@ -1,14 +1,18 @@
 import 'dart:convert';
 
+import 'package:Petti/screens/cards/ui/detail/dialog.dart';
+import 'package:Petti/services/feed.dart';
 import 'package:Petti/shared/shared_preferences_helper.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_open_whatsapp/flutter_open_whatsapp.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '../../utils/utils.dart';
-import 'main.dart';
 import 'dart:async';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flare_flutter/flare_actor.dart';
+
+enum ConfirmAction { CANCEL, ACCEPT }
 
 class ImagePost extends StatefulWidget {
   ImagePost(
@@ -28,14 +32,12 @@ class ImagePost extends StatefulWidget {
       mediaUrl: data['media_url_read'],
       likes: data['likes'],
       description: data['description'],
-      owner: data['owner'].toString(),
+      owner: data['telefono'],
       id: data['id'].toString(),
     );
   }
 
   int getLikeCount(var likes) {
-    print('--!--!...');
-    print(likes);
     if (likes == null) {
       return 0;
     }
@@ -100,8 +102,6 @@ class _ImagePost extends State<ImagePost> {
         this.name = _name.trim().replaceAll(' ', '').toLowerCase();
       });
     });
-    print('????????????');
-    print(likes);
   }
   _ImagePost(
       {this.mediaUrl,
@@ -165,28 +165,103 @@ class _ImagePost extends State<ImagePost> {
     );
   }
 
+  Future<int> eliminarPost(int id) async{
+    var statusCode = await eliminarPostService(id);
+    return statusCode;
+  }
+
+Future<ConfirmAction> _asyncConfirmDialog(BuildContext context, int id) async {
+  return showDialog<ConfirmAction>(
+    context: context,
+    barrierDismissible: false, // user must tap button for close dialog!
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: Text('¿Quieres eliminar esta publicación?'),
+        content: const Text(
+            'Recuerda que esto eliminará tu publicación y nadie podrá contactarte.'),
+        actions: <Widget>[
+          FlatButton(
+            child: const Text('Cancelar'),
+            onPressed: () {
+              Navigator.of(context).pop(ConfirmAction.CANCEL);
+            },
+          ),
+          FlatButton(
+            child: const Text('Aceptar'),
+            onPressed: () {
+              eliminarPost(id).then((value){
+                Navigator.of(context).pop(ConfirmAction.ACCEPT);
+                if(value == 204){
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) => CustomDialog(
+                      title: 'Éxito',
+                      description: '¡Este post ha sio eliminado!\nctualiza tu feed.',
+                      buttonText: "Okay",
+                    ),
+                  );
+                }else{
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) => CustomDialog(
+                      title: 'Hubo un problema',
+                      description: 'Hubo un problema al eliminar este post,\nintentalo más tarde.',
+                      buttonText: "Okay",
+                    ),
+                  );
+                }
+              });
+
+            },
+          )
+        ],
+      );
+    },
+  );
+}
   buildPostHeader({String owner}) {
-    if (owner == null) {
+    if (this.username == null) {
       return Text("owner error");
     }
 
     return FutureBuilder (
 
         builder: (context, snapshot) {
-          if (owner != null) {
+          if (this.username != null) {
             return ListTile(
               leading: CircleAvatar(
                 //backgroundImage: CachedNetworkImageProvider(snapshot.data.data['photoUrl']),
                 backgroundColor: Color.fromRGBO(28, 96, 97, 1.0),
               ),
               title: GestureDetector(
-                child: Text(name, style: boldStyle),
+                child: Text(this.username, style: boldStyle),
                 onTap: () {
                   //openProfile(context, owner);
                 },
               ),
               subtitle: Text(this.location),
-              trailing: const Icon(Icons.more_vert),
+              trailing: IconButton(
+                icon: Icon(Icons.more_vert),
+                tooltip: 'Eliminar post',
+                onPressed: () {
+                  print('eliminando');
+                  SharedPreferencesHelper.getName().then((_name){
+                    if(_name == this.username){
+                      _asyncConfirmDialog(context, int.parse(this.id));
+                    }else{
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) => CustomDialog(
+                          title: '¡Alto!',
+                          description: '¡Este post no te pertenece!\nno puedes eliminarlo ;)',
+                          buttonText: "Okay",
+                        ),
+                      );
+                    }
+                  });
+
+                },
+              ),
             );
           }
 
@@ -212,7 +287,7 @@ class _ImagePost extends State<ImagePost> {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[
-        buildPostHeader(owner: owner),
+        buildPostHeader(owner: username),
         buildLikeableImage(),
         Row(
           mainAxisAlignment: MainAxisAlignment.start,
@@ -220,6 +295,25 @@ class _ImagePost extends State<ImagePost> {
             Padding(padding: const EdgeInsets.only(left: 20.0, top: 40.0)),
             buildLikeIcon(),
             Padding(padding: const EdgeInsets.only(right: 20.0)),
+            GestureDetector(
+                child: const Icon(
+                  FontAwesomeIcons.phone,
+                  size: 25.0,
+                ),
+                onTap: () {
+                  if(this.owner != null){
+                    FlutterOpenWhatsapp.sendSingleMessage('57'+this.owner, "Hello");
+                  }else{
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) => CustomDialog(
+                        title: 'Tenemos problemas',
+                        description: 'El usuario que intentas contactar aún no tiene registrado su número...',
+                        buttonText: "Okay",
+                      ),
+                    );
+                  }
+                }),
           ],
         ),
         Row(
@@ -239,7 +333,7 @@ class _ImagePost extends State<ImagePost> {
             Container(
                 margin: const EdgeInsets.only(left: 20.0, right: 2.0),
                 child: Text(
-                  name,
+                  this.username,
                   style: boldStyle,
                 )),
             Expanded(child: Text(description)),
@@ -251,12 +345,9 @@ class _ImagePost extends State<ImagePost> {
 
   void _likePost(String id2) async{
     var email = await SharedPreferencesHelper.getEmailAsync();
-    print('-----------------------');
-    print(email);
     bool _liked = likes[email] == true;
     var dio = Dio();
     if (_liked) {
-      print('removing like');
       try{
         final formData = {
           '$email': false

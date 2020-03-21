@@ -94,11 +94,8 @@ class _LoginScreenState extends State<LoginScreen>
   void loginActionsIndependient(String displayName, String email, String password) async{
    SharedPreferencesHelper.setName(displayName);
    SharedPreferencesHelper.setEmail(email);
-   print("User : " + displayName);
-   print("Email: " + email);
    String token = await authBackend(jsonEncode({'username': displayName, 'email': email,
      'password': password}));
-   print(token);
    SharedPreferencesHelper.setToken(token);
    Navigator.pushNamedAndRemoveUntil(context, '/home', ModalRoute.withName('/home'),
    );
@@ -143,7 +140,8 @@ class _LoginScreenState extends State<LoginScreen>
            loginActionsIndependient(m[0],emailController.text,passwordController.text);
          }else{
            _showAlertDialog();
-         }         
+         }
+         return 1;
        }catch (error) {
          print("error: " + error.toString());
          return 0;
@@ -152,7 +150,8 @@ class _LoginScreenState extends State<LoginScreen>
        case "L":
        try {
            var m = emaillogController.text.split("@");
-           loginActionsIndependient(m[0],emaillogController.text,passwordlogController.text);                 
+           loginActionsIndependient(m[0],emaillogController.text,passwordlogController.text);
+           return 1;
        }catch (error) {
          print("error: " + error.toString());
          return 0;
@@ -196,9 +195,9 @@ class _LoginScreenState extends State<LoginScreen>
       decoration: BoxDecoration(
           gradient: LinearGradient(
               colors: [
-                Color.fromRGBO(28, 96, 97, 1.0),
-                Color.fromRGBO(89, 192, 154, 1.0),
-                Color.fromRGBO(21, 157, 99, 1.0),
+                Colors.white,
+                Colors.white,
+
               ],
               begin: Alignment.bottomCenter,
               end: Alignment.topCenter,
@@ -217,11 +216,13 @@ class _LoginScreenState extends State<LoginScreen>
           Container(
             padding: EdgeInsets.only(top: 250.0),
             child: Center(
+              /**
               child: Icon(
                 Icons.apps,
                 color: Colors.white,
                 size: 40.0,
               ),
+              **/
             ),
           ),
           Container(
@@ -229,6 +230,7 @@ class _LoginScreenState extends State<LoginScreen>
             child: new Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
+                /**
                 Text(
                   "Petti",
                   style: TextStyle(
@@ -236,11 +238,13 @@ class _LoginScreenState extends State<LoginScreen>
                     fontSize: 20.0,
                   ),
                 ),
+                    **/
                 Text(
-                  "App",
+                  "Petti",
                   style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 20.0,
+                      fontFamily: "Billabong",
+                      color: Color.fromRGBO(28, 96, 97, 1.0),
+                      fontSize: 40.0,
                       fontWeight: FontWeight.bold),
                 ),
               ],
@@ -256,8 +260,8 @@ class _LoginScreenState extends State<LoginScreen>
                   child: new OutlineButton(
                     shape: new RoundedRectangleBorder(
                         borderRadius: new BorderRadius.circular(30.0)),
-                    color: Color.fromRGBO(28, 96, 97, 1.0),
-                    highlightedBorderColor: Colors.white,
+                    color:  Color.fromRGBO(28, 96, 97, 1.0),
+                    highlightedBorderColor:  Color.fromRGBO(28, 96, 97, 1.0),
                     onPressed: () => gotoSignup(),
                     child: new Container(
                       padding: const EdgeInsets.symmetric(
@@ -272,7 +276,7 @@ class _LoginScreenState extends State<LoginScreen>
                               "SIGN UP",
                               textAlign: TextAlign.center,
                               style: TextStyle(
-                                  color: Colors.white,
+                                  color: Color.fromRGBO(28, 96, 97, 1.0),
                                   fontWeight: FontWeight.bold),
                             ),
                           ),
@@ -294,7 +298,7 @@ class _LoginScreenState extends State<LoginScreen>
                   child: new FlatButton(
                     shape: new RoundedRectangleBorder(
                         borderRadius: new BorderRadius.circular(30.0)),
-                    color: Colors.white,
+                    color: Color.fromRGBO(28, 96, 97, 1.0),
                     onPressed: () => gotoLogin(),
                     child: new Container(
                       padding: const EdgeInsets.symmetric(
@@ -309,7 +313,7 @@ class _LoginScreenState extends State<LoginScreen>
                               "LOGIN",
                               textAlign: TextAlign.center,
                               style: TextStyle(
-                                  color: Color.fromRGBO(28, 96, 97, 1.0),
+                                  color: Colors.white,
                                   fontWeight: FontWeight.bold),
                             ),
                           ),
@@ -391,7 +395,7 @@ class _LoginScreenState extends State<LoginScreen>
                 new Expanded(
                   child: TextField(
                     controller: emaillogController,
-                    obscureText: true,
+                    obscureText: false,
                     textAlign: TextAlign.left,
                     decoration: InputDecoration(
                       border: InputBorder.none,
@@ -563,7 +567,7 @@ class _LoginScreenState extends State<LoginScreen>
                             shape: new RoundedRectangleBorder(
                               borderRadius: new BorderRadius.circular(30.0),
                             ),
-                            color: Color.fromRGBO(89, 192, 154, 1.0),
+                            color: Color(0Xff3B5998),
                             onPressed: () => {},
                             child: new Container(
                               child: new Row(
@@ -611,7 +615,7 @@ class _LoginScreenState extends State<LoginScreen>
                             shape: new RoundedRectangleBorder(
                               borderRadius: new BorderRadius.circular(30.0),
                             ),
-                            color: Color.fromRGBO(21, 157, 99, 1.0),
+                            color: Color(0Xffdb3236),
                             onPressed: () => {},
                             child: new Container(
                               child: new Row(
@@ -664,14 +668,6 @@ class _LoginScreenState extends State<LoginScreen>
       height: MediaQuery.of(context).size.height,
       decoration: BoxDecoration(
         color: Colors.white,
-        /**
-        image: DecorationImage(
-          colorFilter: new ColorFilter.mode(
-              Colors.black.withOpacity(0.05), BlendMode.dstATop),
-          image: AssetImage('assets/petshop.png'),
-          fit: BoxFit.cover,
-        ),
-         **/
       ),
       child: new Column(
         children: <Widget>[
@@ -722,7 +718,7 @@ class _LoginScreenState extends State<LoginScreen>
                 new Expanded(
                   child: TextField(
                     controller: emailController,
-                    obscureText: true,
+                    obscureText: false,
                     textAlign: TextAlign.left,
                     decoration: InputDecoration(
                       border: InputBorder.none,

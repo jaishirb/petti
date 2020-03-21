@@ -11,6 +11,5 @@ Future<String> authBackend(String data) async {
   int statusCode = response.statusCode;
   var body = response.body;
   var values = jsonDecode(response.body);
-  print(values['key']);
   return values['key'].toString();
 }

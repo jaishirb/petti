@@ -7,8 +7,9 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
-      appBar: AppBar(
-        title: Text('Veterinaria 24h',
+        resizeToAvoidBottomPadding: false,
+        appBar: AppBar(
+        title: Text('Vet and care',
             style: const TextStyle(
                 fontFamily: "Billabong", color: Color.fromRGBO(28, 96, 97, 1.0), fontSize: 35.0)),
         centerTitle: true,
