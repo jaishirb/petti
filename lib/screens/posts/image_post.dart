@@ -347,13 +347,19 @@ Future<ConfirmAction> _asyncConfirmDialog(BuildContext context, int id) async {
     var email = await SharedPreferencesHelper.getEmailAsync();
     bool _liked = likes[email] == true;
     var dio = Dio();
+    final headers = await getHeaders();
     if (_liked) {
       try{
         final formData = {
-          '$email': false
+          '$email': false,
       };
       final response = await dio.post(
-        'http://$DOMAIN/api/v1/mascotas/publicaciones/$id/update_likes/', data: formData);
+        'http://$DOMAIN/api/v1/mascotas/publicaciones/$id/update_likes/',
+          data: formData,
+          options: Options(
+              headers: headers
+          )
+      );
       print("Response status: ${response.statusCode}");
       print("Response body: ${response.data}");
       }catch(exception){
@@ -379,7 +385,12 @@ Future<ConfirmAction> _asyncConfirmDialog(BuildContext context, int id) async {
           '$email': true
       };
       final response = await dio.post(
-        'http://$DOMAIN/api/v1/mascotas/publicaciones/$id/update_likes/', data: formData);
+        'http://$DOMAIN/api/v1/mascotas/publicaciones/$id/update_likes/',
+          data: formData,
+          options: Options(
+              headers: headers
+          )
+      );
       print("Response status: ${response.statusCode}");
       print("Response body: ${response.data}");
       }catch(exception){

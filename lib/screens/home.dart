@@ -1,6 +1,7 @@
 import 'package:Petti/screens/cards/ui/detail/dialog.dart';
 import 'package:Petti/screens/posts/feed.dart';
 import 'package:Petti/screens/profile.dart';
+import 'package:Petti/screens/shop/app.dart';
 import 'package:Petti/services/profile.dart';
 import 'package:flutter/material.dart';
 import 'package:Petti/screens/data.dart';
@@ -15,7 +16,7 @@ class HomeScreen extends StatefulWidget {
   _HomeScreenState createState() => new _HomeScreenState();
 }
 
-var cardAspectRatio = 12.0 / 16.0;
+var cardAspectRatio = 10.0 / 16.0;
 var widgetAspectRatio = cardAspectRatio * 1.2;
 
 class _HomeScreenState extends State<HomeScreen> {
@@ -203,7 +204,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     SizedBox(
                       width: 15.0,
                     ),
-                    Text("4+ Secciones",
+                    Text("¿Cómo podemos ayudarte hoy?",
                         style: TextStyle(color: Color.fromRGBO(28, 96, 97, 1.0)))
                   ],
                 ),
@@ -234,10 +235,11 @@ class _HomeScreenState extends State<HomeScreen> {
                             break;
                           case 0:
                             _title = 'Market place';
+                            Navigator.push(context, MaterialPageRoute(builder: (context)=>CupertinoStoreApp()));
+
                             break;
                         }
                         print('index: $currentPage');
-
                         //Navigator.pushNamedAndRemoveUntil(context, '/posts', ModalRoute.withName('/posts'));
                       },
                       child: PageView.builder(

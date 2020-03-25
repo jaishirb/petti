@@ -273,7 +273,7 @@ class _LoginScreenState extends State<LoginScreen>
                         children: <Widget>[
                           new Expanded(
                             child: Text(
-                              "SIGN UP",
+                              "Registrarse",
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                   color: Color.fromRGBO(28, 96, 97, 1.0),
@@ -310,7 +310,7 @@ class _LoginScreenState extends State<LoginScreen>
                         children: <Widget>[
                           new Expanded(
                             child: Text(
-                              "LOGIN",
+                              "Iniciar sesión",
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                   color: Colors.white,
@@ -364,7 +364,7 @@ class _LoginScreenState extends State<LoginScreen>
                 child: new Padding(
                   padding: const EdgeInsets.only(left: 40.0),
                   child: new Text(
-                    "EMAIL",
+                    "Correo",
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                       color: Color.fromRGBO(28, 96, 97, 1.0),
@@ -416,7 +416,7 @@ class _LoginScreenState extends State<LoginScreen>
                 child: new Padding(
                   padding: const EdgeInsets.only(left: 40.0),
                   child: new Text(
-                    "PASSWORD",
+                    "Contrasea",
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                       color: Color.fromRGBO(28, 96, 97, 1.0),
@@ -469,7 +469,7 @@ class _LoginScreenState extends State<LoginScreen>
                 padding: const EdgeInsets.only(right: 20.0),
                 child: new FlatButton(
                   child: new Text(
-                    "Forgot Password?",
+                    "Olvidaste tu contraseña?",
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                       color: Color.fromRGBO(28, 96, 97, 1.0),
@@ -508,7 +508,7 @@ class _LoginScreenState extends State<LoginScreen>
                         children: <Widget>[
                           new Expanded(
                             child: Text(
-                              "LOGIN",
+                              "Iniciar sesión",
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                   color: Colors.white,
@@ -536,7 +536,7 @@ class _LoginScreenState extends State<LoginScreen>
                   ),
                 ),
                 Text(
-                  "OR CONNECT WITH",
+                  "O conectar con",
                   style: TextStyle(
                     color: Colors.grey,
                     fontWeight: FontWeight.bold,
@@ -687,7 +687,7 @@ class _LoginScreenState extends State<LoginScreen>
                 child: new Padding(
                   padding: const EdgeInsets.only(left: 40.0),
                   child: new Text(
-                    "EMAIL",
+                    "Correo",
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                       color: Color.fromRGBO(28, 96, 97, 1.0),
@@ -739,7 +739,7 @@ class _LoginScreenState extends State<LoginScreen>
                 child: new Padding(
                   padding: const EdgeInsets.only(left: 40.0),
                   child: new Text(
-                    "PASSWORD",
+                    "Contraseña",
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                       color: Color.fromRGBO(28, 96, 97, 1.0),
@@ -791,7 +791,7 @@ class _LoginScreenState extends State<LoginScreen>
                 child: new Padding(
                   padding: const EdgeInsets.only(left: 40.0),
                   child: new Text(
-                    "CONFIRM PASSWORD",
+                    "Confirmar contraseña",
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                       color: Color.fromRGBO(28, 96, 97, 1.0),
@@ -844,7 +844,7 @@ class _LoginScreenState extends State<LoginScreen>
                 padding: const EdgeInsets.only(right: 20.0),
                 child: new FlatButton(
                   child: new Text(
-                    "Already have an account?",
+                    "¿Ya tienes cuenta?",
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                       color: Color.fromRGBO(28, 96, 97, 1.0),
@@ -882,7 +882,7 @@ class _LoginScreenState extends State<LoginScreen>
                         children: <Widget>[
                           new Expanded(
                             child: Text(
-                              "SIGN UP",
+                              "Registrarse",
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                   color: Colors.white,

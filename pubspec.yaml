@@ -37,12 +37,18 @@ dependencies:
   progress_dialog: ^1.2.1
   compressimage: ^0.1.1
   flutter_open_whatsapp: ^0.1.2
+  intl: ^0.15.7
+  provider: ^3.0.0+1
+  shrine_images: ^1.0.0
+  flutter_material_color_picker: ^1.0.5
+  flutter_counter: ^1.0.3
 
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_launcher_icons: "^0.7.3"
+  pedantic: ^1.8.0
 
 flutter_icons:
   android: "launcher_icon"
@@ -77,6 +83,7 @@ flutter:
    - assets/images/ic_gravity.png
    - assets/images/coin.png
    - assets/images/user.png
+   - assets/images/perritos.png
 
 
   # An image asset can refer to one or more resolution-specific "variants", see

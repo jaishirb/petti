@@ -14,6 +14,16 @@ class SharedPreferencesHelper {
     return prefs.setString(_token, value);
   }
 
+  static Future<bool> setProductos(String value) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.setString('productos', value);
+  }
+
+  static Future<String>getProductos() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getString('productos') ?? '';
+  }
+
   static Future<bool> setName(String value) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     return prefs.setString('name', value);

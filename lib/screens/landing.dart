@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:Petti/shared/shared_preferences_helper.dart';
@@ -21,7 +22,7 @@ class _LandingState extends State<Landing> {
     token = await SharedPreferencesHelper.getToken();
     print('--------------------------------');
     print(token);
-    await new Future.delayed(const Duration(seconds : 7));
+    await new Future.delayed(const Duration(seconds : 4));
     if (token == "") {
       Navigator.pushNamedAndRemoveUntil(
           context, '/login', ModalRoute.withName('/login'));
@@ -54,7 +55,7 @@ class _LandingState extends State<Landing> {
                         radius: 50.0,
                         child: CircleAvatar(
                           radius: 40.0,
-                          backgroundImage: NetworkImage(
+                          backgroundImage: CachedNetworkImageProvider(
                               "https://pettiapp.s3.us-east-2.amazonaws.com/images/LOGO1.png"
                           ),
                         ),
@@ -82,16 +83,6 @@ class _LandingState extends State<Landing> {
                     Padding(
                       padding: EdgeInsets.only(top: 20.0),
                     ),
-                    Text(
-                      "Iniciando Petti App",
-                      softWrap: true,
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 18.0,
-                          color: Color.fromRGBO(28, 96, 97, 1.0)),
-
-                    )
                   ],
                 ),
               )

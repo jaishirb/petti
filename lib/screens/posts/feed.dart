@@ -32,7 +32,7 @@ class _Feed extends State<Feed> with AutomaticKeepAliveClientMixin<Feed> {
     feedData = null;
     this._loadFeed(false);
     _scrollController.addListener((){
-      if(_scrollController.position.pixels == _scrollController.position.maxScrollExtent){
+      if(_scrollController.position.pixels >= _scrollController.position.maxScrollExtent/2){
         this._loadFeed(true);
       }
     });
@@ -54,7 +54,6 @@ class _Feed extends State<Feed> with AutomaticKeepAliveClientMixin<Feed> {
         itemCount: feedData.length,
       );
     } else {
-      print('hola');
       return Container(
           alignment: FractionalOffset.center,
           child: CircularProgressIndicator());
@@ -154,7 +153,7 @@ class _Feed extends State<Feed> with AutomaticKeepAliveClientMixin<Feed> {
     if(!flag){
       url = 'http://$DOMAIN/api/v1/mascotas/publicaciones/?action=$_action';
     }else{
-      print('loading next');
+      //print('loading next');
       url = next;
     }
     if(url != null){

@@ -7,6 +7,9 @@ class Style {
   static final smallTextStyle = commonTextStyle.copyWith(
     fontSize: 9.0,
   );
+  static final mediumTextStyle = commonTextStyle.copyWith(
+    fontSize: 13.0,
+  );
   static final commonTextStyle = baseTextStyle.copyWith(
       color: const Color(0xffb6b2df),
     fontSize: 14.0,
