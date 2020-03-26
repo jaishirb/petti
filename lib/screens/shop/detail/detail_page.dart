@@ -1,5 +1,6 @@
 import 'package:Petti/screens/shop/model/app_state_model.dart';
 import 'package:Petti/screens/shop/model/product.dart';
+import 'package:Petti/screens/shop/search_tab.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -16,12 +17,13 @@ import '../product_list_tab.dart';
 class DetailPageMaster extends StatelessWidget {
   final Product product;
   final model;
-  DetailPageMaster(this.product, this.model);
+  final bool flagProduct;
+  DetailPageMaster(this.product, this.model, this.flagProduct);
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: "Petti",
-      home: DetailPageMinor(product, model),
+      home: DetailPageMinor(product, model, flagProduct),
       debugShowCheckedModeBanner: false,
     );
   }
@@ -30,10 +32,11 @@ class DetailPageMaster extends StatelessWidget {
 class DetailPageMinor extends StatefulWidget{
   final Product product;
   final model;
-  DetailPageMinor(this.product, this.model);
+  final bool flagProduct;
+  DetailPageMinor(this.product, this.model, this.flagProduct);
   @override
   State<StatefulWidget> createState() {
-    return DetailPage(product, model);
+    return DetailPage(product, model, flagProduct);
   }
 
 }
@@ -41,6 +44,7 @@ class DetailPage extends State<DetailPageMinor> {
 
   final Product product;
   final AppStateModel model;
+  final bool flagProduct;
   ProgressDialog pr;
   Color colorSelected;
   TextEditingController cantidadController = new TextEditingController();
@@ -49,12 +53,13 @@ class DetailPage extends State<DetailPageMinor> {
   List<DropdownMenuItem<String>> _dropDownMenuItems;
   String _currentCity;
 
-  DetailPage(this.product, this.model);
+  DetailPage(this.product, this.model, this.flagProduct);
 
   @override
   void initState() {
     _dropDownMenuItems = getDropDownMenuItems();
     _currentCity = _dropDownMenuItems[0].value;
+    print(product);
     colorSelected = product.colors[0];
     super.initState();
   }
@@ -262,7 +267,7 @@ class DetailPage extends State<DetailPageMinor> {
                   ),
                 ),
                 debugShowCheckedModeBanner: false,
-                home: ProductList(),
+                home: (flagProduct)?ProductList():SearchTab(),
               ))),
             ),
           );
@@ -270,6 +275,6 @@ class DetailPage extends State<DetailPageMinor> {
 
   @override
   State<StatefulWidget> createState() {
-   return DetailPage(product, model);
+   return DetailPage(product, model, flagProduct);
   }
 }

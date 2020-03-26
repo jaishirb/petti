@@ -13,11 +13,13 @@ class ProductRowItem extends StatelessWidget {
     this.index,
     this.product,
     this.lastItem,
+    this.flagProduct
   });
 
   final Product product;
   final int index;
   final bool lastItem;
+  final bool flagProduct;
 
   @override
   Widget build(BuildContext context) {
@@ -65,13 +67,13 @@ class ProductRowItem extends StatelessWidget {
           CupertinoButton(
             padding: EdgeInsets.zero,
             onPressed: () {
-              final model = Provider.of<AppStateModel>(context);
+              final model = Provider.of<AppStateModel>(context, listen: false);
               //model.addProductToCart(product.id);
               Navigator.of(context).push(
                 new PageRouteBuilder(
                   pageBuilder: (_, __, ___) => CupertinoTabView(builder: (context) {
                     return CupertinoPageScaffold(
-                      child: DetailPageMaster(product, model),
+                      child: DetailPageMaster(product, model, flagProduct),
                     );
                   }),
                   transitionsBuilder: (context, animation, secondaryAnimation, child) =>

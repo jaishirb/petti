@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 
 enum Category {
   all,
@@ -37,6 +38,23 @@ class Product {
   @override
   String toString() => '$name (id=$id)';
 
+  static MaterialColor hexToColor(String code) {
+    var _code = int.parse(code.substring(1, 7), radix: 16) + 0xFF000000;
+    MaterialColor myColor =  MaterialColor(_code,
+        {
+          50 :  Color(_code),
+          100 : Color(_code),
+          200 : Color(_code),
+          300 : Color(_code),
+          400 : Color(_code),
+          500 : Color(_code),
+          600 : Color(_code),
+          700 : Color(_code),
+          800 : Color(_code),
+          900 : Color(_code)});
+    return myColor;
+  }
+
   Map<String,dynamic> toJson(){
     return {
       "category": this.category,
@@ -45,7 +63,7 @@ class Product {
       "description": this.description,
       "price": this.price,
       "image": this.image,
-      "colors": []
+      "colors": [],
     };
   }
 

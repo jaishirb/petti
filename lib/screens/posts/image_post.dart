@@ -22,7 +22,9 @@ class ImagePost extends StatefulWidget {
       this.description,
       this.likes,
       this.id,
-      this.owner});
+      this.owner,
+        this.image_profile,
+      });
 
 
   factory ImagePost.fromJSON(Map data) {
@@ -33,6 +35,7 @@ class ImagePost extends StatefulWidget {
       likes: data['likes'],
       description: data['description'],
       owner: data['telefono'],
+      image_profile: data['image_profile'],
       id: data['id'].toString(),
     );
   }
@@ -58,6 +61,7 @@ class ImagePost extends StatefulWidget {
   final String username;
   final String location;
   final String description;
+  final String image_profile;
   final likes;
   final String id;
   final String owner;
@@ -69,6 +73,7 @@ class ImagePost extends StatefulWidget {
         description: this.description,
         likes: this.likes,
         likeCount: getLikeCount(this.likes),
+        image_profile: this.image_profile,
         owner: this.owner,
         id: this.id,
       );
@@ -79,6 +84,8 @@ class _ImagePost extends State<ImagePost> {
   final String username;
   final String location;
   final String description;
+  final String image_profile;
+
   Map likes;
   String name = '';
   int likeCount;
@@ -111,6 +118,7 @@ class _ImagePost extends State<ImagePost> {
       this.likes,
       this.id,
       this.likeCount,
+        this.image_profile,
       this.owner});
 
   GestureDetector buildLikeIcon() {
@@ -230,8 +238,8 @@ Future<ConfirmAction> _asyncConfirmDialog(BuildContext context, int id) async {
           if (this.username != null) {
             return ListTile(
               leading: CircleAvatar(
-                //backgroundImage: CachedNetworkImageProvider(snapshot.data.data['photoUrl']),
-                backgroundColor: Color.fromRGBO(28, 96, 97, 1.0),
+                backgroundImage: CachedNetworkImageProvider(image_profile),
+                //backgroundColor: Color.fromRGBO(28, 96, 97, 1.0),
               ),
               title: GestureDetector(
                 child: Text(this.username, style: boldStyle),

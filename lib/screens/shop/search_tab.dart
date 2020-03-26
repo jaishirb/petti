@@ -1,16 +1,13 @@
 import 'dart:convert';
 
+import 'package:Petti/screens/shop/product_list_tab.dart';
 import 'package:Petti/services/shop.dart';
 import 'package:Petti/shared/shared_preferences_helper.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-
-import 'model/app_state_model.dart';
 import 'model/product.dart';
 import 'product_row_item.dart';
 import 'search_bar.dart';
-import 'styles.dart';
 
 class SearchTab extends StatefulWidget {
   @override
@@ -28,10 +25,10 @@ class _SearchTabState extends State<SearchTab> {
 
   @override
   void initState() {
+    initPlatform();
     super.initState();
     _controller = TextEditingController()..addListener(_onTextChanged);
     _focusNode = FocusNode();
-    initPlatform();
   }
 
   Future<List<Product>> getProducts() async{
@@ -41,10 +38,8 @@ class _SearchTabState extends State<SearchTab> {
   }
 
   Future<List<Product>> search(String searchTerms) async{
-    List<Product> products = await getProducts();
-    return products.where((product) {
-      return product.name.toLowerCase().contains(searchTerms.toLowerCase());
-    }).toList();
+    List<Product> products = List<Product>();
+    return products;
   }
 
   static MaterialColor hexToColor(String code) {
@@ -68,6 +63,7 @@ class _SearchTabState extends State<SearchTab> {
     List<dynamic>data = await getProductosFilterService(nombre);
     if(data.length > 0){
       results = new List<Product>();
+      List<Product>tempResults = new List<Product>();
       for(Map producto in data){
         String name = producto['nombre'];
         int separador = 3;
@@ -101,10 +97,14 @@ class _SearchTabState extends State<SearchTab> {
           image: producto['imagen'],
           colors: _colors,
         );
-        setState(() {
-          results.add(_producto);
-        });
+        if(!ProductListTab.products.contains(_producto)){
+          ProductListTab.products.add(_producto);
+        }
+        tempResults.add(_producto);
       }
+      setState(() {
+        results.addAll(tempResults);
+      });
     }else{
       setState(() {
         results = new List<Product>();
@@ -166,6 +166,7 @@ class _SearchTabState extends State<SearchTab> {
                       index: index,
                       product: results[index],
                       lastItem: index == results.length - 1,
+                      flagProduct: false,
                     ),
                 itemCount: results.length,
               ),

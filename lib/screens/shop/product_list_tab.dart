@@ -15,7 +15,7 @@ class ProductList extends StatefulWidget {
 }
 
 class ProductListTab extends State<ProductList>  {
-  List<Product>products = new List<Product>();
+  static List<Product>products = new List<Product>();
   ScrollController _scrollController = new ScrollController();
   int loads = 2;
   String jsonProducts;
@@ -67,49 +67,52 @@ class ProductListTab extends State<ProductList>  {
   }
 
   buildFeed() {
-    if (products.length != 0) {
-      return Consumer<AppStateModel>(
-        builder: (context, model, child) {
-          return CustomScrollView(
-            controller: _scrollController,
-            semanticChildCount: products.length,
-            slivers: <Widget>[
-              const CupertinoSliverNavigationBar(
-                largeTitle: Text('Pettishop',
-                    style: const TextStyle(
-                        fontFamily: "Billabong", color: Color.fromRGBO(28, 96, 97, 1.0),
-                        fontSize: 35.0)),
-              ),
-              SliverSafeArea(
-                top: false,
-                minimum: const EdgeInsets.only(top: 8),
-                sliver: SliverList(
-                  delegate: SliverChildBuilderDelegate(
-                        (context, index) {
-                      if (index < products.length) {
-                        return ProductRowItem(
-                          index: index,
-                          product: products[index],
-                          lastItem: index == products.length - 1,
-                        );
-                      }
-
-                      return null;
-                    },
-                  ),
+    try{
+      if (products.length != 0) {
+        return Consumer<AppStateModel>(
+          builder: (context, model, child) {
+            return CustomScrollView(
+              controller: _scrollController,
+              semanticChildCount: products.length,
+              slivers: <Widget>[
+                const CupertinoSliverNavigationBar(
+                  largeTitle: Text('Pettishop',
+                      style: const TextStyle(
+                          fontFamily: "Billabong", color: Color.fromRGBO(28, 96, 97, 1.0),
+                          fontSize: 35.0)),
                 ),
-              )
-            ],
-          );
-        },
-      );
-    } else {
-      return new Container(
-          decoration: const BoxDecoration(
-            color: CupertinoColors.white,
-          ),
-          child: new Center(child: const CupertinoActivityIndicator()));
-    }
+                SliverSafeArea(
+                  top: false,
+                  minimum: const EdgeInsets.only(top: 8),
+                  sliver: SliverList(
+                    delegate: SliverChildBuilderDelegate(
+                          (context, index) {
+                        if (index < products.length) {
+                          return ProductRowItem(
+                            index: index,
+                            product: products[index],
+                            lastItem: index == products.length - 1,
+                            flagProduct: true,
+                          );
+                        }
+
+                        return null;
+                      },
+                    ),
+                  ),
+                )
+              ],
+            );
+          },
+        );
+      } else {
+        return new Container(
+            decoration: const BoxDecoration(
+              color: CupertinoColors.white,
+            ),
+            child: new Center(child: const CupertinoActivityIndicator()));
+      }
+    }on Exception catch(e) {}
   }
   @override
   Widget build(BuildContext context) {

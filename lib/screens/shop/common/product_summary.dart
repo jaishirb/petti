@@ -140,7 +140,7 @@ class ProductSummary extends StatelessWidget {
       onTap: horizontal
           ? () => Navigator.of(context).push(
             new PageRouteBuilder(
-              pageBuilder: (_, __, ___) => new DetailPageMaster(product, null),
+              pageBuilder: (_, __, ___) => new DetailPageMaster(product, null, true),
               transitionsBuilder: (context, animation, secondaryAnimation, child) =>
                 new FadeTransition(opacity: animation, child: child),
               ) ,

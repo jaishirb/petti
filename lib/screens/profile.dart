@@ -1,9 +1,14 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:Petti/services/profile.dart';
+import 'package:Petti/services/upload_page.dart';
 import 'package:Petti/shared/shared_preferences_helper.dart';
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:compressimage/compressimage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:image_picker/image_picker.dart';
 
 import 'cards/ui/detail/dialog.dart';
 
@@ -17,6 +22,7 @@ class MapScreenState extends State<ProfilePage>
   bool _status = true;
   final FocusNode myFocusNode = FocusNode();
   Map profile;
+  String image;
   TextEditingController _nombreController = new TextEditingController();
   TextEditingController _numeroController = new TextEditingController();
   TextEditingController _emailController = new TextEditingController();
@@ -25,10 +31,10 @@ class MapScreenState extends State<ProfilePage>
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     getDataProfileService().then((value){
       profile = value;
+      print('*****');
       print(profile);
       setState(() {
         _nombreController.text = profile['username'];
@@ -36,6 +42,7 @@ class MapScreenState extends State<ProfilePage>
         _emailController.text = profile['email'];
         _ciudadController.text = profile['ciudad'];
         _direccionController.text = profile['direccion'];
+        image = profile['photo_read'];
       });
       _nombreController.addListener(detector);
       _numeroController.addListener(detector);
@@ -51,6 +58,51 @@ class MapScreenState extends State<ProfilePage>
     profile['email'] = _emailController.text;
     profile['ciudad'] = _ciudadController.text;
     profile['direccion'] = _direccionController.text;
+  }
+
+  Future<int> uploadImage(var imageFile) async {
+    print("FILE SIZE BEFORE: " + imageFile.lengthSync().toString());
+    await CompressImage.compress(imageSrc: imageFile.path, desiredQuality: 75); //desiredQuality ranges from 0 to 100
+    print("FILE SIZE  AFTER: " + imageFile.lengthSync().toString());
+    final id = await uploadImageService(imageFile);
+    return id;
+  }
+
+  selectImage() async{
+    File imageFile = await ImagePicker.pickImage(source: ImageSource.gallery, maxWidth: 1920, maxHeight: 1200, imageQuality: 80);
+    int id = await uploadImage(imageFile);
+    setState(() {
+      profile['photo'] = id;
+      print('--------------');
+      print(id);
+      actualizarProfileService(jsonEncode(profile), profile['id']).then((code){
+        if(code == 200){
+          getDataProfileService().then((_prof){
+            setState(() {
+              profile = _prof;
+              image = _prof['photo_read'];
+            });
+          });
+          showDialog(
+            context: context,
+            builder: (BuildContext context) => CustomDialog(
+              title:'Éxito!',
+              description:'Datos actualizados correctamente!',
+              buttonText: "Okay",
+            ),
+          );
+        }else{
+          showDialog(
+            context: context,
+            builder: (BuildContext context) => CustomDialog(
+              title:'Error',
+              description:'Por favor, intenta más tarde.',
+              buttonText: "Okay",
+            ),
+          );
+        }
+      });
+    });
   }
   @override
   Widget build(BuildContext context) {
@@ -102,8 +154,10 @@ class MapScreenState extends State<ProfilePage>
                                     decoration: new BoxDecoration(
                                       shape: BoxShape.circle,
                                       image: new DecorationImage(
-                                        image: new ExactAssetImage(
-                                            'assets/images/user.png'),
+                                        image: (image != null)?CachedNetworkImageProvider(
+                                          image
+                                        ):new ExactAssetImage(
+                                            'assets/images/user.png',),
                                         fit: BoxFit.cover,
                                       ),
                                     )),
@@ -114,6 +168,22 @@ class MapScreenState extends State<ProfilePage>
                                 child: new Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: <Widget>[
+                                    FlatButton(
+                                      onPressed: () => {
+                                        selectImage()
+                                      },
+                                      child: Row(
+                                        children: <Widget>[
+                                      new CircleAvatar(
+                                      backgroundColor: Colors.green,
+                                        radius: 25.0,
+                                        child: new Icon(
+                                          Icons.camera_alt,
+                                          color: Colors.white,
+                                        )),
+                                        ],
+                                      )
+                                    )
                                     /**
                                     new CircleAvatar(
                                       backgroundColor: Colors.green,

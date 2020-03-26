@@ -174,6 +174,7 @@ class _Feed extends State<Feed> with AutomaticKeepAliveClientMixin<Feed> {
   List<ImagePost> _generateFeed(List<dynamic> feedData) {
     List<ImagePost> listOfPosts = [];
     for (var postData in feedData) {
+      print(postData);
       listOfPosts.add(ImagePost.fromJSON(postData));
     }
     return listOfPosts;

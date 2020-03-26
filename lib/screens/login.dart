@@ -10,7 +10,6 @@ import 'package:Petti/shared/shared_preferences_helper.dart';
 import 'package:http/http.dart' as http;
 
 import '../shared/shared_preferences_helper.dart';
-import 'home.dart';
 
 class LoginScreen extends StatefulWidget {
   @override

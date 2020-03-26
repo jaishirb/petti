@@ -21,6 +21,7 @@ Future<Map>getDataProfileService() async{
   } catch (exception) {
     result = 'Failed invoking the getFeed function. Exception: $exception';
   }
+  print(result);
   return data;
 }
 

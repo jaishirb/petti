@@ -97,8 +97,7 @@ class AppStateModel extends foundation.ChangeNotifier {
   // Adds a product to the cart.
   void addProductToCart(int productId, Color color, String cantidad) {
     var hex = '#${color.value.toRadixString(16)}';
-    print(hex);
-    print(cantidad);
+
     if (!_productsInCart.containsKey(productId)) {
       _productsInCart[productId] = int.parse(cantidad);
     } else {

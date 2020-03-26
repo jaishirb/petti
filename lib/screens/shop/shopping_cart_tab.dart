@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:Petti/screens/posts/image_post.dart';
+import 'package:Petti/screens/shop/product_list_tab.dart';
 import 'package:Petti/services/shop.dart';
 import 'package:Petti/shared/shared_preferences_helper.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -41,7 +42,8 @@ class _ShoppingCartTabState extends State<ShoppingCartTab> {
 
   Future<List<Product>> getProducts() async{
     String jsonProducts = await SharedPreferencesHelper.getProductos();
-    List<Product> products = (json.decode(jsonProducts) as List).map((i) => Product.fromJson(i)).toList();
+    //List<Product> products = (json.decode(jsonProducts) as List).map((i) => Product.fromJson(i)).toList();
+    List<Product> products = ProductListTab.products;
     setState(() {
       _availableProducts = products;
     });
@@ -159,20 +161,6 @@ class _ShoppingCartTabState extends State<ShoppingCartTab> {
 
           ],
         ),
-        /**
-            Container(
-            height: _kDateTimePickerHeight,
-            child: CupertinoDatePicker(
-            mode: CupertinoDatePickerMode.date,
-            minimumDate: minTime,
-            initialDateTime: minTime,
-            onDateTimeChanged: (newDateTime) {
-            setState(() {
-            dateTime = newDateTime;
-            });
-            },
-            ),
-            ),**/
       ],
     );
   }
@@ -281,6 +269,7 @@ class _ShoppingCartTabState extends State<ShoppingCartTab> {
 
 
   Product getProductById(int id){
+    getProducts();
     return _availableProducts.firstWhere((p) => p.id == id);
   }
 
@@ -312,7 +301,6 @@ class _ShoppingCartTabState extends State<ShoppingCartTab> {
             );
 
           default:
-            print(model.productsInCart.length);
             if(model.productsInCart.length > productIndex && _availableProducts.length == 0){
               getProducts().then((value){
                 return ShoppingCartItem(

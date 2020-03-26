@@ -1,17 +1,12 @@
 import 'package:Petti/services/upload_page.dart';
 import 'package:Petti/shared/shared_preferences_helper.dart';
 import 'package:compressimage/compressimage.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:async';
 import 'dart:io';
-import 'feed.dart';
 import 'location.dart';
 import 'package:geocoder/geocoder.dart';
-import 'package:image/image.dart' as Im;
-import 'package:path_provider/path_provider.dart' show getTemporaryDirectory;
-import 'dart:math' as Math;
 
 
 class Uploader extends StatefulWidget {

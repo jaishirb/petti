@@ -39,6 +39,8 @@ class _HomeScreenState extends State<HomeScreen> {
     Map profile;
     getDataProfileService().then((value){
       profile = value;
+      print('*******');
+      print(profile);
       SharedPreferencesHelper.setName(profile['username']).then((_value){
         setState(() {
           this.name = profile['username'];
@@ -125,6 +127,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   leading: Icon(Icons.account_circle),
                   onTap: () {
                     Navigator.push(context, MaterialPageRoute(builder: (context)=>ProfilePage()));
+                    getUserInfo();
                   },
                 ),
                 ListTile(
@@ -216,7 +219,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     child: GestureDetector(
                       onTap: (){
                         String _title = '';
-                        switch(currentPage.toInt()){
+                        switch(currentPage.round()){
                           case 4:
                             _title = 'Adopción';
                             Navigator.push(context, MaterialPageRoute(builder: (context)=>Feed(title: '$_title')));
