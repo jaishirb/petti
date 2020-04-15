@@ -5,6 +5,7 @@ import 'package:Petti/screens/shop/app.dart';
 import 'package:Petti/services/profile.dart';
 import 'package:flutter/material.dart';
 import 'package:Petti/screens/data.dart';
+import 'package:flutter_open_whatsapp/flutter_open_whatsapp.dart';
 import 'cards/ui/home/home_page.dart';
 import 'customIcons.dart';
 import 'data.dart';
@@ -177,11 +178,13 @@ class _HomeScreenState extends State<HomeScreen> {
                             fontFamily: "Billabong", color: Color.fromRGBO(28, 96, 97, 1.0), fontSize: 46.0)),
                     IconButton(
                       icon: Icon(
-                        CustomIcons.option,
-                        size: 12.0,
+                        Icons.headset_mic,
+                        size: 30.0,
                         color: Color.fromRGBO(28, 96, 97, 1.0),
                       ),
-                      onPressed: () {},
+                      onPressed: () {
+                        FlutterOpenWhatsapp.sendSingleMessage('573147382820', "Hola! tengo un problema...");
+                      },
                     )
                   ],
                 ),
@@ -221,11 +224,11 @@ class _HomeScreenState extends State<HomeScreen> {
                         String _title = '';
                         switch(currentPage.round()){
                           case 4:
-                            _title = 'Adopción';
+                            _title = 'Adopción y perdidos';
                             Navigator.push(context, MaterialPageRoute(builder: (context)=>Feed(title: '$_title')));
                             break;
                           case 3:
-                            _title = 'Compra/venta/pérdida';
+                            _title = 'Compra y venta';
                             Navigator.push(context, MaterialPageRoute(builder: (context)=>Feed(title: '$_title')));
                             break;
                           case 2:

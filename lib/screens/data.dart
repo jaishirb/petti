@@ -10,8 +10,8 @@ List<String> title = [
   "Market place",
   "Vet & care",
   "Coupet",
-  "Compra/venta/pérdida",
-  "Adopción",
+  "Compra y venta",
+  "Adopción y perdidos",
 ];
 
 
@@ -24,9 +24,9 @@ List<String> imagesFamous = [
 ];
 
 List<String> titleFamous = [
-  "Adopción",
+  "Adopción y perdidos",
   "Vet & care",
   "Coupet",
-  "Compra/venta/pérdida",
+  "Compra y venta",
   "Market place",
 ];
