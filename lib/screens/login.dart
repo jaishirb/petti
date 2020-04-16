@@ -189,6 +189,8 @@ class _LoginScreenState extends State<LoginScreen>
 
   Widget homePage() {
     return new Scaffold(
+        resizeToAvoidBottomPadding: false,
+        resizeToAvoidBottomInset: false,
       body: SingleChildScrollView(
       child: Container(
       height: MediaQuery.of(context).size.height,
@@ -332,6 +334,8 @@ class _LoginScreenState extends State<LoginScreen>
 
   Widget loginPage() {
     return new Scaffold(
+        resizeToAvoidBottomPadding: false,
+        resizeToAvoidBottomInset: false,
       body: SingleChildScrollView(
       child: Container(
       height: MediaQuery.of(context).size.height,
@@ -346,323 +350,307 @@ class _LoginScreenState extends State<LoginScreen>
         ),
          */
       ),
-      child: new Column(
-        children: <Widget>[
-          Container(
-            padding: EdgeInsets.only(left:120.0, right: 120.0, top: 120.0, bottom: 70.0),
-            child: Center(
-              child: Icon(
-                Icons.account_circle,
-                color: Color.fromRGBO(28, 96, 97, 1.0),
-                size: 70.0,
-              ),
-            ),
-          ),
-          new Row(
-            children: <Widget>[
-              new Expanded(
-                child: new Padding(
-                  padding: const EdgeInsets.only(left: 40.0),
-                  child: new Text(
-                    "Correo",
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      color: Color.fromRGBO(28, 96, 97, 1.0),
-                      fontSize: 15.0,
-                    ),
-                  ),
+      child: SingleChildScrollView(
+        child: new Column(
+          children: <Widget>[
+            Container(
+              padding: EdgeInsets.only(left:120.0, right: 120.0, top: 120.0, bottom: 70.0),
+              child: Center(
+                child: Icon(
+                  Icons.account_circle,
+                  color: Color.fromRGBO(28, 96, 97, 1.0),
+                  size: 70.0,
                 ),
               ),
-            ],
-          ),
-          new Container(
-            width: MediaQuery.of(context).size.width,
-            margin: const EdgeInsets.only(left: 40.0, right: 40.0, top: 10.0),
-            alignment: Alignment.center,
-            decoration: BoxDecoration(
-              border: Border(
-                bottom: BorderSide(
-                    color: Color.fromRGBO(28, 96, 97, 1.0),
-                    width: 0.5,
-                    style: BorderStyle.solid),
-              ),
             ),
-            padding: const EdgeInsets.only(left: 0.0, right: 10.0),
-            child: new Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.start,
+            new Row(
               children: <Widget>[
                 new Expanded(
-                  child: TextField(
-                    controller: emaillogController,
-                    obscureText: false,
-                    textAlign: TextAlign.left,
-                    decoration: InputDecoration(
-                      border: InputBorder.none,
-                      hintText: 'email@domain.com',
-                      hintStyle: TextStyle(color: Colors.grey),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-          Divider(
-            height: 24.0,
-          ),
-          new Row(
-            children: <Widget>[
-              new Expanded(
-                child: new Padding(
-                  padding: const EdgeInsets.only(left: 40.0),
-                  child: new Text(
-                    "Contrasea",
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      color: Color.fromRGBO(28, 96, 97, 1.0),
-                      fontSize: 15.0,
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          ),
-          new Container(
-            width: MediaQuery.of(context).size.width,
-            margin: const EdgeInsets.only(left: 40.0, right: 40.0, top: 10.0),
-            alignment: Alignment.center,
-            decoration: BoxDecoration(
-              border: Border(
-                bottom: BorderSide(
-                    color: Color.fromRGBO(28, 96, 97, 1.0),
-                    width: 0.5,
-                    style: BorderStyle.solid),
-              ),
-            ),
-            padding: const EdgeInsets.only(left: 0.0, right: 10.0),
-            child: new Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: <Widget>[
-                new Expanded(
-                  child: TextField(
-                    controller: passwordlogController,
-                    obscureText: true,
-                    textAlign: TextAlign.left,
-                    decoration: InputDecoration(
-                      border: InputBorder.none,
-                      hintText: '*********',
-                      hintStyle: TextStyle(color: Colors.grey),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-          Divider(
-            height: 24.0,
-          ),
-          new Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: <Widget>[
-              Padding(
-                padding: const EdgeInsets.only(right: 20.0),
-                child: new FlatButton(
-                  child: new Text(
-                    "Olvidaste tu contraseña?",
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      color: Color.fromRGBO(28, 96, 97, 1.0),
-                      fontSize: 15.0,
-                    ),
-                    textAlign: TextAlign.end,
-                  ),
-                  onPressed: () => {},
-                ),
-              ),
-            ],
-          ),
-          new Container(
-            width: MediaQuery.of(context).size.width,
-            margin: const EdgeInsets.only(left: 30.0, right: 30.0, top: 20.0),
-            alignment: Alignment.center,
-            child: new Row(
-              children: <Widget>[
-                new Expanded(
-                  child: new FlatButton(
-                    shape: new RoundedRectangleBorder(
-                      borderRadius: new BorderRadius.circular(30.0),
-                    ),
-                    color: Color.fromRGBO(28, 96, 97, 1.0),
-                    onPressed: () => {
-                      initiateSignIn("L")
-                    },
-                    child: new Container(
-
-                      padding: const EdgeInsets.symmetric(
-                        vertical: 20.0,
-                        horizontal: 20.0,
+                  child: new Padding(
+                    padding: const EdgeInsets.only(left: 40.0),
+                    child: new Text(
+                      "Correo",
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: Color.fromRGBO(28, 96, 97, 1.0),
+                        fontSize: 15.0,
                       ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            new Container(
+              width: MediaQuery.of(context).size.width,
+              margin: const EdgeInsets.only(left: 40.0, right: 40.0, top: 10.0),
+              alignment: Alignment.center,
+              decoration: BoxDecoration(
+                border: Border(
+                  bottom: BorderSide(
+                      color: Color.fromRGBO(28, 96, 97, 1.0),
+                      width: 0.5,
+                      style: BorderStyle.solid),
+                ),
+              ),
+              padding: const EdgeInsets.only(left: 0.0, right: 10.0),
+              child: new Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: <Widget>[
+                  new Expanded(
+                    child: TextField(
+                      controller: emaillogController,
+                      obscureText: false,
+                      textAlign: TextAlign.left,
+                      decoration: InputDecoration(
+                        border: InputBorder.none,
+                        hintText: 'email@domain.com',
+                        hintStyle: TextStyle(color: Colors.grey),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Divider(
+              height: 24.0,
+            ),
+            new Row(
+              children: <Widget>[
+                new Expanded(
+                  child: new Padding(
+                    padding: const EdgeInsets.only(left: 40.0),
+                    child: new Text(
+                      "Contraseña",
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: Color.fromRGBO(28, 96, 97, 1.0),
+                        fontSize: 15.0,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            new Container(
+              width: MediaQuery.of(context).size.width,
+              margin: const EdgeInsets.only(left: 40.0, right: 40.0, top: 10.0),
+              alignment: Alignment.center,
+              decoration: BoxDecoration(
+                border: Border(
+                  bottom: BorderSide(
+                      color: Color.fromRGBO(28, 96, 97, 1.0),
+                      width: 0.5,
+                      style: BorderStyle.solid),
+                ),
+              ),
+              padding: const EdgeInsets.only(left: 0.0, right: 10.0),
+              child: new Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: <Widget>[
+                  new Expanded(
+                    child: TextField(
+                      controller: passwordlogController,
+                      obscureText: true,
+                      textAlign: TextAlign.left,
+                      decoration: InputDecoration(
+                        border: InputBorder.none,
+                        hintText: '*********',
+                        hintStyle: TextStyle(color: Colors.grey),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Divider(
+              height: 24.0,
+            ),
+            new Container(
+              width: MediaQuery.of(context).size.width,
+              margin: const EdgeInsets.only(left: 30.0, right: 30.0, top: 20.0),
+              alignment: Alignment.center,
+              child: new Row(
+                children: <Widget>[
+                  new Expanded(
+                    child: new FlatButton(
+                      shape: new RoundedRectangleBorder(
+                        borderRadius: new BorderRadius.circular(30.0),
+                      ),
+                      color: Color.fromRGBO(28, 96, 97, 1.0),
+                      onPressed: () => {
+                        initiateSignIn("L")
+                      },
+                      child: new Container(
+
+                        padding: const EdgeInsets.symmetric(
+                          vertical: 20.0,
+                          horizontal: 20.0,
+                        ),
+                        child: new Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            new Expanded(
+                              child: Text(
+                                "Iniciar sesión",
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            new Container(
+              width: MediaQuery.of(context).size.width,
+              margin: const EdgeInsets.only(left: 30.0, right: 30.0, top: 20.0),
+              alignment: Alignment.center,
+              child: Row(
+                children: <Widget>[
+                  new Expanded(
+                    child: new Container(
+                      margin: EdgeInsets.all(8.0),
+                      decoration: BoxDecoration(border: Border.all(width: 0.25)),
+                    ),
+                  ),
+                  Text(
+                    "O conectar con",
+                    style: TextStyle(
+                      color: Colors.grey,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  new Expanded(
+                    child: new Container(
+                      margin: EdgeInsets.all(8.0),
+                      decoration: BoxDecoration(border: Border.all(width: 0.25)),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            new Container(
+              width: MediaQuery.of(context).size.width,
+              margin: const EdgeInsets.only(left: 30.0, right: 30.0, top: 20.0),
+              child: new Row(
+                children: <Widget>[
+                  Platform.isAndroid?
+                  new Expanded(
+                    child: new Container(
+                      margin: EdgeInsets.only(right: 8.0),
+                      alignment: Alignment.center,
                       child: new Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
                           new Expanded(
-                            child: Text(
-                              "Iniciar sesión",
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold),
+                            child: new FlatButton(
+                              shape: new RoundedRectangleBorder(
+                                borderRadius: new BorderRadius.circular(30.0),
+                              ),
+                              color: Color(0Xff3B5998),
+                              onPressed: () => {},
+                              child: new Container(
+                                child: new Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: <Widget>[
+                                    new Expanded(
+                                      child: new FlatButton(
+                                        onPressed: ()=>{initiateSignIn("FB")},
+                                        padding: EdgeInsets.only(
+                                          top: 20.0,
+                                          bottom: 20.0,
+                                        ),
+                                        child: new Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceEvenly,
+                                          children: <Widget>[
+                                            Text(
+                                              "FACEBOOK",
+                                              textAlign: TextAlign.center,
+                                              style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontWeight: FontWeight.bold),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ):new Container(),
+                  new Expanded(
+                    child: new Container(
+                      margin: EdgeInsets.only(left: 8.0),
+                      alignment: Alignment.center,
+                      child: new Row(
+                        children: <Widget>[
+                          new Expanded(
+                            child: new FlatButton(
+                              shape: new RoundedRectangleBorder(
+                                borderRadius: new BorderRadius.circular(30.0),
+                              ),
+                              color: Color(0Xffdb3236),
+                              onPressed: () => {},
+                              child: new Container(
+                                child: new Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: <Widget>[
+                                    new Expanded(
+                                      child: new FlatButton(
+                                        onPressed: ()=>{initiateSignIn("G")},
+                                        padding: EdgeInsets.only(
+                                          top: 20.0,
+                                          bottom: 20.0,
+                                        ),
+                                        child: new Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceEvenly,
+                                          children: <Widget>[
+                                            Text(
+                                              "GOOGLE",
+                                              textAlign: TextAlign.center,
+                                              style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontWeight: FontWeight.bold),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
                             ),
                           ),
                         ],
                       ),
                     ),
                   ),
-                ),
-              ],
-            ),
-          ),
-          new Container(
-            width: MediaQuery.of(context).size.width,
-            margin: const EdgeInsets.only(left: 30.0, right: 30.0, top: 20.0),
-            alignment: Alignment.center,
-            child: Row(
-              children: <Widget>[
-                new Expanded(
-                  child: new Container(
-                    margin: EdgeInsets.all(8.0),
-                    decoration: BoxDecoration(border: Border.all(width: 0.25)),
-                  ),
-                ),
-                Text(
-                  "O conectar con",
-                  style: TextStyle(
-                    color: Colors.grey,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                new Expanded(
-                  child: new Container(
-                    margin: EdgeInsets.all(8.0),
-                    decoration: BoxDecoration(border: Border.all(width: 0.25)),
-                  ),
-                ),
-              ],
-            ),
-          ),
-          new Container(
-            width: MediaQuery.of(context).size.width,
-            margin: const EdgeInsets.only(left: 30.0, right: 30.0, top: 20.0),
-            child: new Row(
-              children: <Widget>[
-                Platform.isAndroid?
-                new Expanded(
-                  child: new Container(
-                    margin: EdgeInsets.only(right: 8.0),
-                    alignment: Alignment.center,
-                    child: new Row(
-                      children: <Widget>[
-                        new Expanded(
-                          child: new FlatButton(
-                            shape: new RoundedRectangleBorder(
-                              borderRadius: new BorderRadius.circular(30.0),
-                            ),
-                            color: Color(0Xff3B5998),
-                            onPressed: () => {},
-                            child: new Container(
-                              child: new Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: <Widget>[
-                                  new Expanded(
-                                    child: new FlatButton(
-                                      onPressed: ()=>{initiateSignIn("FB")},
-                                      padding: EdgeInsets.only(
-                                        top: 20.0,
-                                        bottom: 20.0,
-                                      ),
-                                      child: new Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceEvenly,
-                                        children: <Widget>[
-                                          Text(
-                                            "FACEBOOK",
-                                            textAlign: TextAlign.center,
-                                            style: TextStyle(
-                                                color: Colors.white,
-                                                fontWeight: FontWeight.bold),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ):new Container(),
-                new Expanded(
-                  child: new Container(
-                    margin: EdgeInsets.only(left: 8.0),
-                    alignment: Alignment.center,
-                    child: new Row(
-                      children: <Widget>[
-                        new Expanded(
-                          child: new FlatButton(
-                            shape: new RoundedRectangleBorder(
-                              borderRadius: new BorderRadius.circular(30.0),
-                            ),
-                            color: Color(0Xffdb3236),
-                            onPressed: () => {},
-                            child: new Container(
-                              child: new Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: <Widget>[
-                                  new Expanded(
-                                    child: new FlatButton(
-                                      onPressed: ()=>{initiateSignIn("G")},
-                                      padding: EdgeInsets.only(
-                                        top: 20.0,
-                                        bottom: 20.0,
-                                      ),
-                                      child: new Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceEvenly,
-                                        children: <Widget>[
-                                          Text(
-                                            "GOOGLE",
-                                            textAlign: TextAlign.center,
-                                            style: TextStyle(
-                                                color: Colors.white,
-                                                fontWeight: FontWeight.bold),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          )
-        ],
+                ],
+              ),
+            )
+          ],
+        ),
       ),
     )));
   }
 
   Widget signupPage() {
     return new Scaffold(
+      resizeToAvoidBottomPadding: false,
+      resizeToAvoidBottomInset: false,
       body: SingleChildScrollView(
       child:
       Container(
@@ -670,235 +658,237 @@ class _LoginScreenState extends State<LoginScreen>
       decoration: BoxDecoration(
         color: Colors.white,
       ),
-      child: new Column(
-        children: <Widget>[
-          Container(
-            padding: EdgeInsets.only(left:120.0, right: 120.0, top: 100.0, bottom: 70.0),
-            child: Center(
-              child: Icon(
-                Icons.account_circle,
-                color: Color.fromRGBO(28, 96, 97, 1.0),
-                size: 70.0,
-              ),
-            ),
-          ),
-          new Row(
-            children: <Widget>[
-              new Expanded(
-                child: new Padding(
-                  padding: const EdgeInsets.only(left: 40.0),
-                  child: new Text(
-                    "Correo",
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      color: Color.fromRGBO(28, 96, 97, 1.0),
-                      fontSize: 15.0,
-                    ),
-                  ),
+      child: SingleChildScrollView(
+        child: Column(
+          children: <Widget>[
+            Container(
+              padding: EdgeInsets.only(left:120.0, right: 120.0, top: 100.0, bottom: 70.0),
+              child: Center(
+                child: Icon(
+                  Icons.account_circle,
+                  color: Color.fromRGBO(28, 96, 97, 1.0),
+                  size: 70.0,
                 ),
               ),
-            ],
-          ),
-          new Container(
-            width: MediaQuery.of(context).size.width,
-            margin: const EdgeInsets.only(left: 40.0, right: 40.0, top: 10.0),
-            alignment: Alignment.center,
-            decoration: BoxDecoration(
-              border: Border(
-                bottom: BorderSide(
-                    color: Color.fromRGBO(28, 96, 97, 1.0),
-                    width: 0.5,
-                    style: BorderStyle.solid),
-              ),
             ),
-            padding: const EdgeInsets.only(left: 0.0, right: 10.0),
-            child: new Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.start,
+            new Row(
               children: <Widget>[
                 new Expanded(
-                  child: TextField(
-                    controller: emailController,
-                    obscureText: false,
-                    textAlign: TextAlign.left,
-                    decoration: InputDecoration(
-                      border: InputBorder.none,
-                      hintText: 'email@domain.com',
-                      hintStyle: TextStyle(color: Colors.grey),
+                  child: new Padding(
+                    padding: const EdgeInsets.only(left: 40.0),
+                    child: new Text(
+                      "Correo",
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: Color.fromRGBO(28, 96, 97, 1.0),
+                        fontSize: 15.0,
+                      ),
                     ),
                   ),
                 ),
               ],
             ),
-          ),
-          Divider(
-            height: 24.0,
-          ),
-          new Row(
-            children: <Widget>[
-              new Expanded(
-                child: new Padding(
-                  padding: const EdgeInsets.only(left: 40.0),
-                  child: new Text(
-                    "Contraseña",
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
+            new Container(
+              width: MediaQuery.of(context).size.width,
+              margin: const EdgeInsets.only(left: 40.0, right: 40.0, top: 10.0),
+              alignment: Alignment.center,
+              decoration: BoxDecoration(
+                border: Border(
+                  bottom: BorderSide(
                       color: Color.fromRGBO(28, 96, 97, 1.0),
-                      fontSize: 15.0,
-                    ),
-                  ),
+                      width: 0.5,
+                      style: BorderStyle.solid),
                 ),
               ),
-            ],
-          ),
-          new Container(
-            width: MediaQuery.of(context).size.width,
-            margin: const EdgeInsets.only(left: 40.0, right: 40.0, top: 10.0),
-            alignment: Alignment.center,
-            decoration: BoxDecoration(
-              border: Border(
-                bottom: BorderSide(
-                    color: Color.fromRGBO(28, 96, 97, 1.0),
-                    width: 0.5,
-                    style: BorderStyle.solid),
+              padding: const EdgeInsets.only(left: 0.0, right: 10.0),
+              child: new Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: <Widget>[
+                  new Expanded(
+                    child: TextField(
+                      controller: emailController,
+                      obscureText: false,
+                      textAlign: TextAlign.left,
+                      decoration: InputDecoration(
+                        border: InputBorder.none,
+                        hintText: 'email@domain.com',
+                        hintStyle: TextStyle(color: Colors.grey),
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ),
-            padding: const EdgeInsets.only(left: 0.0, right: 10.0),
-            child: new Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.start,
+            Divider(
+              height: 24.0,
+            ),
+            new Row(
               children: <Widget>[
                 new Expanded(
-                  child: TextField(
-                    controller: passwordController,
-                    obscureText: true,
-                    textAlign: TextAlign.left,
-                    decoration: InputDecoration(
-                      border: InputBorder.none,
-                      hintText: '*********',
-                      hintStyle: TextStyle(color: Colors.grey),
+                  child: new Padding(
+                    padding: const EdgeInsets.only(left: 40.0),
+                    child: new Text(
+                      "Contraseña",
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: Color.fromRGBO(28, 96, 97, 1.0),
+                        fontSize: 15.0,
+                      ),
                     ),
                   ),
                 ),
               ],
             ),
-          ),
-          Divider(
-            height: 24.0,
-          ),
-          new Row(
-            children: <Widget>[
-              new Expanded(
-                child: new Padding(
-                  padding: const EdgeInsets.only(left: 40.0),
-                  child: new Text(
-                    "Confirmar contraseña",
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
+            new Container(
+              width: MediaQuery.of(context).size.width,
+              margin: const EdgeInsets.only(left: 40.0, right: 40.0, top: 10.0),
+              alignment: Alignment.center,
+              decoration: BoxDecoration(
+                border: Border(
+                  bottom: BorderSide(
                       color: Color.fromRGBO(28, 96, 97, 1.0),
-                      fontSize: 15.0,
-                    ),
-                  ),
+                      width: 0.5,
+                      style: BorderStyle.solid),
                 ),
               ),
-            ],
-          ),
-          new Container(
-            width: MediaQuery.of(context).size.width,
-            margin: const EdgeInsets.only(left: 40.0, right: 40.0, top: 10.0),
-            alignment: Alignment.center,
-            decoration: BoxDecoration(
-              border: Border(
-                bottom: BorderSide(
-                    color: Color.fromRGBO(28, 96, 97, 1.0),
-                    width: 0.5,
-                    style: BorderStyle.solid),
+              padding: const EdgeInsets.only(left: 0.0, right: 10.0),
+              child: new Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: <Widget>[
+                  new Expanded(
+                    child: TextField(
+                      controller: passwordController,
+                      obscureText: true,
+                      textAlign: TextAlign.left,
+                      decoration: InputDecoration(
+                        border: InputBorder.none,
+                        hintText: '*********',
+                        hintStyle: TextStyle(color: Colors.grey),
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ),
-            padding: const EdgeInsets.only(left: 0.0, right: 10.0),
-            child: new Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.start,
+            Divider(
+              height: 24.0,
+            ),
+            new Row(
               children: <Widget>[
                 new Expanded(
-                  child: TextField(
-                    controller: password2Controller,
-                    obscureText: true,
-                    textAlign: TextAlign.left,
-                    decoration: InputDecoration(
-                      border: InputBorder.none,
-                      hintText: '*********',
-                      hintStyle: TextStyle(color: Colors.grey),
+                  child: new Padding(
+                    padding: const EdgeInsets.only(left: 40.0),
+                    child: new Text(
+                      "Confirmar contraseña",
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: Color.fromRGBO(28, 96, 97, 1.0),
+                        fontSize: 15.0,
+                      ),
                     ),
                   ),
                 ),
               ],
             ),
-          ),
-          Divider(
-            height: 24.0,
-          ),
-          new Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: <Widget>[
-              Padding(
-                padding: const EdgeInsets.only(right: 20.0),
-                child: new FlatButton(
-                  child: new Text(
-                    "¿Ya tienes cuenta?",
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
+            new Container(
+              width: MediaQuery.of(context).size.width,
+              margin: const EdgeInsets.only(left: 40.0, right: 40.0, top: 10.0),
+              alignment: Alignment.center,
+              decoration: BoxDecoration(
+                border: Border(
+                  bottom: BorderSide(
                       color: Color.fromRGBO(28, 96, 97, 1.0),
-                      fontSize: 15.0,
-                    ),
-                    textAlign: TextAlign.end,
-                  ),
-                  onPressed: () => {gotoLogin()},
+                      width: 0.5,
+                      style: BorderStyle.solid),
                 ),
               ),
-            ],
-          ),
-          new Container(
-            width: MediaQuery.of(context).size.width,
-            margin: const EdgeInsets.only(left: 30.0, right: 30.0, top: 50.0),
-            alignment: Alignment.center,
-            child: new Row(
+              padding: const EdgeInsets.only(left: 0.0, right: 10.0),
+              child: new Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: <Widget>[
+                  new Expanded(
+                    child: TextField(
+                      controller: password2Controller,
+                      obscureText: true,
+                      textAlign: TextAlign.left,
+                      decoration: InputDecoration(
+                        border: InputBorder.none,
+                        hintText: '*********',
+                        hintStyle: TextStyle(color: Colors.grey),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Divider(
+              height: 24.0,
+            ),
+            new Row(
+              mainAxisAlignment: MainAxisAlignment.end,
               children: <Widget>[
-                new Expanded(
+                Padding(
+                  padding: const EdgeInsets.only(right: 20.0),
                   child: new FlatButton(
-                    shape: new RoundedRectangleBorder(
-                      borderRadius: new BorderRadius.circular(30.0),
-                    ),
-                    color: Color.fromRGBO(28, 96, 97, 1.0),
-                    onPressed: () => {
-                      initiateSignIn("S")
-                    },
-                    child: new Container(
-                      padding: const EdgeInsets.symmetric(
-                        vertical: 20.0,
-                        horizontal: 20.0,
+                    child: new Text(
+                      "¿Ya tienes cuenta?",
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: Color.fromRGBO(28, 96, 97, 1.0),
+                        fontSize: 15.0,
                       ),
-                      child: new Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          new Expanded(
-                            child: Text(
-                              "Registrarse",
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold),
-                            ),
-                          ),
-                        ],
-                      ),
+                      textAlign: TextAlign.end,
                     ),
+                    onPressed: () => {gotoLogin()},
                   ),
                 ),
               ],
             ),
-          ),
-        ],
+            new Container(
+              width: MediaQuery.of(context).size.width,
+              margin: const EdgeInsets.only(left: 30.0, right: 30.0, top: 50.0),
+              alignment: Alignment.center,
+              child: new Row(
+                children: <Widget>[
+                  new Expanded(
+                    child: new FlatButton(
+                      shape: new RoundedRectangleBorder(
+                        borderRadius: new BorderRadius.circular(30.0),
+                      ),
+                      color: Color.fromRGBO(28, 96, 97, 1.0),
+                      onPressed: () => {
+                        initiateSignIn("S")
+                      },
+                      child: new Container(
+                        padding: const EdgeInsets.symmetric(
+                          vertical: 20.0,
+                          horizontal: 20.0,
+                        ),
+                        child: new Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            new Expanded(
+                              child: Text(
+                                "Registrarse",
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     )
     ));
@@ -928,14 +918,16 @@ class _LoginScreenState extends State<LoginScreen>
   Widget build(BuildContext context) {
     return new MaterialApp(
       debugShowCheckedModeBanner: false,
-        home: Container(
-          height: MediaQuery.of(context).size.height,
-          child: PageView(
-            controller: _controller,
-            physics: new AlwaysScrollableScrollPhysics(),
-            children: <Widget>[loginPage(), homePage(), signupPage()],
-            scrollDirection: Axis.horizontal,
-          ))
+        home: SingleChildScrollView(
+          child: Container(
+            height: MediaQuery.of(context).size.height,
+            child: PageView(
+              controller: _controller,
+              physics: new AlwaysScrollableScrollPhysics(),
+              children: <Widget>[loginPage(), homePage(), signupPage()],
+              scrollDirection: Axis.horizontal,
+            )),
+        )
     );
   }
 }
