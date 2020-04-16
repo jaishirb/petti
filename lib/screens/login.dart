@@ -6,6 +6,7 @@ import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:Petti/shared/shared_preferences_helper.dart';
+import 'dart:io' show Platform;
 
 import 'package:http/http.dart' as http;
 
@@ -555,6 +556,7 @@ class _LoginScreenState extends State<LoginScreen>
             margin: const EdgeInsets.only(left: 30.0, right: 30.0, top: 20.0),
             child: new Row(
               children: <Widget>[
+                Platform.isAndroid?
                 new Expanded(
                   child: new Container(
                     margin: EdgeInsets.only(right: 8.0),
@@ -602,7 +604,7 @@ class _LoginScreenState extends State<LoginScreen>
                       ],
                     ),
                   ),
-                ),
+                ):new Container(),
                 new Expanded(
                   child: new Container(
                     margin: EdgeInsets.only(left: 8.0),
