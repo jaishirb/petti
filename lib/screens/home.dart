@@ -183,7 +183,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         color: Color.fromRGBO(28, 96, 97, 1.0),
                       ),
                       onPressed: () {
-                        FlutterOpenWhatsapp.sendSingleMessage('573147382820', "Hola! tengo un problema...");
+                        FlutterOpenWhatsapp.sendSingleMessage('573147382820', "Hola!");
                       },
                     )
                   ],
