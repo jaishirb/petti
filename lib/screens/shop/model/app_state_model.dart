@@ -58,12 +58,12 @@ class AppStateModel extends foundation.ChangeNotifier {
   }
 
   // Total shipping cost for the items in the cart.
-  double get shippingCost {
+  double shippingCost (List<Product> _products){
     int total = 0;
     for(var elem in _productsInCart.keys){
       total += _productsInCart[elem];
     }
-    if(_productsInCart.length >= 3 || total >= 3){
+    if(subtotalCost(_products) >= 20000){
       return 0;
     }
     return 4500;
@@ -73,7 +73,7 @@ class AppStateModel extends foundation.ChangeNotifier {
 
   // Total cost to order everything in the cart.
   double totalCost (List<Product>_products){
-    return subtotalCost(_products) + shippingCost;
+    return subtotalCost(_products) + shippingCost(_products);
   }
 
   // Returns a copy of the list of available products, filtered by category.

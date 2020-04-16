@@ -7,7 +7,7 @@ List<String> images = [
 ];
 
 List<String> title = [
-  "Market place",
+  "PetShop",
   "Vet & care",
   "Coupet",
   "Compra y venta",
@@ -28,5 +28,5 @@ List<String> titleFamous = [
   "Vet & care",
   "Coupet",
   "Compra y venta",
-  "Market place",
+  "PetShop",
 ];

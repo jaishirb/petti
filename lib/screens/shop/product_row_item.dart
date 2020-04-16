@@ -84,6 +84,7 @@ class ProductRowItem extends StatelessWidget {
             child: const Icon(
               CupertinoIcons.plus_circled,
               semanticLabel: 'Add',
+              size: 32.0,
             ),
           ),
         ],

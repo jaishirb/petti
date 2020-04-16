@@ -240,7 +240,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             Navigator.push(context, MaterialPageRoute(builder: (context)=>HomePage()));
                             break;
                           case 0:
-                            _title = 'Market place';
+                            _title = 'PetShop';
                             Navigator.push(context, MaterialPageRoute(builder: (context)=>CupertinoStoreApp()));
 
                             break;

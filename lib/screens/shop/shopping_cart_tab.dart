@@ -154,13 +154,17 @@ class _ShoppingCartTabState extends State<ShoppingCartTab> {
                 ),
               ],
             ),
+          ],
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: <Widget>[
             Text(
               DateFormat.yMd().add_jm().format(dateTime.add(new Duration(days: 1))),
               style: Styles.deliveryTime,
             ),
-
           ],
-        ),
+        )
       ],
     );
   }
@@ -336,7 +340,7 @@ class _ShoppingCartTabState extends State<ShoppingCartTab> {
                           children: <Widget>[
                             Text(
                               'Domicilio '
-                              '${_currencyFormat.format(model.shippingCost)}',
+                              '${_currencyFormat.format(model.shippingCost(_availableProducts))}',
                               style: Styles.productRowItemPrice,
                             ),
                             const SizedBox(height: 6),
