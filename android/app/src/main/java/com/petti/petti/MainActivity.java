@@ -1,4 +1,4 @@
-package com.example.flutter_story_app_concept;
+package com.petti.petti;
 
 import android.os.Bundle;
 import io.flutter.app.FlutterActivity;

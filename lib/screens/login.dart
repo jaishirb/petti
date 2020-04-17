@@ -69,6 +69,7 @@ class _LoginScreenState extends State<LoginScreen>
    print("Email: " + email);
    String token = await authBackend(jsonEncode({'username': displayName, 'email': email,
      'password': displayName}));
+   print('*******************');
    print(token);
    SharedPreferencesHelper.setToken(token);
    Navigator.pushNamedAndRemoveUntil(context, '/home', ModalRoute.withName('/home'),
