@@ -238,7 +238,9 @@ Future<ConfirmAction> _asyncConfirmDialog(BuildContext context, int id) async {
           if (this.username != null) {
             return ListTile(
               leading: CircleAvatar(
-                backgroundImage: CachedNetworkImageProvider(image_profile),
+                backgroundImage: CachedNetworkImageProvider(
+                    (image_profile!=null)?image_profile:
+                    "https://pettiapp.s3.us-east-2.amazonaws.com/images/LOGO1.png"),
                 //backgroundColor: Color.fromRGBO(28, 96, 97, 1.0),
               ),
               title: GestureDetector(

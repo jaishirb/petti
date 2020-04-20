@@ -26,10 +26,10 @@ Future<int> postToFireStoreService({int mediaUrl, String location, String descri
   var dio = Dio();
   String _action;
   switch(section){
-    case 'Adopción':
+    case 'Adopción y perdidos':
       _action = 'adopcion';
       break;
-    case 'Compra/venta/pérdida':
+    case 'Compra y venta':
       _action = 'compraventa';
       break;
     case 'Coupet':

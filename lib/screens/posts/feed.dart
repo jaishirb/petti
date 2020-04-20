@@ -139,10 +139,10 @@ class _Feed extends State<Feed> with AutomaticKeepAliveClientMixin<Feed> {
     List<ImagePost> listOfPosts;
     String _action;
     switch(title){
-      case 'Adopción':
+      case 'Adopción y perdidos':
         _action = 'adopcion';
         break;
-      case 'Compra/venta/pérdida':
+      case 'Compra y venta':
         _action = 'compraventa';
         break;
       case 'Coupet':
