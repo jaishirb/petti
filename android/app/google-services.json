@@ -10,7 +10,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:496683495191:android:7d6532ac0adc2023fdd152",
         "android_client_info": {
-          "package_name": "com.example.flutter_story_app_concept"
+          "package_name": "com.petti.petti"
         }
       },
       "oauth_client": [
@@ -18,7 +18,51 @@
           "client_id": "496683495191-4kqdl47alaoe4kafs0u47qm0r6ca1vb8.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.example.flutter_story_app_concept",
+            "package_name": "com.petti.petti",
+            "certificate_hash": "126d6e347fd79fb04922b2a95a1aee3a29a8a209"
+          }
+        },
+        {
+          "client_id": "496683495191-baaslldl9ocjqhpnqlcrm75ejcp71pos.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC_oTzOfqoAjbpDlN94z6SEtkA2XLaI7fc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "496683495191-baaslldl9ocjqhpnqlcrm75ejcp71pos.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "496683495191-2d7vel4iksu1g6duu03i6s9jfcokn98n.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "io.flutter.flutter.app"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:496683495191:android:0ff7aa8ce9c21a4ffdd152",
+        "android_client_info": {
+          "package_name": "com.petti.petti"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "496683495191-uinjrv5b4n9ebqnh3pn53vut6ifh97e5.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.petti.petti",
             "certificate_hash": "126d6e347fd79fb04922b2a95a1aee3a29a8a209"
           }
         },

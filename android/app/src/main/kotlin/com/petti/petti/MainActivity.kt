@@ -1,4 +1,4 @@
-package com.example.petti
+package com.petti.petti
 
 import androidx.annotation.NonNull;
 import io.flutter.embedding.android.FlutterActivity
