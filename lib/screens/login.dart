@@ -67,7 +67,7 @@ class _LoginScreenState extends State<LoginScreen>
    SharedPreferencesHelper.setEmail(email);
    print("User : " + displayName);
    print("Email: " + email);
-   String token = await authBackend(jsonEncode({'username': displayName, 'email': email,
+   String token = await authBackend(jsonEncode({'email': email,
      'password': displayName}));
    print('*******************');
    print(token);
@@ -123,6 +123,21 @@ class _LoginScreenState extends State<LoginScreen>
    }
  }
 
+ void loginActionsIndependientSignUp(String displayName, String email, String password) async{
+   SharedPreferencesHelper.setName(displayName);
+   SharedPreferencesHelper.setEmail(email);
+   String token = await authBackend(jsonEncode({'email': email,
+     'password': password}));
+   if(token != null){
+     SharedPreferencesHelper.setToken(token);
+     Navigator.pushNamedAndRemoveUntil(context, '/home', ModalRoute.withName('/home'),
+     );
+   }else{
+     _showAlertDialogLogin();
+   }
+ }
+
+
  Future<int> _handleSignIn(String type) async {
    switch (type) {
      case "FB":
@@ -159,7 +174,7 @@ class _LoginScreenState extends State<LoginScreen>
        try {
          if(passwordController.text == password2Controller.text){
            var m = emailController.text.split("@");
-           loginActionsIndependient(m[0],emailController.text,passwordController.text);
+           loginActionsIndependientSignUp(m[0],emailController.text,passwordController.text);
          }else{
            _showAlertDialog();
          }
