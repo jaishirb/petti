@@ -92,14 +92,35 @@ class _LoginScreenState extends State<LoginScreen>
     );
   }
 
+ void _showAlertDialogLogin() {
+   showDialog(
+       context: context,
+       builder: (buildcontext) {
+         return AlertDialog(
+           title: new Text("Error"),
+           content: new Text("Los datos no coinciden con ninguna cuenta"),
+           actions: <Widget>[
+             new FlatButton(onPressed: (){
+               Navigator.of(context).pop();
+             }, child: new Text("Cerrar"))
+           ],
+         );
+       }
+   );
+ }
+
   void loginActionsIndependient(String displayName, String email, String password) async{
    SharedPreferencesHelper.setName(displayName);
    SharedPreferencesHelper.setEmail(email);
    String token = await authBackend(jsonEncode({'username': displayName, 'email': email,
      'password': password}));
-   SharedPreferencesHelper.setToken(token);
-   Navigator.pushNamedAndRemoveUntil(context, '/home', ModalRoute.withName('/home'),
-   );
+   if(token != null){
+     SharedPreferencesHelper.setToken(token);
+     Navigator.pushNamedAndRemoveUntil(context, '/home', ModalRoute.withName('/home'),
+     );
+   }else{
+     _showAlertDialogLogin();
+   }
  }
 
  Future<int> _handleSignIn(String type) async {
