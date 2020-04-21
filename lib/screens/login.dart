@@ -67,7 +67,7 @@ class _LoginScreenState extends State<LoginScreen>
    SharedPreferencesHelper.setEmail(email);
    print("User : " + displayName);
    print("Email: " + email);
-   String token = await authBackend(jsonEncode({'email': email,
+   String token = await authBackend(jsonEncode({'username': displayName, 'email': email,
      'password': displayName}));
    print('*******************');
    print(token);
