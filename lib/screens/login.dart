@@ -67,7 +67,7 @@ class _LoginScreenState extends State<LoginScreen>
    SharedPreferencesHelper.setEmail(email);
    print("User : " + displayName);
    print("Email: " + email);
-   String token = await authBackend(jsonEncode({'username': displayName, 'email': email,
+   String token = await authBackend(jsonEncode({'email': email,
      'password': displayName}));
    print('*******************');
    print(token);
@@ -112,7 +112,7 @@ class _LoginScreenState extends State<LoginScreen>
   void loginActionsIndependient(String displayName, String email, String password) async{
    SharedPreferencesHelper.setName(displayName);
    SharedPreferencesHelper.setEmail(email);
-   String token = await authBackend(jsonEncode({'username': displayName, 'email': email,
+   String token = await authBackend(jsonEncode({'email': email,
      'password': password}));
    if(token != null){
      SharedPreferencesHelper.setToken(token);
