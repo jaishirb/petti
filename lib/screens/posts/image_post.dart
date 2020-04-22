@@ -204,7 +204,7 @@ Future<ConfirmAction> _asyncConfirmDialog(BuildContext context, int id) async {
                     context: context,
                     builder: (BuildContext context) => CustomDialog(
                       title: 'Éxito',
-                      description: '¡Este post ha sio eliminado!\nctualiza tu feed.',
+                      description: '¡Este post ha sido eliminado!\nactualiza tu feed.',
                       buttonText: "Okay",
                     ),
                   );
