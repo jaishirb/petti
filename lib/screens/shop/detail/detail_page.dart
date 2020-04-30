@@ -215,7 +215,10 @@ class DetailPage extends State<DetailPageMinor> {
                             colorSelected = color;
                           });
                         },
-                        selectedColor: product.colors[0],
+                        onMainColorChange: (ColorSwatch color) {
+                          colorSelected = color;
+                        },
+                        selectedColor: colorSelected,
                         colors: product.colors,
                       ),
 
