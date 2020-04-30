@@ -448,6 +448,31 @@ class ShoppingCartItem extends StatelessWidget {
   final int quantity;
   final NumberFormat formatter;
 
+  String getFormattedName(String nombre){
+    String name = nombre;
+    int separador = 3;
+    if(name.length > 17){
+      separador = 2;
+    }
+    var arrayNombre = nombre.toString().split(' ');
+    print(arrayNombre.length);
+    if(arrayNombre.length > separador){
+      name = '';
+      print('entro');
+      int index = 1;
+      for(var word in arrayNombre){
+        if(index == separador){
+          name += ' ' + word + '\n';
+        }else{
+          name += ' ' + word;
+        }
+        index+=1;
+      }
+    }
+    print('*****************');
+    print(name);
+    return name;
+  }
   @override
   Widget build(BuildContext context) {
     final row = SafeArea(
@@ -482,7 +507,7 @@ class ShoppingCartItem extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
                         Text(
-                          product.name,
+                          getFormattedName(product.name),
                           style: Styles.productRowItemName,
                         ),
                         Text(
