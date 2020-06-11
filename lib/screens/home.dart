@@ -1,16 +1,16 @@
-import 'package:Petti/screens/cards/ui/detail/dialog.dart';
-import 'package:Petti/screens/posts/feed.dart';
+import 'data.dart';
+import 'dart:math';
+import 'customIcons.dart';
+import 'cards/ui/home/home_page.dart';
+import 'package:flutter/material.dart';
+import 'package:Petti/screens/data.dart';
 import 'package:Petti/screens/profile.dart';
 import 'package:Petti/screens/shop/app.dart';
 import 'package:Petti/services/profile.dart';
-import 'package:flutter/material.dart';
-import 'package:Petti/screens/data.dart';
-import 'package:flutter_open_whatsapp/flutter_open_whatsapp.dart';
-import 'cards/ui/home/home_page.dart';
-import 'customIcons.dart';
-import 'data.dart';
-import 'dart:math';
+import 'package:Petti/screens/posts/feed.dart';
+import 'package:Petti/screens/cards/ui/detail/dialog.dart';
 import 'package:Petti/shared/shared_preferences_helper.dart';
+import 'package:flutter_open_whatsapp/flutter_open_whatsapp.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -21,14 +21,11 @@ var cardAspectRatio = 10.0 / 16.0;
 var widgetAspectRatio = cardAspectRatio * 1.2;
 
 class _HomeScreenState extends State<HomeScreen> {
-
   String name = 'Petti';
   String email = '';
-
   var currentPage = images.length - 1.0;
   var currentPageFamous = imagesFamous.length - 1.0;
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
-
 
   @override
   void initState() {
@@ -36,19 +33,18 @@ class _HomeScreenState extends State<HomeScreen> {
     this.getUserInfo();
   }
 
-  getUserInfo (){
+  getUserInfo() {
     Map profile;
-    getDataProfileService().then((value){
+    getDataProfileService().then((value) {
       profile = value;
-      print('*******');
-      print(profile);
-      SharedPreferencesHelper.setName(profile['username']).then((_value){
+//      print('*******');print(profile);
+      SharedPreferencesHelper.setName(profile['username']).then((_value) {
         setState(() {
           this.name = profile['username'];
         });
       });
     });
-    SharedPreferencesHelper.getEmail().then((onValue){
+    SharedPreferencesHelper.getEmail().then((onValue) {
       setState(() {
         this.email = onValue;
       });
@@ -56,7 +52,8 @@ class _HomeScreenState extends State<HomeScreen> {
         context: context,
         builder: (BuildContext context) => CustomDialog(
           title: 'Bienvenido!',
-          description: '¡Bienvenido a Petti!\nrecuerda actualizar tu perfil y agregar tu número de contacto :)',
+          description:
+              '¡Bienvenido a Petti!\nrecuerda actualizar tu perfil y agregar tu número de contacto :)',
           buttonText: "Okay",
         ),
       );
@@ -65,20 +62,21 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    PageController controller = new PageController(initialPage: images.length - 1);
+    PageController controller =
+        new PageController(initialPage: images.length - 1);
     controller.addListener(() {
       setState(() {
         currentPage = controller.page;
       });
     });
 
-    PageController controllerFamous = new PageController(initialPage: imagesFamous.length - 1);
+    PageController controllerFamous =
+        new PageController(initialPage: imagesFamous.length - 1);
     controllerFamous.addListener(() {
       setState(() {
         currentPageFamous = controllerFamous.page;
       });
     });
-
 
     void _handleLogout() async {
       SharedPreferencesHelper.removeToken();
@@ -104,48 +102,57 @@ class _HomeScreenState extends State<HomeScreen> {
         drawer: Drawer(
           child: ListView(
             children: <Widget>[
-                UserAccountsDrawerHeader(
-                    accountName: Text(this.name),
-                    accountEmail: Text(this.email),
-                    currentAccountPicture: CircleAvatar(
-                        backgroundColor: Theme.of(context).platform == TargetPlatform.iOS ? Colors.blue : Colors.white,
-                      child: Text(name.substring(0,1), style: TextStyle(fontSize: 40.0, color: Color.fromRGBO(21, 157, 99, 1.0)),),
-                    ),
+              UserAccountsDrawerHeader(
+                accountName: Text(this.name),
+                accountEmail: Text(this.email),
+                currentAccountPicture: CircleAvatar(
+                  backgroundColor:
+                      Theme.of(context).platform == TargetPlatform.iOS
+                          ? Colors.blue
+                          : Colors.white,
+                  child: Text(
+                    name.substring(0, 1),
+                    style: TextStyle(
+                        fontSize: 40.0,
+                        color: Color.fromRGBO(21, 157, 99, 1.0)),
+                  ),
                 ),
-                ListTile(
-                  title: Text("Home"),
-                  leading: Icon(Icons.home),
-                  /** 
+              ),
+              ListTile(
+                title: Text("Home"),
+                leading: Icon(Icons.home),
+                /** 
                   onTap: () {
                     Navigator.of(context).pop();
                     Navigator.of(context).push(MaterialPageRoute(
                     builder: (BuildContext context) => NewPage("Page two")));
                   },
                   **/
-                ),
-                ListTile(
-                  title: Text("Perfil"),
-                  leading: Icon(Icons.account_circle),
-                  onTap: () {
-                    Navigator.push(context, MaterialPageRoute(builder: (context)=>ProfilePage()));
-                    getUserInfo();
-                  },
-                ),
-                ListTile(
-                  title: Text("Cerrar sesión"),
-                  leading: Icon(Icons.exit_to_app),
-                  onTap: () {
-                    _handleLogout();
-                    //logic of sign out
-                    /**
+              ),
+              ListTile(
+                title: Text("Perfil"),
+                leading: Icon(Icons.account_circle),
+                onTap: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => ProfilePage()));
+                  getUserInfo();
+                },
+              ),
+              ListTile(
+                title: Text("Cerrar sesión"),
+                leading: Icon(Icons.exit_to_app),
+                onTap: () {
+                  _handleLogout();
+                  //logic of sign out
+                  /**
                      * Here you put the screen to go after signing out 
                     Navigator.of(context).push(MaterialPageRoute(
                     builder: (BuildContext context) => NewPage("Page two")));
                     **/
-                  },
-                ),
+                },
+              ),
             ],
-      ),
+          ),
         ),
         body: SingleChildScrollView(
           child: Column(
@@ -162,9 +169,10 @@ class _HomeScreenState extends State<HomeScreen> {
                         color: Color.fromRGBO(28, 96, 97, 1.0),
                         size: 30.0,
                       ),
-                      onPressed: () {_scaffoldKey.currentState.openDrawer();},
+                      onPressed: () {
+                        _scaffoldKey.currentState.openDrawer();
+                      },
                     ),
-
                   ],
                 ),
               ),
@@ -175,7 +183,9 @@ class _HomeScreenState extends State<HomeScreen> {
                   children: <Widget>[
                     Text("Petti",
                         style: TextStyle(
-                            fontFamily: "Billabong", color: Color.fromRGBO(28, 96, 97, 1.0), fontSize: 46.0)),
+                            fontFamily: "Billabong",
+                            color: Color.fromRGBO(28, 96, 97, 1.0),
+                            fontSize: 46.0)),
                     IconButton(
                       icon: Icon(
                         Icons.headset_mic,
@@ -183,7 +193,8 @@ class _HomeScreenState extends State<HomeScreen> {
                         color: Color.fromRGBO(28, 96, 97, 1.0),
                       ),
                       onPressed: () {
-                        FlutterOpenWhatsapp.sendSingleMessage('573147382820', "Hola!");
+                        FlutterOpenWhatsapp.sendSingleMessage(
+                            '573147382820', "Hola!");
                       },
                     )
                   ],
@@ -211,7 +222,8 @@ class _HomeScreenState extends State<HomeScreen> {
                       width: 15.0,
                     ),
                     Text("¿Cómo podemos ayudarte hoy?",
-                        style: TextStyle(color: Color.fromRGBO(28, 96, 97, 1.0)))
+                        style:
+                            TextStyle(color: Color.fromRGBO(28, 96, 97, 1.0)))
                   ],
                 ),
               ),
@@ -220,29 +232,47 @@ class _HomeScreenState extends State<HomeScreen> {
                   CardScrollWidget(currentPage),
                   Positioned.fill(
                     child: GestureDetector(
-                      onTap: (){
+                      onTap: () {
                         String _title = '';
-                        switch(currentPage.round()){
+                        switch (currentPage.round()) {
                           case 4:
                             _title = 'Adopción y perdidos';
-                            Navigator.push(context, MaterialPageRoute(builder: (context)=>Feed(title: '$_title')));
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        Feed(title: '$_title')));
                             break;
                           case 3:
                             _title = 'Compra y venta';
-                            Navigator.push(context, MaterialPageRoute(builder: (context)=>Feed(title: '$_title')));
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        Feed(title: '$_title')));
                             break;
                           case 2:
                             _title = 'Coupet';
-                            Navigator.push(context, MaterialPageRoute(builder: (context)=>Feed(title: '$_title')));
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        Feed(title: '$_title')));
                             break;
                           case 1:
                             _title = 'Vet & care';
-                            Navigator.push(context, MaterialPageRoute(builder: (context)=>HomePage()));
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => HomePage()));
                             break;
                           case 0:
                             _title = 'PetShop';
-                            Navigator.push(context, MaterialPageRoute(builder: (context)=>CupertinoStoreApp()));
-
+                            //Navigator.pushNamedAndRemoveUntil(context, '/store', ModalRoute.withName('/store'));
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => CupertinoStoreApp()));
                             break;
                         }
                         print('index: $currentPage');
@@ -260,7 +290,6 @@ class _HomeScreenState extends State<HomeScreen> {
                   )
                 ],
               ),
-
             ],
           ),
         ),
@@ -331,7 +360,6 @@ class CardScrollWidget extends StatelessWidget {
                           mainAxisSize: MainAxisSize.min,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
-
                             SizedBox(
                               height: 10.0,
                             ),
@@ -442,10 +470,10 @@ class CardFamousScrollWidget extends StatelessWidget {
                               height: 10.0,
                             ),
                             Padding(
-                              padding: const EdgeInsets.only(
-                                  left: 12.0, bottom: 12.0),
-                              child: new GestureDetector(
-                                  onTap: (){
+                                padding: const EdgeInsets.only(
+                                    left: 12.0, bottom: 12.0),
+                                child: new GestureDetector(
+                                  onTap: () {
                                     print("Container clicked $i");
                                   },
                                   child: new Container(
@@ -453,12 +481,12 @@ class CardFamousScrollWidget extends StatelessWidget {
                                         horizontal: 22.0, vertical: 6.0),
                                     decoration: BoxDecoration(
                                         color: Color.fromRGBO(28, 96, 97, 1.0),
-                                        borderRadius: BorderRadius.circular(20.0)),
+                                        borderRadius:
+                                            BorderRadius.circular(20.0)),
                                     child: Text("Ver más",
                                         style: TextStyle(color: Colors.white)),
                                   ),
-                              )
-                            )
+                                ))
                           ],
                         ),
                       )

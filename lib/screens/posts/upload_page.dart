@@ -1,13 +1,12 @@
-import 'package:Petti/services/upload_page.dart';
-import 'package:Petti/shared/shared_preferences_helper.dart';
-import 'package:compressimage/compressimage.dart';
-import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
-import 'dart:async';
 import 'dart:io';
+import 'dart:async';
 import 'location.dart';
+import 'package:flutter/material.dart';
 import 'package:geocoder/geocoder.dart';
-
+import 'package:image_picker/image_picker.dart';
+import 'package:Petti/services/upload_page.dart';
+import 'package:compressimage/compressimage.dart';
+import 'package:Petti/shared/shared_preferences_helper.dart';
 
 class Uploader extends StatefulWidget {
   _Uploader createState() => _Uploader();
@@ -16,7 +15,6 @@ class Uploader extends StatefulWidget {
 class _Uploader extends State<Uploader> {
   File file;
   Address address;
-
   Map<String, double> currentLocation = Map();
   TextEditingController descriptionController = TextEditingController();
   TextEditingController locationController = TextEditingController();
@@ -35,10 +33,14 @@ class _Uploader extends State<Uploader> {
   //method to get Location and save into variables
   initPlatformState() async {
     Address first = await getUserLocation();
-    setState(() {
-      address = first;
-    });
-    SharedPreferencesHelper.getSection().then((value){
+    try {
+      setState(() {
+        address = first;
+      });
+    } catch (e) {
+      print(e);
+    }
+    SharedPreferencesHelper.getSection().then((value) {
       setState(() {
         section = value;
       });
@@ -47,18 +49,22 @@ class _Uploader extends State<Uploader> {
 
   Future<int> uploadImage(var imageFile) async {
     print("FILE SIZE BEFORE: " + imageFile.lengthSync().toString());
-    await CompressImage.compress(imageSrc: imageFile.path, desiredQuality: 75); //desiredQuality ranges from 0 to 100
+    await CompressImage.compress(
+        imageSrc: imageFile.path,
+        desiredQuality: 75); //desiredQuality ranges from 0 to 100
     print("FILE SIZE  AFTER: " + imageFile.lengthSync().toString());
     final id = await uploadImageService(imageFile);
     return id;
   }
 
-
-
-  Future<int> postToFireStore({int mediaUrl, String location, String description}) async {
+  Future<int> postToFireStore(
+      {int mediaUrl, String location, String description}) async {
     String _section = await SharedPreferencesHelper.getSection();
     final statusCode = await postToFireStoreService(
-        mediaUrl: mediaUrl, location: location, description: description, section: _section);
+        mediaUrl: mediaUrl,
+        location: location,
+        description: description,
+        section: _section);
     return statusCode;
   }
 
@@ -155,7 +161,6 @@ class _Uploader extends State<Uploader> {
     return showDialog<Null>(
       context: parentContext,
       barrierDismissible: false, // user must tap button!
-
       builder: (BuildContext context) {
         return SimpleDialog(
           title: const Text('Crear una publicación'),
@@ -164,8 +169,11 @@ class _Uploader extends State<Uploader> {
                 child: const Text('Tomar foto'),
                 onPressed: () async {
                   Navigator.pop(context);
-                  File imageFile =
-                      await ImagePicker.pickImage(source: ImageSource.camera, maxWidth: 1920, maxHeight: 1200, imageQuality: 80);
+                  File imageFile = await ImagePicker.pickImage(
+                      source: ImageSource.camera,
+                      maxWidth: 1920,
+                      maxHeight: 1200,
+                      imageQuality: 80);
                   setState(() {
                     file = imageFile;
                   });
@@ -174,8 +182,11 @@ class _Uploader extends State<Uploader> {
                 child: const Text('Escoger en galería'),
                 onPressed: () async {
                   Navigator.of(context).pop();
-                  File imageFile =
-                      await ImagePicker.pickImage(source: ImageSource.gallery, maxWidth: 1920, maxHeight: 1200, imageQuality: 80);
+                  File imageFile = await ImagePicker.pickImage(
+                      source: ImageSource.gallery,
+                      maxWidth: 1920,
+                      maxHeight: 1200,
+                      imageQuality: 80);
                   setState(() {
                     file = imageFile;
                   });
@@ -203,16 +214,19 @@ class _Uploader extends State<Uploader> {
       uploading = true;
     });
     uploadImage(file).then((int data) {
-      print('image uploaded!');
+//      print('image uploaded!');
       postToFireStore(
           mediaUrl: data,
           description: descriptionController.text,
           location: locationController.text);
     }).then((_) {
-      print('post created!');
+//      print('post created!');
       setState(() {
         file = null;
         uploading = false;
+
+        //Navigator.pushNamedAndRemoveUntil(context, '/login', ModalRoute.withName('/login'));
+        //Navigator.pushNamedAndRemoveUntil(context, '/posts', ModalRoute.withName('/posts'));
       });
     });
   }
@@ -230,58 +244,53 @@ class PostForm extends StatelessWidget {
       this.locationController});
 
   Widget build(BuildContext context) {
-    return Column(
-      children: <Widget>[
-        loading
-            ? LinearProgressIndicator()
-            : Padding(padding: EdgeInsets.only(top: 0.0)),
-        Divider(),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: <Widget>[
-            CircleAvatar(
+    return Column(children: <Widget>[
+      loading
+          ? LinearProgressIndicator()
+          : Padding(padding: EdgeInsets.only(top: 0.0)),
+      Divider(),
+      Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: <Widget>[
+          CircleAvatar(
               //backgroundImage: NetworkImage(currentUserModel.photoUrl),
-            ),
-            Container(
-              width: 250.0,
-              child: TextField(
-                controller: descriptionController,
-                decoration: InputDecoration(
-                    hintText: "Escribe una descripción...", border: InputBorder.none),
               ),
-            ),
-            Container(
-              height: 45.0,
-              width: 45.0,
-              child: AspectRatio(
-                aspectRatio: 487 / 451,
-                child: Container(
-                  decoration: BoxDecoration(
-                      image: DecorationImage(
-                    fit: BoxFit.fill,
-                    alignment: FractionalOffset.topCenter,
-                    image: FileImage(imageFile),
-                  )),
-                ),
-              ),
-            ),
-          ],
-        ),
-        Divider(),
-        ListTile(
-          leading: Icon(Icons.pin_drop),
-          title: Container(
+          Container(
             width: 250.0,
             child: TextField(
-              controller: locationController,
+              controller: descriptionController,
               decoration: InputDecoration(
-                  hintText: "¿Dónde se tomó esta foto?",
+                  hintText: "Escribe una descripción...",
                   border: InputBorder.none),
             ),
           ),
-        )
-      ],
-    );
+          Container(
+            height: 45.0,
+            width: 45.0,
+            child: AspectRatio(
+              aspectRatio: 487 / 451,
+              child: Container(
+                decoration: BoxDecoration(
+                    image: DecorationImage(
+                  fit: BoxFit.fill,
+                  alignment: FractionalOffset.topCenter,
+                  image: FileImage(imageFile),
+                )),
+              ),
+            ),
+          ),
+        ],
+      ),
+      Divider(),
+      ListTile(
+          leading: Icon(Icons.pin_drop),
+          title: Container(
+              width: 250.0,
+              child: TextField(
+                  controller: locationController,
+                  decoration: InputDecoration(
+                      hintText: "¿Dónde se tomó esta foto?",
+                      border: InputBorder.none))))
+    ]);
   }
 }
-

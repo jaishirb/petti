@@ -25,8 +25,17 @@ class AppStateModel extends foundation.ChangeNotifier {
     return Map.from(_productsInCart);
   }
 
-  void resetProductsInCart(){
+  int get totalProductsCount {
+    int p = 0;
+    _productsInCart.forEach((a, b) {
+      p = p + b;
+    });
+    return p;
+  }
+
+  void resetProductsInCart() {
     _productsInCart = <int, int>{};
+    notifyListeners();
   }
 
   // Total number of items in the cart.
@@ -45,8 +54,8 @@ class AppStateModel extends foundation.ChangeNotifier {
     return _productsInCart.keys.map((id) {
       // Extended price for product line
       Product elem;
-      for(var item in _products){
-        if(item.id == id){
+      for (var item in _products) {
+        if (item.id == id) {
           elem = item;
           break;
         }
@@ -58,12 +67,12 @@ class AppStateModel extends foundation.ChangeNotifier {
   }
 
   // Total shipping cost for the items in the cart.
-  double shippingCost (List<Product> _products){
+  double shippingCost(List<Product> _products) {
     int total = 0;
-    for(var elem in _productsInCart.keys){
+    for (var elem in _productsInCart.keys) {
       total += _productsInCart[elem];
     }
-    if(subtotalCost(_products) >= 20000){
+    if (subtotalCost(_products) >= 20000) {
       return 0;
     }
     return 4500;
@@ -72,14 +81,16 @@ class AppStateModel extends foundation.ChangeNotifier {
   // Sales tax for the items in the cart
 
   // Total cost to order everything in the cart.
-  double totalCost (List<Product>_products){
+  double totalCost(List<Product> _products) {
     return subtotalCost(_products) + shippingCost(_products);
   }
 
   // Returns a copy of the list of available products, filtered by category.
-  Future<List<Product>> getProducts() async{
+  Future<List<Product>> getProducts() async {
     String jsonProducts = await SharedPreferencesHelper.getProductos();
-    List<Product> products = (json.decode(jsonProducts) as List).map((i) => Product.fromJson(i)).toList();
+    List<Product> products = (json.decode(jsonProducts) as List)
+        .map((i) => Product.fromJson(i))
+        .toList();
     _availableProducts = products;
     return products;
   }
@@ -107,16 +118,17 @@ class AppStateModel extends foundation.ChangeNotifier {
     notifyListeners();
   }
 
-  Map<String, dynamic>generateJSONCompra(String nombre, String email, String location){
-    List<Map<String, dynamic>>individuales = new List<Map<String, dynamic>>();
-    for(var elem in _productsInCart.keys){
+  Map<String, dynamic> generateJSONCompra(
+      String nombre, String email, String location) {
+    List<Map<String, dynamic>> individuales = new List<Map<String, dynamic>>();
+    for (var elem in _productsInCart.keys) {
       individuales.add({
         'producto': elem,
         'color': _colorsProductsInCart[elem],
         'cantidad': _productsInCart[elem]
       });
     }
-    Map<String, dynamic>data = {
+    Map<String, dynamic> data = {
       'pedidos_individuales': individuales,
       'domicilio_cliente': location,
       'telefono_cliente': email,
@@ -152,7 +164,7 @@ class AppStateModel extends foundation.ChangeNotifier {
   }
 
   // Loads the list of available products from the repo.
-  Future<List<Product>>loadProducts(String url) async{
+  Future<List<Product>> loadProducts(String url) async {
     List<Product> tempProductos = await ProductsRepository.loadProducts(url);
     _availableProducts.addAll(tempProductos);
     notifyListeners();

@@ -1,21 +1,88 @@
+import 'app.dart';
+import 'styles.dart';
 import 'dart:convert';
-
-import 'package:Petti/screens/posts/image_post.dart';
-import 'package:Petti/screens/shop/product_list_tab.dart';
+import 'model/product.dart';
+import 'package:intl/intl.dart';
+import 'model/app_state_model.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:provider/provider.dart';
 import 'package:Petti/services/shop.dart';
+import 'package:razorpay_flutter/razorpay_flutter.dart';
+import 'package:Petti/screens/shop/product_list_tab.dart';
 import 'package:Petti/shared/shared_preferences_helper.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-import 'package:intl/date_symbol_data_file.dart';
-import 'package:intl/intl.dart';
-import 'package:provider/provider.dart';
-
-import 'model/app_state_model.dart';
-import 'model/product.dart';
-import 'styles.dart';
+//import 'package:intl/date_symbol_data_file.dart';
+//import 'package:Petti/screens/posts/image_post.dart';
 
 const double _kDateTimePickerHeight = 216;
+bool _paymentSucess = false;
+BuildContext _context;
+
+void _handlePaymentSuccess(PaymentSuccessResponse response) {
+  _paymentSucess = true;
+  _sucess();
+}
+
+void _sucess() {
+  showCupertinoDialog<void>(
+      context: _context,
+      builder: (BuildContext _context) {
+        return CupertinoAlertDialog(
+          title: Text('¡Éxito!'),
+          content: Text(
+              '¡Pedido enviado exitosamente!\npronto un agente se contactará contigo.'),
+          actions: <Widget>[
+            CupertinoDialogAction(
+              child: Text('Aceptar'),
+              onPressed: () {
+                Navigator.of(_context).pop();
+              },
+            ),
+          ],
+        );
+      });
+}
+
+void _handlePaymentError(PaymentFailureResponse response) {
+  showCupertinoDialog<void>(
+      context: _context,
+      builder: (BuildContext _context) {
+        return CupertinoAlertDialog(
+          title: Text('Problemas'),
+          content: Text(
+              'Oops, ha ocurido un error al procesar tu pago, intentalo luego.'),
+          actions: <Widget>[
+            CupertinoDialogAction(
+              child: Text('Aceptar'),
+              onPressed: () {
+                Navigator.of(_context).pop();
+              },
+            ),
+          ],
+        );
+      });
+}
+
+void _handleExternalWallet(ExternalWalletResponse response) {
+  showCupertinoDialog<void>(
+      context: _context,
+      builder: (BuildContext _context) {
+        return CupertinoAlertDialog(
+          title: Text('Cartera externa'),
+          content: Text(
+              'Proceso de pago con tarjeta externa.\n${response.walletName}'),
+          actions: <Widget>[
+            CupertinoDialogAction(
+              child: Text('Aceptar'),
+              onPressed: () {
+                Navigator.of(_context).pop();
+              },
+            ),
+          ],
+        );
+      });
+}
 
 class ShoppingCartTab extends StatefulWidget {
   @override
@@ -31,16 +98,42 @@ class _ShoppingCartTabState extends State<ShoppingCartTab> {
   String pin;
   List<Product> _availableProducts = new List<Product>();
   DateTime dateTime = DateTime.now();
-
+  double _totalAmount = 0;
+  AppStateModel _model;
+  Razorpay _razorpay;
   @override
-  initState(){
+  initState() {
     getProducts();
     super.initState();
+    _razorpay = Razorpay();
+    _razorpay.on(Razorpay.EVENT_PAYMENT_SUCCESS, _handlePaymentSuccess);
+    _razorpay.on(Razorpay.EVENT_PAYMENT_ERROR, _handlePaymentError);
+    _razorpay.on(Razorpay.EVENT_EXTERNAL_WALLET, _handleExternalWallet);
+  }
+
+  void openCheckout() async {
+    var options = {
+      'key': 'rzp_test_2OblpRDFgXv4DL',
+      'amount': _totalAmount * 100,
+      'name': 'Petti shop',
+      'description': 'Proceso de pago',
+      'prefill': {'contact': '+57', 'email': ''},
+      'external': {
+        'wallets': ['paytm']
+      },
+      'currency': 'COP',
+      'theme': {'color': '#1c6061'}
+    };
+    try {
+      _razorpay.open(options);
+    } catch (e) {
+      debugPrint(e);
+    }
   }
 
   final _currencyFormat = NumberFormat.currency(symbol: '\$');
 
-  Future<List<Product>> getProducts() async{
+  Future<List<Product>> getProducts() async {
     String jsonProducts = await SharedPreferencesHelper.getProductos();
     //List<Product> products = (json.decode(jsonProducts) as List).map((i) => Product.fromJson(i)).toList();
     List<Product> products = ProductListTab.products;
@@ -160,7 +253,9 @@ class _ShoppingCartTabState extends State<ShoppingCartTab> {
           mainAxisAlignment: MainAxisAlignment.end,
           children: <Widget>[
             Text(
-              DateFormat.yMd().add_jm().format(dateTime.add(new Duration(days: 1))),
+              DateFormat.yMd()
+                  .add_jm()
+                  .format(dateTime.add(new Duration(days: 1))),
               style: Styles.deliveryTime,
             ),
           ],
@@ -169,13 +264,15 @@ class _ShoppingCartTabState extends State<ShoppingCartTab> {
     );
   }
 
-  Future<void> _asyncConfirmDialog(BuildContext _context, AppStateModel model) async {
+  Future<void> _asyncConfirmDialog(
+      BuildContext _context, AppStateModel model) async {
     return showCupertinoDialog<void>(
       context: _context,
       builder: (BuildContext context) {
         return CupertinoAlertDialog(
           title: Text('¿Estás seguro que deseas vaciar el carrito?'),
-          content: Text('Si vaceas el carrito todos los items que seleccionaste se eliminarán.'),
+          content: Text(
+              'Si vaceas el carrito todos los items que seleccionaste se eliminarán.'),
           actions: <Widget>[
             CupertinoDialogAction(
               child: Text('Cancelar'),
@@ -198,13 +295,15 @@ class _ShoppingCartTabState extends State<ShoppingCartTab> {
     );
   }
 
-  Future<void> _pedidoExitosoDialog(BuildContext _context, AppStateModel model) async {
+  /*Future<void> _pedidoExitosoDialog(
+      BuildContext _context, AppStateModel model) async {
     return showCupertinoDialog<void>(
       context: _context,
       builder: (BuildContext context) {
         return CupertinoAlertDialog(
           title: Text('Éxito'),
-          content: Text('¡Pedido enviado exitosamente!\npronto un agente se contactará contigo.'),
+          content: Text(
+              '¡Pedido enviado exitosamente!\npronto un agente se contactará contigo.'),
           actions: <Widget>[
             CupertinoDialogAction(
               child: Text('Aceptar'),
@@ -227,7 +326,8 @@ class _ShoppingCartTabState extends State<ShoppingCartTab> {
       builder: (BuildContext context) {
         return CupertinoAlertDialog(
           title: Text('Problemas'),
-          content: Text('Oops, ha ocurido un error al crear tu pedido, intentalo luego.'),
+          content: Text(
+              'Oops, ha ocurido un error al crear tu pedido, intentalo luego.'),
           actions: <Widget>[
             CupertinoDialogAction(
               child: Text('Aceptar'),
@@ -239,7 +339,7 @@ class _ShoppingCartTabState extends State<ShoppingCartTab> {
         );
       },
     );
-  }
+  }*/
 
   Future<void> _missingFieldsDialog(BuildContext _context) async {
     return showCupertinoDialog<void>(
@@ -247,7 +347,8 @@ class _ShoppingCartTabState extends State<ShoppingCartTab> {
       builder: (BuildContext context) {
         return CupertinoAlertDialog(
           title: Text('Error'),
-          content: Text('Por favor diligencie todos los campos de manera correcta.'),
+          content:
+              Text('Por favor diligencie todos los campos de manera correcta.'),
           actions: <Widget>[
             CupertinoDialogAction(
               child: Text('Aceptar'),
@@ -261,18 +362,45 @@ class _ShoppingCartTabState extends State<ShoppingCartTab> {
     );
   }
 
-  Future<void> _enviarPedidoConfirmDialog(BuildContext _context, AppStateModel model) async {
-    crearCompra(model).then((value){
-      if(value){
-        _pedidoExitosoDialog(context, model);
-      }else{
-        _pedidoFailDialog(context);
-      }
-    });
+  Future<void> _enviarPedidoConfirmDialog(
+      BuildContext _context, AppStateModel model) async {
+    _totalAmount = model.totalCost(_availableProducts);
+    _model = model;
+    return showCupertinoDialog<void>(
+        context: _context,
+        builder: (BuildContext context) {
+          return CupertinoAlertDialog(
+              title: Text('Método de pago'),
+              content: Text('Seleccione su método de pago.'),
+              actions: <Widget>[
+                CupertinoDialogAction(
+                    child: Text('Efectivo'),
+                    onPressed: () {
+                      crearCompra(model, false); //PAGO EN EFECTIVO PENDIENTE
+                      Navigator.pop(context);
+                      _sucess();
+                    }),
+                CupertinoDialogAction(
+                    child: Text('Pago en línea'),
+                    onPressed: () {
+                      Navigator.pop(context);
+                      openCheckout();
+                      //PAGO EN LÍNEA HECHO
+                      if (_paymentSucess) {
+                        crearCompra(model, true);
+                      }
+                    }),
+                CupertinoDialogAction(
+                    child: Text('Cancelar'),
+                    onPressed: () {
+                      Navigator.pop(context);
+                    })
+              ]);
+        });
+    //.then((value) {if (value) {_pedidoExitosoDialog(context, model);} else {_pedidoFailDialog(context);}});
   }
 
-
-  Product getProductById(int id){
+  Product getProductById(int id) {
     getProducts();
     return _availableProducts.firstWhere((p) => p.id == id);
   }
@@ -303,10 +431,10 @@ class _ShoppingCartTabState extends State<ShoppingCartTab> {
               padding: const EdgeInsets.fromLTRB(16, 8, 16, 24),
               child: _buildDateAndTimePicker(context),
             );
-
           default:
-            if(model.productsInCart.length > productIndex && _availableProducts.length == 0){
-              getProducts().then((value){
+            if (model.productsInCart.length > productIndex &&
+                _availableProducts.length == 0) {
+              getProducts().then((value) {
                 return ShoppingCartItem(
                   index: index,
                   product: getProductById(
@@ -317,7 +445,8 @@ class _ShoppingCartTabState extends State<ShoppingCartTab> {
                 );
               });
             }
-            if (model.productsInCart.length > productIndex && _availableProducts.length >0) {
+            if (model.productsInCart.length > productIndex &&
+                _availableProducts.length > 0) {
               return ShoppingCartItem(
                 index: index,
                 product: getProductById(
@@ -365,31 +494,34 @@ class _ShoppingCartTabState extends State<ShoppingCartTab> {
                     children: <Widget>[
                       Container(
                         margin: const EdgeInsets.only(bottom: 25.0),
-                        child:   Align(
-                          alignment: Alignment.bottomCenter,
-                          child: ButtonBar(
-                            children: <Widget>[
-                              FlatButton(
-                                child: Text('Enviar pedido'),
-                                color: Colors.green,
-                                onPressed: () {
-                                  if(name != null && email != null && email.length == 10 && location != null){
-                                    _enviarPedidoConfirmDialog(context, model);
-                                  }else{
-                                    _missingFieldsDialog(context);
-                                  }
-                                },
-                              ),
-                              FlatButton(
-                                child: Text('Vaciar carrito'),
-                                color: Colors.red,
-                                onPressed: () {
-                                  _asyncConfirmDialog(context, model);
-                                },
-                              ),
-                            ],
-                          )
-                        ),
+                        child: Align(
+                            alignment: Alignment.bottomCenter,
+                            child: ButtonBar(
+                              children: <Widget>[
+                                FlatButton(
+                                  child: Text('Enviar pedido'),
+                                  color: Colors.green,
+                                  onPressed: () {
+                                    if (name != null &&
+                                        email != null &&
+                                        email.length == 10 &&
+                                        location != null) {
+                                      _enviarPedidoConfirmDialog(
+                                          context, model);
+                                    } else {
+                                      _missingFieldsDialog(context);
+                                    }
+                                  },
+                                ),
+                                FlatButton(
+                                  child: Text('Vaciar carrito'),
+                                  color: Colors.red,
+                                  onPressed: () {
+                                    _asyncConfirmDialog(context, model);
+                                  },
+                                ),
+                              ],
+                            )),
                       ),
                     ],
                   )
@@ -408,9 +540,8 @@ class _ShoppingCartTabState extends State<ShoppingCartTab> {
       builder: (context, model, child) {
         return CustomScrollView(
           slivers: <Widget>[
-            const CupertinoSliverNavigationBar(
-              largeTitle: Text('Carrito de compras'),
-            ),
+            CupertinoSliverNavigationBar(
+                largeTitle: Text('Carrito de compras')),
             SliverSafeArea(
               top: false,
               minimum: const EdgeInsets.only(top: 4),
@@ -424,13 +555,11 @@ class _ShoppingCartTabState extends State<ShoppingCartTab> {
     );
   }
 
-  Future<bool> crearCompra(AppStateModel model) async{
+  Future<bool> crearCompra(AppStateModel model, bool pagado) async {
     Map<String, dynamic> data = model.generateJSONCompra(name, email, location);
     int statusCode = await crearPedidoService(json.encode(data));
     return statusCode == 201;
   }
-
-
 }
 
 class ShoppingCartItem extends StatelessWidget {
@@ -448,33 +577,35 @@ class ShoppingCartItem extends StatelessWidget {
   final int quantity;
   final NumberFormat formatter;
 
-  String getFormattedName(String nombre){
+  String getFormattedName(String nombre) {
     String name = nombre;
     int separador = 3;
-    if(name.length > 17){
+    if (name.length > 17) {
       separador = 2;
     }
     var arrayNombre = nombre.toString().split(' ');
-    print(arrayNombre.length);
-    if(arrayNombre.length > separador){
+//    print(arrayNombre.length);
+    if (arrayNombre.length > separador) {
       name = '';
-      print('entro');
+//      print('entro');
       int index = 1;
-      for(var word in arrayNombre){
-        if(index == separador){
+      for (var word in arrayNombre) {
+        if (index == separador) {
           name += ' ' + word + '\n';
-        }else{
+        } else {
           name += ' ' + word;
         }
-        index+=1;
+        index += 1;
       }
     }
-    print('*****************');
-    print(name);
+//    print('*****************');
+//    print(name);
     return name;
   }
+
   @override
   Widget build(BuildContext context) {
+    _context = context;
     final row = SafeArea(
       top: false,
       bottom: false,

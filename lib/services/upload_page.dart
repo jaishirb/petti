@@ -42,7 +42,7 @@ Future<int> postToFireStoreService({int mediaUrl, String location, String descri
     "description": description,
     "tag": _action,
   };
-  print(t);
+//  print(t);
   FormData formData = FormData.fromMap({
     "location": location,
     "media_url": mediaUrl,

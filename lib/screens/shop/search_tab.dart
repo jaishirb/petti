@@ -1,13 +1,12 @@
 import 'dart:convert';
-
-import 'package:Petti/screens/shop/product_list_tab.dart';
-import 'package:Petti/services/shop.dart';
-import 'package:Petti/shared/shared_preferences_helper.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
+import 'search_bar.dart';
 import 'model/product.dart';
 import 'product_row_item.dart';
-import 'search_bar.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:Petti/services/shop.dart';
+import 'package:Petti/screens/shop/product_list_tab.dart';
+import 'package:Petti/shared/shared_preferences_helper.dart';
 
 class SearchTab extends StatefulWidget {
   @override
@@ -140,7 +139,7 @@ class _SearchTabState extends State<SearchTab> {
     });
   }
 
-  Widget _buildSearchBox() {
+  Widget buildSearchBox() {
     return Padding(
       padding: const EdgeInsets.all(8),
       child: SearchBar(
@@ -159,7 +158,7 @@ class _SearchTabState extends State<SearchTab> {
       child: SafeArea(
         child: Column(
           children: [
-            _buildSearchBox(),
+            buildSearchBox(),
             Expanded(
               child: ListView.builder(
                 itemBuilder: (context, index) => ProductRowItem(

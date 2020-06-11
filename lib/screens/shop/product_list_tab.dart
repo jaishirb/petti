@@ -14,8 +14,8 @@ class ProductList extends StatefulWidget {
   ProductListTab createState() => new ProductListTab();
 }
 
-class ProductListTab extends State<ProductList>  {
-  static List<Product>products = new List<Product>();
+class ProductListTab extends State<ProductList> {
+  static List<Product> products = new List<Product>();
   ScrollController _scrollController = new ScrollController();
   int loads = 2;
   String jsonProducts;
@@ -25,15 +25,18 @@ class ProductListTab extends State<ProductList>  {
   @override
   void initState() {
     super.initState();
-    AppStateModel().loadProducts(null).then((productos){
+    AppStateModel().loadProducts(null).then((productos) {
       setState(() {
         products = productos;
-        jsonProducts = jsonEncode(products.map((i) => i.toJson()).toList()).toString();
+        jsonProducts =
+            jsonEncode(products.map((i) => i.toJson()).toList()).toString();
         SharedPreferencesHelper.setProductos(jsonProducts);
       });
     });
-    _scrollController.addListener((){
-      if(_scrollController.position.pixels >= _scrollController.position.maxScrollExtent/2 && flag){
+    _scrollController.addListener(() {
+      if (_scrollController.position.pixels >=
+              _scrollController.position.maxScrollExtent / 2 &&
+          flag) {
         setState(() {
           loading = true;
         });
@@ -49,17 +52,18 @@ class ProductListTab extends State<ProductList>  {
     super.dispose();
   }
 
-  loadMore() async{
+  loadMore() async {
     var url = 'http://$DOMAIN/api/v1/shop/?page=$loads';
-    AppStateModel().loadProducts(url).then((productos){
+    AppStateModel().loadProducts(url).then((productos) {
       setState(() {
-        if(productos.length == 0){
+        if (productos.length == 0) {
           flag = false;
-        }else{
+        } else {
           flag = true;
         }
         products.addAll(productos);
-        jsonProducts = jsonEncode(products.map((i) => i.toJson()).toList()).toString();
+        jsonProducts =
+            jsonEncode(products.map((i) => i.toJson()).toList()).toString();
         SharedPreferencesHelper.setProductos(jsonProducts);
         loading = false;
       });
@@ -67,7 +71,7 @@ class ProductListTab extends State<ProductList>  {
   }
 
   buildFeed() {
-    try{
+    try {
       if (products.length != 0) {
         return Consumer<AppStateModel>(
           builder: (context, model, child) {
@@ -75,18 +79,12 @@ class ProductListTab extends State<ProductList>  {
               controller: _scrollController,
               semanticChildCount: products.length,
               slivers: <Widget>[
-                const CupertinoSliverNavigationBar(
-                  largeTitle: Text('Pettishop',
-                      style: const TextStyle(
-                          fontFamily: "Billabong", color: Color.fromRGBO(28, 96, 97, 1.0),
-                          fontSize: 35.0)),
-                ),
                 SliverSafeArea(
                   top: false,
                   minimum: const EdgeInsets.only(top: 8),
                   sliver: SliverList(
                     delegate: SliverChildBuilderDelegate(
-                          (context, index) {
+                      (context, index) {
                         if (index < products.length) {
                           return ProductRowItem(
                             index: index,
@@ -95,7 +93,6 @@ class ProductListTab extends State<ProductList>  {
                             flagProduct: true,
                           );
                         }
-
                         return null;
                       },
                     ),
@@ -112,8 +109,9 @@ class ProductListTab extends State<ProductList>  {
             ),
             child: new Center(child: const CupertinoActivityIndicator()));
       }
-    }on Exception catch(e) {}
+    } on Exception catch (e) {}
   }
+
   @override
   Widget build(BuildContext context) {
     return buildFeed();

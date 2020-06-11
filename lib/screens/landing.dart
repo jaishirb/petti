@@ -1,8 +1,7 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:Petti/shared/shared_preferences_helper.dart';
-
+import 'package:cached_network_image/cached_network_image.dart';
+//import 'package:shared_preferences/shared_preferences.dart';
 
 class Landing extends StatefulWidget {
   @override
@@ -11,7 +10,6 @@ class Landing extends StatefulWidget {
 
 class _LandingState extends State<Landing> {
   String token = "";
-
   @override
   void initState() {
     super.initState();
@@ -20,9 +18,8 @@ class _LandingState extends State<Landing> {
 
   _loadUserInfo() async {
     token = await SharedPreferencesHelper.getToken();
-    print('--------------------------------');
-    print(token);
-    await new Future.delayed(const Duration(seconds : 4));
+//    print('--------------------------------');print(token);
+    await new Future.delayed(const Duration(seconds: 4));
     if (token == "") {
       Navigator.pushNamedAndRemoveUntil(
           context, '/login', ModalRoute.withName('/login'));
@@ -56,8 +53,7 @@ class _LandingState extends State<Landing> {
                         child: CircleAvatar(
                           radius: 40.0,
                           backgroundImage: CachedNetworkImageProvider(
-                              "https://pettiapp.s3.us-east-2.amazonaws.com/images/LOGO1.png"
-                          ),
+                              "https://pettiapp.s3.us-east-2.amazonaws.com/images/LOGO1.png"),
                         ),
                       ),
                       Padding(

@@ -93,7 +93,7 @@ class HomePage extends StatefulWidget {
 PageController pageController;
 
 class _HomePageState extends State<HomePage> {
-  int _page = 0;
+  int page = 0;
   bool triedSilentLogin = false;
   bool setupNotifications = false;
   String token = "";
@@ -157,17 +157,17 @@ class _HomePageState extends State<HomePage> {
               items: <BottomNavigationBarItem>[
                 BottomNavigationBarItem(
                     icon: Icon(Icons.home,
-                        color: (_page == 0) ? Colors.black : Colors.grey),
+                        color: (page == 0) ? Colors.black : Colors.grey),
                     title: Container(height: 0.0),
                     backgroundColor: Colors.white),
                 BottomNavigationBarItem(
                     icon: Icon(Icons.add_circle,
-                        color: (_page == 1) ? Colors.black : Colors.grey),
+                        color: (page == 1) ? Colors.black : Colors.grey),
                     title: Container(height: 0.0),
                     backgroundColor: Colors.white),
               ],
               onTap: navigationTapped,
-              currentIndex: _page,
+              currentIndex: page,
             ),
           );
   }
@@ -195,7 +195,7 @@ class _HomePageState extends State<HomePage> {
 
   void onPageChanged(int page) {
     setState(() {
-      this._page = page;
+      this.page = page;
     });
   }
 
