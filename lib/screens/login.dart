@@ -106,7 +106,7 @@ class _LoginScreenState extends State<LoginScreen>
         builder: (buildcontext) {
           return AlertDialog(
             title: new Text("Error"),
-            content: new Text("Los datos no coinciden con ninguna cuenta"),
+            content: new Text("Intente con otros datos, este usuario ya existe."),
             actions: <Widget>[
               new FlatButton(
                   onPressed: () {
@@ -836,6 +836,7 @@ class _LoginScreenState extends State<LoginScreen>
                                           password2Controller.text) {
                                         if (passwordController.text.length >
                                             7) {
+                                          print('generating code');
                                           generateCode(jsonEncode({'phone': phoneController.text})).then((value) {
                                             if(value){
                                               setVerify(true);
