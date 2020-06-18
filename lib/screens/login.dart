@@ -118,6 +118,24 @@ class _LoginScreenState extends State<LoginScreen>
         });
   }
 
+  void _showAlertDialogSignup() {
+    showDialog(
+        context: context,
+        builder: (buildcontext) {
+          return AlertDialog(
+            title: new Text("Error"),
+            content: new Text("Los datos ingresados ya existen."),
+            actions: <Widget>[
+              new FlatButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: new Text("Cerrar"))
+            ],
+          );
+        });
+  }
+
   void loginActionsIndependient(
       String displayName, String email, String password) async {
     SharedPreferencesHelper.setName(displayName);
@@ -137,11 +155,10 @@ class _LoginScreenState extends State<LoginScreen>
   }
 
   void loginActionsIndependientSignUp(
-      String displayName, String email, String password, String phone) async {
+      String displayName, String email, String password, String phone, int code) async {
     SharedPreferencesHelper.setName(displayName);
     SharedPreferencesHelper.setEmail(email);
-    String token =
-        await authBackend(jsonEncode({'email': email, 'password': password}));
+    String token = await signup(jsonEncode({'email': email, 'password': password, 'code': code, 'phone': phone}));
     if (token != null) {
       SharedPreferencesHelper.setToken(token);
       Navigator.pushNamedAndRemoveUntil(
@@ -149,9 +166,10 @@ class _LoginScreenState extends State<LoginScreen>
         '/home',
         ModalRoute.withName('/home'),
       );
-    } else {
+    }else{
       _showAlertDialogLogin();
     }
+
   }
 
   Future<int> _handleSignIn(String type) async {
@@ -194,8 +212,15 @@ class _LoginScreenState extends State<LoginScreen>
         try {
           if (passwordController.text == password2Controller.text) {
             var m = emailController.text.split("@");
+            print('-----------------');
+            print(emailController.text);
+            print(passwordController.text);
+            print(phoneController.text);
+            print(int.parse(_digit1.text + _digit2.text + _digit3.text + _digit4.text + _digit5.text));
             loginActionsIndependientSignUp(m[0], emailController.text,
-                passwordController.text, phoneController.text);
+                passwordController.text, phoneController.text,
+                int.parse(_digit1.text + _digit2.text + _digit3.text + _digit4.text + _digit5.text)
+            );
           } else {
             _showAlertDialog('Por favor verifique sus datos');
           }
@@ -811,7 +836,12 @@ class _LoginScreenState extends State<LoginScreen>
                                           password2Controller.text) {
                                         if (passwordController.text.length >
                                             7) {
-                                          setVerify(true);
+                                          generateCode(jsonEncode({'phone': phoneController.text})).then((value) {
+                                            if(value){
+                                              setVerify(true);
+                                            }else {
+                                              _showAlertDialogSignup();
+                                        }});
                                         } else {
                                           _showAlertDialog(
                                               'La contraseña debe tener mínimo 8 caracteres');

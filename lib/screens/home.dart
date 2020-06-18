@@ -48,6 +48,7 @@ class _HomeScreenState extends State<HomeScreen> {
       setState(() {
         this.email = onValue;
       });
+      /**
       showDialog(
         context: context,
         builder: (BuildContext context) => CustomDialog(
@@ -57,6 +58,7 @@ class _HomeScreenState extends State<HomeScreen> {
           buttonText: "Okay",
         ),
       );
+          **/
     });
   }
 

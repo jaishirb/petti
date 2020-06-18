@@ -1,3 +1,6 @@
+import 'package:Petti/screens/shop/payment.dart';
+import 'package:Petti/screens/shop/webview.dart';
+
 import 'app.dart';
 import 'styles.dart';
 import 'dart:convert';
@@ -113,11 +116,11 @@ class _ShoppingCartTabState extends State<ShoppingCartTab> {
 
   void openCheckout() async {
     var options = {
-      'key': 'rzp_test_2OblpRDFgXv4DL',
+      'key': 'rzp_test_oyhwl5XQIWUuGT',
       'amount': _totalAmount * 100,
       'name': 'Petti shop',
       'description': 'Proceso de pago',
-      'prefill': {'contact': '+57', 'email': ''},
+      'prefill': {'contact': '+57' + email},
       'external': {
         'wallets': ['paytm']
       },
@@ -255,7 +258,9 @@ class _ShoppingCartTabState extends State<ShoppingCartTab> {
             Text(
               DateFormat.yMd()
                   .add_jm()
-                  .format(dateTime.add(new Duration(days: 1))),
+                  .format((DateTime.now().hour > 17)?new
+              DateTime.utc(new DateTime.now().year, new DateTime.now().month, new DateTime.now().day, 9).add(new Duration(days: 1)):
+              dateTime.add(new Duration(hours: 5))),
               style: Styles.deliveryTime,
             ),
           ],
@@ -362,6 +367,7 @@ class _ShoppingCartTabState extends State<ShoppingCartTab> {
     );
   }
 
+
   Future<void> _enviarPedidoConfirmDialog(
       BuildContext _context, AppStateModel model) async {
     _totalAmount = model.totalCost(_availableProducts);
@@ -376,19 +382,30 @@ class _ShoppingCartTabState extends State<ShoppingCartTab> {
                 CupertinoDialogAction(
                     child: Text('Efectivo'),
                     onPressed: () {
-                      crearCompra(model, false); //PAGO EN EFECTIVO PENDIENTE
+                      crearCompra(model, false, 'efectivo'); //PAGO EN EFECTIVO PENDIENTE
                       Navigator.pop(context);
                       _sucess();
                     }),
                 CupertinoDialogAction(
                     child: Text('Pago en línea'),
                     onPressed: () {
+                      crearCompra(model, false, 'online');
                       Navigator.pop(context);
-                      openCheckout();
+                      int total = model.totalCost(_availableProducts).toInt();
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => Payment(total)),
+                      );
+                      setState(() {
+                        model.resetProductsInCart();
+                      });
+                      //openCheckout();
                       //PAGO EN LÍNEA HECHO
+                      /**
                       if (_paymentSucess) {
-                        crearCompra(model, true);
+                        crearCompra(model, true, 'online');
                       }
+                       **/
                     }),
                 CupertinoDialogAction(
                     child: Text('Cancelar'),
@@ -555,8 +572,8 @@ class _ShoppingCartTabState extends State<ShoppingCartTab> {
     );
   }
 
-  Future<bool> crearCompra(AppStateModel model, bool pagado) async {
-    Map<String, dynamic> data = model.generateJSONCompra(name, email, location);
+  Future<bool> crearCompra(AppStateModel model, bool pagado, String metodo) async {
+    Map<String, dynamic> data = model.generateJSONCompra(name, email, location, metodo);
     int statusCode = await crearPedidoService(json.encode(data));
     return statusCode == 201;
   }

@@ -72,7 +72,7 @@ class AppStateModel extends foundation.ChangeNotifier {
     for (var elem in _productsInCart.keys) {
       total += _productsInCart[elem];
     }
-    if (subtotalCost(_products) >= 20000) {
+    if (subtotalCost(_products) >= 40000) {
       return 0;
     }
     return 4500;
@@ -119,7 +119,7 @@ class AppStateModel extends foundation.ChangeNotifier {
   }
 
   Map<String, dynamic> generateJSONCompra(
-      String nombre, String email, String location) {
+      String nombre, String email, String location, String metodo) {
     List<Map<String, dynamic>> individuales = new List<Map<String, dynamic>>();
     for (var elem in _productsInCart.keys) {
       individuales.add({
@@ -133,6 +133,7 @@ class AppStateModel extends foundation.ChangeNotifier {
       'domicilio_cliente': location,
       'telefono_cliente': email,
       'nombre_cliente': nombre,
+      'tipo_pago': metodo
     };
     return data;
   }
