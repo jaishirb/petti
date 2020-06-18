@@ -605,8 +605,8 @@ class _LoginScreenState extends State<LoginScreen>
 
   Widget signupPage() {
     return new Scaffold(
-        resizeToAvoidBottomPadding: false,
-        resizeToAvoidBottomInset: false,
+        resizeToAvoidBottomPadding: true,
+        resizeToAvoidBottomInset: true,
         body: SingleChildScrollView(
             child: Container(
                 height: MediaQuery.of(context).size.height,
