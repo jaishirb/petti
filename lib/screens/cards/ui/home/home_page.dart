@@ -14,6 +14,13 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
         resizeToAvoidBottomPadding: false,
         appBar: AppBar(
+          leading: IconButton(
+            icon: Icon(Icons.arrow_back, color: Colors.black),
+            onPressed: () {
+              Provider.of<Search>(context, listen: false).search = '';
+              Navigator.of(context).pop();
+              },
+          ),
           title: Text('Vet and care',
               style: const TextStyle(
                   fontFamily: "Billabong",
@@ -35,6 +42,7 @@ class _HomePageState extends State<HomePage> {
                     focusedBorder: OutlineInputBorder(
                         borderSide: BorderSide(color: Colors.teal))),
                 onChanged: (val) {
+                  print(val);
                   Provider.of<Search>(context, listen: false).search = val;
                 },
               ),

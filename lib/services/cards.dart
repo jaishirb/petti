@@ -32,5 +32,7 @@ Future<int> reservarService(String data) async {
   Response response = await post(url, headers: headers, body: data);
   print(response.statusCode);
   int statusCode = response.statusCode;
-  return statusCode;
+  var body = utf8.decode(response.bodyBytes);
+  int id = jsonDecode(body)['id'];
+  return id;
 }

@@ -7,14 +7,16 @@ import 'package:cached_network_image/cached_network_image.dart';
 
 class Payment extends StatefulWidget {
   final total;
-  Payment(this.total);
+  final id_venta;
+  Payment(this.total, this.id_venta);
   @override
-  _PaymentState createState() => _PaymentState(this.total);
+  _PaymentState createState() => _PaymentState(this.total, this.id_venta);
 }
 
 class _PaymentState extends State<Payment> {
   final total;
-  _PaymentState(this.total);
+  final id_venta;
+  _PaymentState(this.total, this.id_venta);
   String token = "";
   @override
   void initState() {
@@ -27,7 +29,7 @@ class _PaymentState extends State<Payment> {
     print('*****************************');
     print(this.total);
     var amountInCents = 100*this.total;
-    const reference = "aws";
+    var reference = "$id_venta";
     var url = 'https://checkout.wompi.co/p/?public-key=$publicKey&&'
         'currency=$currency&&amount-in-cents=$amountInCents&&reference=$reference';
     Navigator.push(context,
@@ -89,8 +91,8 @@ class _PaymentState extends State<Payment> {
                           Align(
                             alignment: Alignment.center,
                             child: Text(
-                              "Una vez tu pago sea exitoso, \nte enviaremos un mensaje "
-                                  "de\ntexto tan pronto tu pedido esté\nen preparación.",
+                              "Una vez tu pago sea exitoso, \ntu solicitud será procesada por\n"
+                                  "un agente. gracias por elegirnos.",
                               style: TextStyle(
                                   color: Color.fromRGBO(0, 0, 0, 1.0),
                                   fontWeight: FontWeight.normal,

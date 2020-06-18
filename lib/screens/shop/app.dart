@@ -24,18 +24,21 @@ class CupertinoStoreApp extends StatelessWidget {
           centerTitle: true,
           backgroundColor: Colors.white,
           actions: <Widget>[
-            Stack(alignment: Alignment.center, children: <Widget>[
-              Icon(Icons.shopping_cart, color: Colors.teal, size: 35),
-              Container(
-                  alignment: Alignment.bottomRight,
-                  width: 40,
-                  child: Stack(alignment: Alignment.center, children: [
-                    Icon(Icons.brightness_1, color: Colors.amber, size: 22),
-                    Text(_cartItemCount.toString(),
-                        style: TextStyle(
-                            color: Colors.white, fontWeight: FontWeight.bold))
-                  ]))
-            ])
+            Padding(
+              padding: const EdgeInsets.only(right: 8.0),
+              child: Stack(alignment: Alignment.center, children: <Widget>[
+                Icon(Icons.shopping_cart, color: Colors.teal, size: 35),
+                Container(
+                    alignment: Alignment.bottomRight,
+                    width: 40,
+                    child: Stack(alignment: Alignment.center, children: [
+                      Icon(Icons.brightness_1, color: Colors.amber, size: 22),
+                      Text(_cartItemCount.toString(),
+                          style: TextStyle(
+                              color: Colors.white, fontWeight: FontWeight.bold))
+                    ]))
+              ]),
+            )
           ],
         ),
         body: CupertinoStoreHomePage());

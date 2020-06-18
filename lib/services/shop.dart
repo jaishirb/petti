@@ -74,6 +74,8 @@ Future<int> crearPedidoService(String data) async {
   final headers = await getHeaders();
   Response response = await post(url, headers: headers, body: data);
   print(response.statusCode);
+  var body = utf8.decode(response.bodyBytes);
+  int id = jsonDecode(body)['id'];
   int statusCode = response.statusCode;
-  return statusCode;
+  return id;
 }

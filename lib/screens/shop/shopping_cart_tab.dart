@@ -389,16 +389,20 @@ class _ShoppingCartTabState extends State<ShoppingCartTab> {
                 CupertinoDialogAction(
                     child: Text('Pago en línea'),
                     onPressed: () {
-                      crearCompra(model, false, 'online');
-                      Navigator.pop(context);
-                      int total = model.totalCost(_availableProducts).toInt();
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => Payment(total)),
-                      );
-                      setState(() {
-                        model.resetProductsInCart();
+                      int id;
+                      crearCompra(model, false, 'online').then((value) {
+                        id=value;
+                        Navigator.pop(context);
+                        int total = model.totalCost(_availableProducts).toInt();
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => Payment(total, id)),
+                        );
+                        setState(() {
+                          model.resetProductsInCart();
+                        });
                       });
+
                       //openCheckout();
                       //PAGO EN LÍNEA HECHO
                       /**
@@ -572,10 +576,10 @@ class _ShoppingCartTabState extends State<ShoppingCartTab> {
     );
   }
 
-  Future<bool> crearCompra(AppStateModel model, bool pagado, String metodo) async {
+  Future<int> crearCompra(AppStateModel model, bool pagado, String metodo) async {
     Map<String, dynamic> data = model.generateJSONCompra(name, email, location, metodo);
-    int statusCode = await crearPedidoService(json.encode(data));
-    return statusCode == 201;
+    int id = await crearPedidoService(json.encode(data));
+    return id;
   }
 }
 

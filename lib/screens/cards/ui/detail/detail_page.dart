@@ -17,7 +17,7 @@ class DetailPage extends StatelessWidget {
 
   DetailPage(this.planet);
 
-  void book(BuildContext context)async{
+  Future<bool>book(BuildContext context)async{
     pr = new ProgressDialog(context,type: ProgressDialogType.Normal, isDismissible: true, showLogs: false);
     pr.style(
         message: 'Creando reserva...',
@@ -34,26 +34,62 @@ class DetailPage extends StatelessWidget {
             color: Colors.black, fontSize: 14.0, fontWeight: FontWeight.w300)
     );
     pr.show();
-    int statusCode = await reservarService(jsonEncode({'servicio': int.parse(planet.id)}));
+    int id = await reservarService(jsonEncode({'servicio': int.parse(planet.id)}));
     Future.delayed(Duration(seconds: 3)).then((onValue){
       print("PR status  ${pr.isShowing()}" );
       if(pr.isShowing()){
         pr.hide();
       }
       String title, description;
-      if(statusCode == 200 || statusCode == 201){
-        title = "¡Muy bien!";
-        description = "Hemos recibido tu reserva, \n¡pronto un asesor te contactará!";
-      }else{
-        title = "Oops";
-        description = "Parece que ha habido un error, \nintenta más tarde.";
-      }
+      title = "¡Muy bien!";
+      description = "Hemos recibido tu reserva, \n¡pronto un asesor te contactará!";
       showDialog(
         context: context,
         builder: (BuildContext context) => CustomDialog(
           title: title,
           description: description,
           buttonText: "Okay",
+        ),
+      );
+    });
+    return true;
+  }
+
+  void book2(BuildContext context)async{
+    pr = new ProgressDialog(context,type: ProgressDialogType.Normal, isDismissible: true, showLogs: false);
+    pr.style(
+        message: 'Creando reserva...',
+        borderRadius: 0.0,
+        backgroundColor: Colors.white,
+        progressWidget: CircularProgressIndicator(),
+        elevation: 5.0,
+        insetAnimCurve: Curves.easeInOut,
+        progress: 0.0,
+        maxProgress: 100.0,
+        progressTextStyle: TextStyle(
+            color: Colors.black, fontSize: 7.0, fontWeight: FontWeight.w200),
+        messageTextStyle: TextStyle(
+            color: Colors.black, fontSize: 14.0, fontWeight: FontWeight.w300)
+    );
+    pr.show();
+    int id = await reservarService(jsonEncode({'servicio': int.parse(planet.id)}));
+    Future.delayed(Duration(seconds: 3)).then((onValue){
+      print("PR status  ${pr.isShowing()}" );
+      if(pr.isShowing()){
+        pr.hide();
+      }
+      String title, description;
+      title = "¡Muy bien!";
+      description = "Hemos recibido tu reserva, \n¡ahora continúa con el pago online!";
+
+      showDialog(
+        context: context,
+        builder: (BuildContext context) => CustomDialog2(
+          title: title,
+          description: description,
+          buttonText: "Ir a pagar",
+          total: int.parse(planet.gravity.replaceAll('cop', '').replaceAll('.', '')),
+          reference: id,
         ),
       );
     });
@@ -94,7 +130,9 @@ class DetailPage extends StatelessWidget {
                 alignment: Alignment.bottomCenter,
                 child: FloatingActionButton.extended(
                   onPressed: () {
-                    book(context);
+                    _showDialog(context);
+
+                    //book(context);
                   },
                   icon: Icon(Icons.accessibility),
                   label: Text("Adquirir servicio"),
@@ -105,6 +143,42 @@ class DetailPage extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+  void _showDialog(BuildContext context) {
+    // flutter defined function
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        // return object of type Dialog
+        return AlertDialog(
+          title: new Text("Reserva de servicio"),
+          content: new Text("Medio de pago"),
+          actions: <Widget>[
+            // usually buttons at the bottom of the dialog
+            new FlatButton(
+              child: new Text("Efectivo"),
+              onPressed: () {
+                //Navigator.of(context).pop();
+                book(context);
+              },
+            ),
+            new FlatButton(
+              child: new Text("Pago en línea"),
+              onPressed: () {
+                book2(context);
+                //Navigator.of(context).pop();
+              },
+            ),
+            new FlatButton(
+              child: new Text("Finalizar"),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
     );
   }
 
