@@ -24,7 +24,7 @@ class _PaymentState extends State<Payment> {
   }
 
   _launchURL() async {
-    const publicKey = 'pub_test_PXgF1UYsxTt9q9aGvAtmIeYBGKHHEFlq';
+    const publicKey = 'pub_prod_9B8EH9OWXRfrOjIm87f0CgGEolbdfL8x';
     const currency = "COP";
     print('*****************************');
     print(this.total);

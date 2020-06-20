@@ -34,7 +34,7 @@ class DetailPage extends StatelessWidget {
             color: Colors.black, fontSize: 14.0, fontWeight: FontWeight.w300)
     );
     pr.show();
-    int id = await reservarService(jsonEncode({'servicio': int.parse(planet.id)}));
+    int id = await reservarService(jsonEncode({'servicio': int.parse(planet.id), 'tipo_pago': 'efectivo'}));
     Future.delayed(Duration(seconds: 3)).then((onValue){
       print("PR status  ${pr.isShowing()}" );
       if(pr.isShowing()){
@@ -72,7 +72,7 @@ class DetailPage extends StatelessWidget {
             color: Colors.black, fontSize: 14.0, fontWeight: FontWeight.w300)
     );
     pr.show();
-    int id = await reservarService(jsonEncode({'servicio': int.parse(planet.id)}));
+    int id = await reservarService(jsonEncode({'servicio': int.parse(planet.id), 'tipo_pago': 'online'}));
     Future.delayed(Duration(seconds: 3)).then((onValue){
       print("PR status  ${pr.isShowing()}" );
       if(pr.isShowing()){
@@ -244,12 +244,24 @@ class DetailPage extends StatelessWidget {
 
   Container _getToolbar(BuildContext context) {
     return new Container(
-            margin: new EdgeInsets.only(
-                top: MediaQuery
-                    .of(context)
-                    .padding
-                    .top),
-            child: new BackButton(color: Colors.white),
-          );
+        margin: new EdgeInsets.only(
+            top: MediaQuery
+                .of(context)
+                .padding
+                .top),
+        child: RawMaterialButton(
+          onPressed: () {
+            Navigator.pop(context);},
+          elevation: 2.0,
+          fillColor: Color.fromRGBO(28,96,97, 1),
+          child: Icon(
+              Icons.arrow_back_ios,
+              size: 15.0,
+              color:Colors.white
+          ),
+          padding: EdgeInsets.all(15.0),
+          shape: CircleBorder(),
+        )
+    );
   }
 }
