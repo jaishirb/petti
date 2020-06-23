@@ -464,8 +464,8 @@ class _LoginScreenState extends State<LoginScreen>
 
   Widget loginPage() {
     return new Scaffold(
-        resizeToAvoidBottomPadding: false,
-        resizeToAvoidBottomInset: false,
+        resizeToAvoidBottomPadding: true,
+        resizeToAvoidBottomInset: true,
         body: SingleChildScrollView(
             child: Container(
           height: MediaQuery.of(context).size.height,
@@ -838,24 +838,6 @@ class _LoginScreenState extends State<LoginScreen>
                   Divider(
                     height: 15.0,
                   ),
-                  new Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: <Widget>[
-                        Padding(
-                            padding: const EdgeInsets.only(right: 20.0),
-                            child: new FlatButton(
-                              child: new Text(
-                                "¿Ya tienes cuenta?",
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  color: Color.fromRGBO(28, 96, 97, 1.0),
-                                  fontSize: 15.0,
-                                ),
-                                textAlign: TextAlign.end,
-                              ),
-                              onPressed: () => {gotoLogin()},
-                            ))
-                      ]),
                   new Container(
                       width: MediaQuery.of(context).size.width,
                       margin: const EdgeInsets.only(
