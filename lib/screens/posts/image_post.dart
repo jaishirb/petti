@@ -145,7 +145,18 @@ class _ImagePost extends State<ImagePost> {
           color: color,
         ),
         onTap: () {
-          _likePost(id);
+          if(guess){
+            showDialog(
+              context: context,
+              builder: (BuildContext context) => CustomDialog(
+                title:'No autorizado',
+                description:'Debes iniciar sesión para poder realizar esta acción.',
+                buttonText: "Okay",
+              ),
+            );
+          }else{
+            _likePost(id);
+          }
         });
   }
 

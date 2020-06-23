@@ -110,7 +110,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 currentAccountPicture: CircleAvatar(
                   backgroundColor:
                       Theme.of(context).platform == TargetPlatform.iOS
-                          ? Colors.blue
+                          ? Colors.white
                           : Colors.white,
                   child: Text(
                     name.substring(0, 1),

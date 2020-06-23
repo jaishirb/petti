@@ -169,8 +169,23 @@ class MapScreenState extends State<ProfilePage>
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: <Widget>[
                                     FlatButton(
-                                      onPressed: () => {
-                                        selectImage()
+                                      onPressed: ()  {
+                                        SharedPreferencesHelper.getGuess().then((value)  {
+                                          if(value){
+                                            showDialog(
+                                              context: context,
+                                              builder: (BuildContext context) => CustomDialog(
+                                                title:'No autorizado',
+                                                description:'Debes iniciar sesión para poder realizar esta acción.',
+                                                buttonText: "Okay",
+                                              ),
+                                            );
+                                          }else{
+                                            selectImage();
+                                          }
+                                        });
+
+
                                       },
                                       child: Row(
                                         children: <Widget>[
