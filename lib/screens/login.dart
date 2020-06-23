@@ -309,7 +309,7 @@ class _LoginScreenState extends State<LoginScreen>
           child: new Column(
             children: <Widget>[
               Container(
-                  padding: EdgeInsets.only(top: 250.0),
+                  padding: EdgeInsets.only(top: 140.0),
                   child: Center(
                       /**
               child: Icon(
@@ -664,7 +664,7 @@ class _LoginScreenState extends State<LoginScreen>
                     child: Column(children: <Widget>[
                   Container(
                       padding: EdgeInsets.only(
-                          left: 120.0, right: 120.0, top: 100.0, bottom: 70.0),
+                          left: 120.0, right: 120.0, top: 80.0, bottom: 20.0),
                       child: Center(
                           child: Icon(Icons.account_circle,
                               color: Color.fromRGBO(28, 96, 97, 1.0),
@@ -682,7 +682,7 @@ class _LoginScreenState extends State<LoginScreen>
                   new Container(
                       width: MediaQuery.of(context).size.width,
                       margin: const EdgeInsets.only(
-                          left: 40.0, right: 40.0, top: 10.0),
+                          left: 40.0, right: 40.0, top: 2.0),
                       alignment: Alignment.center,
                       decoration: BoxDecoration(
                           border: Border(
@@ -709,7 +709,7 @@ class _LoginScreenState extends State<LoginScreen>
                                           .requestFocus(_phoneFocus);
                                     }))
                           ])),
-                  Divider(height: 24.0),
+                  Divider(height: 15.0),
                   new Row(children: <Widget>[
                     new Expanded(
                         child: new Padding(
@@ -723,7 +723,7 @@ class _LoginScreenState extends State<LoginScreen>
                   new Container(
                       width: MediaQuery.of(context).size.width,
                       margin: const EdgeInsets.only(
-                          left: 40.0, right: 40.0, top: 10.0),
+                          left: 40.0, right: 40.0, top: 2.0),
                       alignment: Alignment.center,
                       decoration: BoxDecoration(
                           border: Border(
@@ -753,7 +753,7 @@ class _LoginScreenState extends State<LoginScreen>
                                           .requestFocus(_pass1Focus);
                                     }))
                           ])),
-                  Divider(height: 24.0),
+                  Divider(height: 15.0),
                   new Row(children: <Widget>[
                     new Expanded(
                         child: new Padding(
@@ -767,7 +767,7 @@ class _LoginScreenState extends State<LoginScreen>
                   new Container(
                       width: MediaQuery.of(context).size.width,
                       margin: const EdgeInsets.only(
-                          left: 40.0, right: 40.0, top: 10.0),
+                          left: 40.0, right: 40.0, top: 2.0),
                       alignment: Alignment.center,
                       decoration: BoxDecoration(
                           border: Border(
@@ -796,7 +796,7 @@ class _LoginScreenState extends State<LoginScreen>
                                           .requestFocus(_pass2Focus);
                                     }))
                           ])),
-                  Divider(height: 24.0),
+                  Divider(height: 15.0),
                   new Row(children: <Widget>[
                     new Expanded(
                         child: new Padding(
@@ -810,7 +810,7 @@ class _LoginScreenState extends State<LoginScreen>
                   new Container(
                       width: MediaQuery.of(context).size.width,
                       margin: const EdgeInsets.only(
-                          left: 40.0, right: 40.0, top: 10.0),
+                          left: 40.0, right: 40.0, top: 2.0),
                       alignment: Alignment.center,
                       decoration: BoxDecoration(
                           border: Border(
@@ -836,7 +836,7 @@ class _LoginScreenState extends State<LoginScreen>
                                             TextStyle(color: Colors.grey))))
                           ])),
                   Divider(
-                    height: 24.0,
+                    height: 15.0,
                   ),
                   new Row(
                       mainAxisAlignment: MainAxisAlignment.end,
@@ -859,7 +859,7 @@ class _LoginScreenState extends State<LoginScreen>
                   new Container(
                       width: MediaQuery.of(context).size.width,
                       margin: const EdgeInsets.only(
-                          left: 30.0, right: 30.0, top: 50.0),
+                          left: 30.0, right: 30.0, top: 20.0),
                       alignment: Alignment.center,
                       child: new Row(children: <Widget>[
                         new Expanded(
