@@ -106,7 +106,7 @@ class _LoginScreenState extends State<LoginScreen>
         builder: (buildcontext) {
           return AlertDialog(
             title: new Text("Error"),
-            content: new Text("Intente con otros datos, este usuario ya existe."),
+            content: new Text("Datos incorrectos."),
             actions: <Widget>[
               new FlatButton(
                   onPressed: () {
@@ -235,11 +235,24 @@ class _LoginScreenState extends State<LoginScreen>
           var m = emaillogController.text.split("@");
           loginActionsIndependient(
               m[0], emaillogController.text, passwordlogController.text);
+          SharedPreferencesHelper.setGuess(false);
           return 1;
         } catch (error) {
           print("error: " + error.toString());
           return 0;
         }
+        break;
+      case "I":
+        try {
+          loginActionsIndependient(
+              'guess', 'guess@petti.com', 'guesspetti123asd');
+          SharedPreferencesHelper.setGuess(true);
+          return 1;
+        } catch (error) {
+          print("error: " + error.toString());
+          return 0;
+        }
+        break;
     }
     return 0;
   }
@@ -397,6 +410,42 @@ class _LoginScreenState extends State<LoginScreen>
                                   textAlign: TextAlign.center,
                                   style: TextStyle(
                                       color: Colors.white,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              new Container(
+                width: MediaQuery.of(context).size.width,
+                margin:
+                const EdgeInsets.only(left: 30.0, right: 30.0, top: 40.0),
+                alignment: Alignment.center,
+                child: new Row(
+                  children: <Widget>[
+                    new Expanded(
+                      child: new FlatButton(
+                        //color: Color.fromRGBO(28, 96, 97, 1.0),
+                        onPressed: () => initiateSignIn('I'),
+                        child: new Container(
+                          padding: const EdgeInsets.symmetric(
+                            vertical: 20.0,
+                            horizontal: 20.0,
+                          ),
+                          child: new Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[
+                              new Expanded(
+                                child: Text(
+                                  "Continuar como invitado",
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                      color: Color.fromRGBO(28, 96, 97, 1.0),
                                       fontWeight: FontWeight.bold),
                                 ),
                               ),

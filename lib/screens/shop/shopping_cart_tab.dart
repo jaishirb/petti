@@ -53,6 +53,7 @@ class _ShoppingCartTabState extends State<ShoppingCartTab> {
   String email;
   String location;
   String pin;
+  bool guess = true;
   List<Product> _availableProducts = new List<Product>();
   DateTime dateTime = DateTime.now();
   double _totalAmount = 0;
@@ -61,7 +62,11 @@ class _ShoppingCartTabState extends State<ShoppingCartTab> {
   initState() {
     getProducts();
     super.initState();
-
+    SharedPreferencesHelper.getGuess().then((value) {
+      setState(() {
+        guess = value;
+      });
+    });
   }
 
 
@@ -232,6 +237,29 @@ class _ShoppingCartTabState extends State<ShoppingCartTab> {
     );
   }
 
+  Future<void> alertGuess(
+      BuildContext _context) async {
+    return showCupertinoDialog<void>(
+      context: _context,
+      builder: (BuildContext context) {
+        return CupertinoAlertDialog(
+          title: Text('No autorizado'),
+          content: Text(
+              'Debes iniciar sesión para poder realizar esta acción.'),
+          actions: <Widget>[
+            CupertinoDialogAction(
+              child: Text('Aceptar'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+
   /*Future<void> _pedidoExitosoDialog(
       BuildContext _context, AppStateModel model) async {
     return showCupertinoDialog<void>(
@@ -314,27 +342,34 @@ class _ShoppingCartTabState extends State<ShoppingCartTab> {
                 CupertinoDialogAction(
                     child: Text('Efectivo'),
                     onPressed: () {
-                      crearCompra(model, false, 'efectivo'); //PAGO EN EFECTIVO PENDIENTE
-                      Navigator.pop(context);
-                      _sucess();
+                      if(guess){
+                        alertGuess(_context);
+                      }else{
+                        crearCompra(model, false, 'efectivo'); //PAGO EN EFECTIVO PENDIENTE
+                        Navigator.pop(context);
+                        _sucess();
+                      }
                     }),
                 CupertinoDialogAction(
                     child: Text('Pago en línea'),
                     onPressed: () {
-                      int id;
-                      crearCompra(model, false, 'online').then((value) {
-                        id=value;
-                        Navigator.pop(context);
-                        int total = model.totalCost(_availableProducts).toInt();
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => Payment(total, id)),
-                        );
-                        setState(() {
-                          model.resetProductsInCart();
+                      if(guess){
+                        alertGuess(_context);
+                      }else{
+                        int id;
+                        crearCompra(model, false, 'online').then((value) {
+                          id=value;
+                          Navigator.pop(context);
+                          int total = model.totalCost(_availableProducts).toInt();
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => Payment(total, id)),
+                          );
+                          setState(() {
+                            model.resetProductsInCart();
+                          });
                         });
-                      });
-
+                      }
                       //openCheckout();
                       //PAGO EN LÍNEA HECHO
                       /**

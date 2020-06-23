@@ -86,6 +86,7 @@ class _ImagePost extends State<ImagePost> {
   final String description;
   final String image_profile;
 
+  bool guess = true;
   Map likes;
   String name = '';
   int likeCount;
@@ -107,6 +108,11 @@ class _ImagePost extends State<ImagePost> {
     SharedPreferencesHelper.getName().then((_name){
       setState(() {
         this.name = _name.trim().replaceAll(' ', '').toLowerCase();
+      });
+    });
+    SharedPreferencesHelper.getGuess().then((value) {
+      setState(() {
+        guess = value;
       });
     });
   }
@@ -145,7 +151,20 @@ class _ImagePost extends State<ImagePost> {
 
   GestureDetector buildLikeableImage() {
     return GestureDetector(
-      onDoubleTap: () => _likePost(id),
+      onDoubleTap: () {
+        if(guess){
+          showDialog(
+            context: context,
+            builder: (BuildContext context) => CustomDialog(
+              title:'No autorizado',
+              description:'Debes iniciar sesión para poder realizar esta acción.',
+              buttonText: "Okay",
+            ),
+          );
+        }else{
+          _likePost(id);
+        }
+      },
       child: Stack(
         alignment: Alignment.center,
         children: <Widget>[
@@ -255,21 +274,31 @@ Future<ConfirmAction> _asyncConfirmDialog(BuildContext context, int id) async {
                 tooltip: 'Eliminar post',
                 onPressed: () {
                   print('eliminando');
-                  SharedPreferencesHelper.getName().then((_name){
-                    if(_name == this.username){
-                      _asyncConfirmDialog(context, int.parse(this.id));
-                    }else{
-                      showDialog(
-                        context: context,
-                        builder: (BuildContext context) => CustomDialog(
-                          title: '¡Alto!',
-                          description: '¡Este post no te pertenece!\nno puedes eliminarlo ;)',
-                          buttonText: "Okay",
-                        ),
-                      );
-                    }
-                  });
-
+                  if(guess){
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) => CustomDialog(
+                        title:'No autorizado',
+                        description:'Debes iniciar sesión para poder realizar esta acción.',
+                        buttonText: "Okay",
+                      ),
+                    );
+                  }else{
+                    SharedPreferencesHelper.getName().then((_name){
+                      if(_name == this.username){
+                        _asyncConfirmDialog(context, int.parse(this.id));
+                      }else{
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) => CustomDialog(
+                            title: '¡Alto!',
+                            description: '¡Este post no te pertenece!\nno puedes eliminarlo ;)',
+                            buttonText: "Okay",
+                          ),
+                        );
+                      }
+                    });
+                  }
                 },
               ),
             );
@@ -311,17 +340,28 @@ Future<ConfirmAction> _asyncConfirmDialog(BuildContext context, int id) async {
                   size: 25.0,
                 ),
                 onTap: () {
-                  if(this.owner != null){
-                    FlutterOpenWhatsapp.sendSingleMessage('57'+this.owner, "Hello");
-                  }else{
+                  if(guess){
                     showDialog(
                       context: context,
                       builder: (BuildContext context) => CustomDialog(
-                        title: 'Tenemos problemas',
-                        description: 'El usuario que intentas contactar aún no tiene registrado su número...',
+                        title:'No autorizado',
+                        description:'Debes iniciar sesión para poder realizar esta acción.',
                         buttonText: "Okay",
                       ),
                     );
+                  }else{
+                    if(this.owner != null){
+                      FlutterOpenWhatsapp.sendSingleMessage('57'+this.owner, "Hola");
+                    }else{
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) => CustomDialog(
+                          title: 'Tenemos problemas',
+                          description: 'El usuario que intentas contactar aún no tiene registrado su número...',
+                          buttonText: "Okay",
+                        ),
+                      );
+                    }
                   }
                 }),
           ],

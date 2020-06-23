@@ -546,9 +546,20 @@ class MapScreenState extends State<ProfilePage>
         ),
       ),
       onTap: () {
-        setState(() {
-          _status = false;
-        });
+        if(_nombreController.text == 'guess'){
+          showDialog(
+            context: context,
+            builder: (BuildContext context) => CustomDialog(
+              title:'No autorizado',
+              description:'Debes iniciar sesión para poder realizar esta acción.',
+              buttonText: "Okay",
+            ),
+          );
+        }else{
+          setState(() {
+            _status = false;
+          });
+        }
       },
     );
   }

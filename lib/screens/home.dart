@@ -188,15 +188,34 @@ class _HomeScreenState extends State<HomeScreen> {
                             fontFamily: "Billabong",
                             color: Color.fromRGBO(28, 96, 97, 1.0),
                             fontSize: 46.0)),
-                    IconButton(
-                      icon: Icon(
+                    RawMaterialButton(
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(28.0),
+                          side: BorderSide(color: Color.fromRGBO(28,96,97, 1))
+                      ),
+                      elevation: 2.0,
+                      //fillColor: Color.fromRGBO(28,96,97, 1),
+                      child: Icon(
                         Icons.headset_mic,
                         size: 30.0,
                         color: Color.fromRGBO(28, 96, 97, 1.0),
                       ),
                       onPressed: () {
-                        FlutterOpenWhatsapp.sendSingleMessage(
-                            '573147382820', "Hola!");
+                        SharedPreferencesHelper.getGuess().then((value) {
+                          if(value){
+                            showDialog(
+                              context: context,
+                              builder: (BuildContext context) => CustomDialog(
+                                title:'No autorizado',
+                                description:'Debes iniciar sesión para poder realizar esta acción.',
+                                buttonText: "Okay",
+                              ),
+                            );
+                          }else{
+                            FlutterOpenWhatsapp.sendSingleMessage(
+                                '573147382820', "Hola!");
+                          }
+                        });
                       },
                     )
                   ],

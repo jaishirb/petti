@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:Petti/screens/cards/ui/detail/dialog.dart';
 import 'package:Petti/services/cards.dart';
+import 'package:Petti/shared/shared_preferences_helper.dart';
 import 'package:flutter/material.dart';
 import '../../model/cards.dart' as cardp;
 import '../../ui/common/plannet_summary.dart';
@@ -130,8 +131,20 @@ class DetailPage extends StatelessWidget {
                 alignment: Alignment.bottomCenter,
                 child: FloatingActionButton.extended(
                   onPressed: () {
-                    _showDialog(context);
-
+                    SharedPreferencesHelper.getGuess().then((value) {
+                      if(value){
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) => CustomDialog(
+                            title:'No autorizado',
+                            description:'Debes iniciar sesión para poder realizar esta acción.',
+                            buttonText: "Okay",
+                          ),
+                        );
+                      }else{
+                        _showDialog(context);
+                      }
+                    });
                     //book(context);
                   },
                   icon: Icon(Icons.accessibility),

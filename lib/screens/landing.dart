@@ -10,6 +10,8 @@ class Landing extends StatefulWidget {
 
 class _LandingState extends State<Landing> {
   String token = "";
+  bool guess = true;
+  String username = "";
   @override
   void initState() {
     super.initState();
@@ -18,9 +20,11 @@ class _LandingState extends State<Landing> {
 
   _loadUserInfo() async {
     token = await SharedPreferencesHelper.getToken();
+    guess = await SharedPreferencesHelper.getGuess();
+    username = await SharedPreferencesHelper.getName();
 //    print('--------------------------------');print(token);
     await new Future.delayed(const Duration(seconds: 4));
-    if (token == "") {
+    if (token == "" || guess || username=='guess') {
       Navigator.pushNamedAndRemoveUntil(
           context, '/login', ModalRoute.withName('/login'));
     } else {

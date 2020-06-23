@@ -1,5 +1,7 @@
 import 'dart:io';
 import 'dart:async';
+import 'package:Petti/screens/cards/ui/detail/dialog.dart';
+
 import 'location.dart';
 import 'image_post.dart';
 import 'package:flutter/material.dart';
@@ -31,6 +33,7 @@ class _Feed extends State<Feed> with AutomaticKeepAliveClientMixin<Feed> {
   Address address;
   String section;
   bool uploading = false;
+  bool guess = true;
   TextEditingController descriptionController = TextEditingController();
   TextEditingController locationController = TextEditingController();
   @override
@@ -44,6 +47,11 @@ class _Feed extends State<Feed> with AutomaticKeepAliveClientMixin<Feed> {
           _scrollController.position.maxScrollExtent / 2) {
         this._loadFeed(true);
       }
+    });
+    SharedPreferencesHelper.getGuess().then((value) {
+      setState(() {
+        guess = value;
+      });
     });
   }
 
@@ -164,46 +172,58 @@ class _Feed extends State<Feed> with AutomaticKeepAliveClientMixin<Feed> {
         ? Scaffold(
             floatingActionButton: FloatingActionButton.extended(
               onPressed: () {
-                return showDialog<Null>(
+                if(guess){
+                  showDialog(
                     context: context,
-                    barrierDismissible: false, // user must tap button!
-                    builder: (BuildContext context) {
-                      return SimpleDialog(
-                          title: const Text('Crear una publicación'),
-                          children: <Widget>[
-                            SimpleDialogOption(
-                                child: const Text('Tomar foto'),
-                                onPressed: () async {
-                                  Navigator.pop(context);
-                                  File imageFile = await ImagePicker.pickImage(
-                                      source: ImageSource.camera,
-                                      maxWidth: 1920,
-                                      maxHeight: 1200,
-                                      imageQuality: 80);
-                                  setState(() {
-                                    file = imageFile;
-                                  });
-                                }),
-                            SimpleDialogOption(
-                                child: const Text('Escoger en galería'),
-                                onPressed: () async {
-                                  Navigator.of(context).pop();
-                                  File imageFile = await ImagePicker.pickImage(
-                                      source: ImageSource.gallery,
-                                      maxWidth: 1920,
-                                      maxHeight: 1200,
-                                      imageQuality: 80);
-                                  setState(() {
-                                    file = imageFile;
-                                  });
-                                }),
-                            SimpleDialogOption(
-                                child: const Text("Cancelar"),
-                                onPressed: () {
-                                  Navigator.pop(context);
-                                })
-                          ]);
-                    });
+                    builder: (BuildContext context) => CustomDialog(
+                      title:'No autorizado',
+                      description:'Debes iniciar sesión para poder realizar esta acción.',
+                      buttonText: "Okay",
+                    ),
+                  );
+                }else{
+                  return showDialog<Null>(
+                      context: context,
+                      barrierDismissible: false, // user must tap button!
+                      builder: (BuildContext context) {
+                        return SimpleDialog(
+                            title: const Text('Crear una publicación'),
+                            children: <Widget>[
+                              SimpleDialogOption(
+                                  child: const Text('Tomar foto'),
+                                  onPressed: () async {
+                                    Navigator.pop(context);
+                                    File imageFile = await ImagePicker.pickImage(
+                                        source: ImageSource.camera,
+                                        maxWidth: 1920,
+                                        maxHeight: 1200,
+                                        imageQuality: 80);
+                                    setState(() {
+                                      file = imageFile;
+                                    });
+                                  }),
+                              SimpleDialogOption(
+                                  child: const Text('Escoger en galería'),
+                                  onPressed: () async {
+                                    Navigator.of(context).pop();
+                                    File imageFile = await ImagePicker.pickImage(
+                                        source: ImageSource.gallery,
+                                        maxWidth: 1920,
+                                        maxHeight: 1200,
+                                        imageQuality: 80);
+                                    setState(() {
+                                      file = imageFile;
+                                    });
+                                  }),
+                              SimpleDialogOption(
+                                  child: const Text("Cancelar"),
+                                  onPressed: () {
+                                    Navigator.pop(context);
+                                  })
+                            ]);
+                      });
+                }
+                return null;
               },
               icon: Icon(Icons.camera_alt, color: Colors.white),
               label: Text('Publicar'),
