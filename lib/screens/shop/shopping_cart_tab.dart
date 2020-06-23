@@ -11,7 +11,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
 import 'package:Petti/services/shop.dart';
-import 'package:razorpay_flutter/razorpay_flutter.dart';
 import 'package:Petti/screens/shop/product_list_tab.dart';
 import 'package:Petti/shared/shared_preferences_helper.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -22,11 +21,6 @@ const double _kDateTimePickerHeight = 216;
 bool _paymentSucess = false;
 BuildContext _context;
 
-void _handlePaymentSuccess(PaymentSuccessResponse response) {
-  _paymentSucess = true;
-  _sucess();
-}
-
 void _sucess() {
   showCupertinoDialog<void>(
       context: _context,
@@ -35,46 +29,6 @@ void _sucess() {
           title: Text('¡Éxito!'),
           content: Text(
               '¡Pedido enviado exitosamente!\npronto un agente se contactará contigo.'),
-          actions: <Widget>[
-            CupertinoDialogAction(
-              child: Text('Aceptar'),
-              onPressed: () {
-                Navigator.of(_context).pop();
-              },
-            ),
-          ],
-        );
-      });
-}
-
-void _handlePaymentError(PaymentFailureResponse response) {
-  showCupertinoDialog<void>(
-      context: _context,
-      builder: (BuildContext _context) {
-        return CupertinoAlertDialog(
-          title: Text('Problemas'),
-          content: Text(
-              'Oops, ha ocurido un error al procesar tu pago, intentalo luego.'),
-          actions: <Widget>[
-            CupertinoDialogAction(
-              child: Text('Aceptar'),
-              onPressed: () {
-                Navigator.of(_context).pop();
-              },
-            ),
-          ],
-        );
-      });
-}
-
-void _handleExternalWallet(ExternalWalletResponse response) {
-  showCupertinoDialog<void>(
-      context: _context,
-      builder: (BuildContext _context) {
-        return CupertinoAlertDialog(
-          title: Text('Cartera externa'),
-          content: Text(
-              'Proceso de pago con tarjeta externa.\n${response.walletName}'),
           actions: <Widget>[
             CupertinoDialogAction(
               child: Text('Aceptar'),
@@ -103,36 +57,14 @@ class _ShoppingCartTabState extends State<ShoppingCartTab> {
   DateTime dateTime = DateTime.now();
   double _totalAmount = 0;
   AppStateModel _model;
-  Razorpay _razorpay;
   @override
   initState() {
     getProducts();
     super.initState();
-    _razorpay = Razorpay();
-    _razorpay.on(Razorpay.EVENT_PAYMENT_SUCCESS, _handlePaymentSuccess);
-    _razorpay.on(Razorpay.EVENT_PAYMENT_ERROR, _handlePaymentError);
-    _razorpay.on(Razorpay.EVENT_EXTERNAL_WALLET, _handleExternalWallet);
+
   }
 
-  void openCheckout() async {
-    var options = {
-      'key': 'rzp_test_oyhwl5XQIWUuGT',
-      'amount': _totalAmount * 100,
-      'name': 'Petti shop',
-      'description': 'Proceso de pago',
-      'prefill': {'contact': '+57' + email},
-      'external': {
-        'wallets': ['paytm']
-      },
-      'currency': 'COP',
-      'theme': {'color': '#1c6061'}
-    };
-    try {
-      _razorpay.open(options);
-    } catch (e) {
-      debugPrint(e);
-    }
-  }
+
 
   final _currencyFormat = NumberFormat.currency(symbol: '\$');
 
