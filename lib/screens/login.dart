@@ -136,6 +136,43 @@ class _LoginScreenState extends State<LoginScreen>
         });
   }
 
+
+  void _showAlertDialogResend() {
+    showDialog(
+        context: context,
+        builder: (buildcontext) {
+          return AlertDialog(
+            title: new Text("Error"),
+            content: new Text("Ha habido un problema al solicitar un nuevo código de verificación. Intente más tarde."),
+            actions: <Widget>[
+              new FlatButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: new Text("Cerrar"))
+            ],
+          );
+        });
+  }
+
+  void newCode() {
+    showDialog(
+        context: context,
+        builder: (buildcontext) {
+          return AlertDialog(
+            title: new Text("En proceso"),
+            content: new Text("Se ha enviado in nuevo código a tu número de celular."),
+            actions: <Widget>[
+              new FlatButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: new Text("Cerrar"))
+            ],
+          );
+        });
+  }
+
   void loginActionsIndependient(
       String displayName, String email, String password) async {
     SharedPreferencesHelper.setName(displayName);
@@ -946,127 +983,173 @@ class _LoginScreenState extends State<LoginScreen>
                 onPressed: () {
                   setVerify(false);
                 })),
-        body: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: <Widget>[
-              Text('Hemos enviado un mensaje de texto al'),
-              Text('${phoneController.text}',
-                  style: TextStyle(
-                      fontSize: 15, color: Color.fromRGBO(28, 96, 97, 1.0))),
-              Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: <Widget>[
-                    Container(
-                        width: MediaQuery.of(context).size.width / 10,
-                        child: TextFormField(
-                            focusNode: _f1,
-                            onChanged: (n) {
-                              if (n.length > 0) {
-                                FocusScope.of(context).requestFocus(_f2);
-                              }
-                            },
-                            textAlign: TextAlign.center,
-                            controller: _digit1,
-                            maxLength: 1,
-                            keyboardType: TextInputType.number,
-                            decoration: InputDecoration(counterText: ''))),
-                    Container(
-                        width: MediaQuery.of(context).size.width / 10,
-                        child: TextFormField(
-                            focusNode: _f2,
-                            onChanged: (n) {
-                              if (n.length > 0) {
-                                FocusScope.of(context).requestFocus(_f3);
-                              }
-                            },
-                            textAlign: TextAlign.center,
-                            controller: _digit2,
-                            maxLength: 1,
-                            keyboardType: TextInputType.number,
-                            decoration: InputDecoration(counterText: ''))),
-                    Container(
-                        width: MediaQuery.of(context).size.width / 10,
-                        child: TextField(
-                            focusNode: _f3,
-                            onChanged: (n) {
-                              if (n.length > 0) {
-                                FocusScope.of(context).requestFocus(_f4);
-                              }
-                            },
-                            textAlign: TextAlign.center,
-                            controller: _digit3,
-                            maxLength: 1,
-                            keyboardType: TextInputType.number,
-                            decoration: InputDecoration(counterText: ''))),
-                    Container(
-                        width: MediaQuery.of(context).size.width / 10,
-                        child: TextField(
-                            focusNode: _f4,
-                            onChanged: (n) {
-                              if (n.length > 0) {
-                                FocusScope.of(context).requestFocus(_f5);
-                              }
-                            },
-                            textAlign: TextAlign.center,
-                            controller: _digit4,
-                            maxLength: 1,
-                            keyboardType: TextInputType.number,
-                            decoration: InputDecoration(counterText: ''))),
-                    Container(
-                        width: MediaQuery.of(context).size.width / 10,
-                        child: TextField(
-                            focusNode: _f5,
-                            onChanged: (n) {
-                              if (n.length > 0) {
-                                FocusScope.of(context).nextFocus();
-                              }
-                            },
-                            textAlign: TextAlign.center,
-                            controller: _digit5,
-                            maxLength: 1,
-                            keyboardType: TextInputType.number,
-                            decoration: InputDecoration(counterText: ''))),
-                  ]),
-              Container(
-                width: MediaQuery.of(context).size.width,
-                margin:
-                    const EdgeInsets.only(left: 30.0, right: 30.0, top: 100),
-                alignment: Alignment.center,
-                child: new Row(
-                  children: <Widget>[
-                    new Expanded(
-                      child: new FlatButton(
-                        shape: new RoundedRectangleBorder(
-                            borderRadius: new BorderRadius.circular(30.0)),
-                        color: Color.fromRGBO(28, 96, 97, 1.0),
-                        onPressed: () => initiateSignIn("S"),
-                        child: new Container(
-                          padding: const EdgeInsets.symmetric(
-                            vertical: 20.0,
-                            horizontal: 20.0,
-                          ),
-                          child: new Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: <Widget>[
-                              new Expanded(
-                                child: Text(
-                                  "Verificar",
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold),
+        body: Padding(
+          padding: const EdgeInsets.only(top: 125),
+          child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                Text('Hemos enviado un mensaje de texto al'),
+                Text('${phoneController.text}',
+                    style: TextStyle(
+                        fontSize: 15, color: Color.fromRGBO(28, 96, 97, 1.0))),
+                Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: <Widget>[
+                      Container(
+                          width: MediaQuery.of(context).size.width / 10,
+                          child: TextFormField(
+                              focusNode: _f1,
+                              onChanged: (n) {
+                                if (n.length > 0) {
+                                  FocusScope.of(context).requestFocus(_f2);
+                                }
+                              },
+                              textAlign: TextAlign.center,
+                              controller: _digit1,
+                              maxLength: 1,
+                              keyboardType: TextInputType.number,
+                              decoration: InputDecoration(counterText: ''))),
+                      Container(
+                          width: MediaQuery.of(context).size.width / 10,
+                          child: TextFormField(
+                              focusNode: _f2,
+                              onChanged: (n) {
+                                if (n.length > 0) {
+                                  FocusScope.of(context).requestFocus(_f3);
+                                }
+                              },
+                              textAlign: TextAlign.center,
+                              controller: _digit2,
+                              maxLength: 1,
+                              keyboardType: TextInputType.number,
+                              decoration: InputDecoration(counterText: ''))),
+                      Container(
+                          width: MediaQuery.of(context).size.width / 10,
+                          child: TextField(
+                              focusNode: _f3,
+                              onChanged: (n) {
+                                if (n.length > 0) {
+                                  FocusScope.of(context).requestFocus(_f4);
+                                }
+                              },
+                              textAlign: TextAlign.center,
+                              controller: _digit3,
+                              maxLength: 1,
+                              keyboardType: TextInputType.number,
+                              decoration: InputDecoration(counterText: ''))),
+                      Container(
+                          width: MediaQuery.of(context).size.width / 10,
+                          child: TextField(
+                              focusNode: _f4,
+                              onChanged: (n) {
+                                if (n.length > 0) {
+                                  FocusScope.of(context).requestFocus(_f5);
+                                }
+                              },
+                              textAlign: TextAlign.center,
+                              controller: _digit4,
+                              maxLength: 1,
+                              keyboardType: TextInputType.number,
+                              decoration: InputDecoration(counterText: ''))),
+                      Container(
+                          width: MediaQuery.of(context).size.width / 10,
+                          child: TextField(
+                              focusNode: _f5,
+                              onChanged: (n) {
+                                if (n.length > 0) {
+                                  FocusScope.of(context).nextFocus();
+                                }
+                              },
+                              textAlign: TextAlign.center,
+                              controller: _digit5,
+                              maxLength: 1,
+                              keyboardType: TextInputType.number,
+                              decoration: InputDecoration(counterText: ''))),
+                    ]),
+                Container(
+                  width: MediaQuery.of(context).size.width,
+                  margin:
+                      const EdgeInsets.only(left: 30.0, right: 30.0, top: 100),
+                  alignment: Alignment.center,
+                  child: new Row(
+                    children: <Widget>[
+                      new Expanded(
+                        child: new FlatButton(
+                          shape: new RoundedRectangleBorder(
+                              borderRadius: new BorderRadius.circular(30.0)),
+                          color: Color.fromRGBO(28, 96, 97, 1.0),
+                          onPressed: () => initiateSignIn("S"),
+                          child: new Container(
+                            padding: const EdgeInsets.symmetric(
+                              vertical: 20.0,
+                              horizontal: 20.0,
+                            ),
+                            child: new Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[
+                                new Expanded(
+                                  child: Text(
+                                    "Verificar",
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold),
+                                  ),
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-              )
-            ]));
+                new Container(
+                  width: MediaQuery.of(context).size.width,
+                  margin:
+                  const EdgeInsets.only(left: 30.0, right: 30.0, top: 40.0),
+                  alignment: Alignment.center,
+                  child: new Row(
+                    children: <Widget>[
+                      new Expanded(
+                        child: new FlatButton(
+                          //color: Color.fromRGBO(28, 96, 97, 1.0),
+                          onPressed: () {
+                          generateCode(jsonEncode({'phone': phoneController.text})).then((value) {
+                          if(value){
+                            newCode();
+                          }else {
+                          _showAlertDialogResend();
+                          }});
+                          },
+                          child: new Container(
+                            padding: const EdgeInsets.symmetric(
+                              vertical: 20.0,
+                              horizontal: 20.0,
+                            ),
+                            child: new Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[
+                                new Expanded(
+                                  child: Text(
+                                    "Solicitar nuevo código",
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                        color: Color.fromRGBO(28, 96, 97, 1.0),
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ]),
+        ));
   }
 
   gotoLogin() {
