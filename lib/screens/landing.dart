@@ -25,6 +25,7 @@ class _LandingState extends State<Landing> {
 //    print('--------------------------------');print(token);
     await new Future.delayed(const Duration(seconds: 4));
     if (token == "" || guess || username=='guess') {
+      SharedPreferencesHelper.setGuess(false);
       Navigator.pushNamedAndRemoveUntil(
           context, '/login', ModalRoute.withName('/login'));
     } else {
