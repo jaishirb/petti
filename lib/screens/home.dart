@@ -84,6 +84,7 @@ class _HomeScreenState extends State<HomeScreen> {
       SharedPreferencesHelper.removeToken();
       SharedPreferencesHelper.removeEmail();
       SharedPreferencesHelper.removeName();
+      SharedPreferencesHelper.setGuess(false);
       Navigator.pushNamedAndRemoveUntil(
           context, '/login', ModalRoute.withName('/login'));
     }
